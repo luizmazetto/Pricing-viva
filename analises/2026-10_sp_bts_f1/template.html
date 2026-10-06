@@ -1,0 +1,172 @@
+<title>SP: BTS e F1 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: memorando de revenue management; resumo no topo, depois um bloco por evento com tabela por prédio e régua de preço vs mercado */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --ink:#18202b; --muted:#5b6575; --line:#dde1e8;
+  --bts:#6b4fbb; --f1:#c8322c; --up:#1f7a4d; --down:#b4541a; --check:#8a6d00; --hold:#5b6575;
+  --up-bg:#e3f2ea; --down-bg:#fbeadf; --check-bg:#f6efcc; --hold-bg:#eceff3;
+  --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161c; --surface:#1a2029; --ink:#e6e9ee; --muted:#9aa4b2; --line:#2c3440;
+  --bts:#a993f0; --f1:#f0726b; --up:#5cc78f; --down:#f0a16b; --check:#e3c54f; --hold:#9aa4b2;
+  --up-bg:#173326; --down-bg:#3a2516; --check-bg:#352e10; --hold-bg:#242b35; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161c; --surface:#1a2029; --ink:#e6e9ee; --muted:#9aa4b2; --line:#2c3440;
+  --bts:#a993f0; --f1:#f0726b; --up:#5cc78f; --down:#f0a16b; --check:#e3c54f; --hold:#9aa4b2;
+  --up-bg:#173326; --down-bg:#3a2516; --check-bg:#352e10; --hold-bg:#242b35; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:32px 64px;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0;max-width:72ch}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:10px}
+.meta{color:var(--muted);font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:4px}
+.kpi .v{font:700 26px var(--display);font-variant-numeric:tabular-nums}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.bts{border-top:3px solid var(--bts)} .kpi.f1{border-top:3px solid var(--f1)}
+.findings{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.findings li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.findings .dot{width:10px;height:10px;border-radius:50%;margin-top:8px}
+section{display:grid;gap:16px}
+.sec-head{display:grid;gap:6px;border-left:4px solid var(--c);padding-left:14px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);align-items:center}
+.legend i{display:inline-block;vertical-align:middle;margin-right:6px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:1180px;font-size:14px}
+td:first-child{min-width:150px} td:nth-child(2){min-width:270px}
+th{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px;white-space:nowrap}
+.r{text-align:right}
+.bname{font-weight:600}
+.bsub{font-size:12px;color:var(--muted)}
+.chip{display:inline-block;font:600 12px var(--body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.up{background:var(--up-bg);color:var(--up)} .chip.down{background:var(--down-bg);color:var(--down)}
+.chip.check{background:var(--check-bg);color:var(--check)} .chip.hold{background:var(--hold-bg);color:var(--hold)}
+.why{font-size:13px;color:var(--muted);margin-top:4px;max-width:46ch}
+.occbar{display:grid;gap:3px;min-width:120px}
+.occbar .t{position:relative;height:8px;background:var(--hold-bg);border-radius:4px}
+.occbar .o{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--c)}
+.occbar .m{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.delta.up{color:var(--up)} .delta.down{color:var(--down)}
+.scale{width:190px;height:34px;display:block}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:10px;min-width:0}
+.panel svg{width:100%;height:auto;display:block}
+.small{font-size:13px;color:var(--muted)}
+.steps{display:grid;gap:8px;margin:0;padding-left:20px}
+code{font-family:var(--mono);font-size:12.5px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Revenue · São Paulo · extração 06/out/2026</div>
+  <h1>Preços de SP para o BTS (30–31/out) e a F1 (5–7/nov)</h1>
+  <p class="meta">Base: <code>views.listing_daily_stats</code> (BigQuery), a mesma que alimenta o dashboard 58 “Us vs Market”, com mercado do PriceLabs por unidade. Pace do mercado de 2025 vem da tabela Calendar (VivaAnalytics). Noites analisadas: BTS sexta e sábado 30–31/out (24 dias de antecedência); F1 quinta a sábado 5–7/nov (corrida no domingo 8/nov, 29–31 dias de antecedência).</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi bts"><span class="eyebrow">BTS · ocupação</span><span class="v">__BTS_OCC__ <span class="small">vs __BTS_MKT__ mercado</span></span><span class="s">__BTS_REM__ noites ainda à venda em 28 prédios</span></div>
+  <div class="kpi bts"><span class="eyebrow">BTS · demanda do mercado</span><span class="v">2,5×</span><span class="s">Mercado a 28 dias: 49–50% ocupado. Mesmo fim de semana de 2025: 19–20%.</span></div>
+  <div class="kpi f1"><span class="eyebrow">F1 · nosso pace vs 2025</span><span class="v">8,9% <span class="small">vs 6,8%</span></span><span class="s">Ocupação (sem mid-term) ~33 dias antes da corrida. Em 2025 terminamos em 98%.</span></div>
+  <div class="kpi f1"><span class="eyebrow">F1 · ocupação vs mercado</span><span class="v">__F1_OCC__ <span class="small">vs __F1_MKT__ mercado</span></span><span class="s">Mercado em linha com 2025: 27–33% hoje, 29–38% a 28 dias em 2025.</span></div>
+</div>
+
+<section>
+  <h2>Resumo</h2>
+  <ul class="findings">
+    <li><span class="dot" style="background:var(--bts)"></span><p><b>BTS: estamos esticados.</b> O mercado já vendeu 64% das noites 30–31/out e nós vendemos 25%. Nosso preço pedido médio (R$ 612) está bem acima da mediana anunciada no mercado. Oito prédios estão acima do p75 com menos de um terço da ocupação do mercado (AYM, AYR, PVF, PQJ, NXH, AYH, HBV, DGE). Faltam só 24 dias, então essas noites precisam ir para a faixa p50–p75 agora.</p></li>
+    <li><span class="dot" style="background:var(--up)"></span><p><b>BTS: três prédios vendem mais rápido que o mercado</b> (URB, FYP, HLK, com 54–69% de ocupação). O que sobrou neles deve subir 15%.</p></li>
+    <li><span class="dot" style="background:var(--f1)"></span><p><b>F1: não é hora de baixar preço.</b> Em 2025, 33 dias antes da corrida a cidade estava em 6,8% de ocupação e fechou em 98%. As reservas da última semana saíram pelo maior ADR (R$ 528); as feitas entre 8 e 21 dias antes saíram mais baratas (R$ 383–403). Hoje estamos em 8,9%, à frente de 2025, com o mercado no mesmo ritmo.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>F1: prédios que já venderam demais.</b> HBV (64%), HLK (51%), PVN (26%) e URB (18%) já passaram do mercado. Suba o que sobrou e considere estadia mínima de 3 noites. O risco da F1 é o volume: temos ~2.300 noites à venda, contra ~1.600 noites no total da F1 de 2025.</p></li>
+  </ul>
+</section>
+
+<section style="--c:var(--bts)">
+  <div class="sec-head" style="--c:var(--bts)">
+    <div class="eyebrow">Show · Morumbi · 28, 30 e 31/out</div>
+    <h2>BTS: posição relativa ao mercado</h2>
+    <p class="small">O critério é o índice de penetração (nossa ocupação ÷ ocupação do mercado do PriceLabs) somado à posição do preço pedido nas noites não vendidas frente aos percentis p50, p75 e p90 do mercado. A quarta 28/out segue o mesmo padrão: 24% de ocupação contra 54% do mercado.</p>
+  </div>
+  <div class="legend"><span><i style="width:14px;height:8px;background:var(--bts);border-radius:3px"></i>nossa ocupação</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90 do mercado</span></div>
+  <div class="tbl"><table id="t-bts"></table></div>
+</section>
+
+<section style="--c:var(--f1)">
+  <div class="sec-head" style="--c:var(--f1)">
+    <div class="eyebrow">GP de São Paulo · Interlagos · 6–8/nov</div>
+    <h2>F1: pace contra 2025</h2>
+    <p class="small">Mesma antecedência: reservas criadas até 33 dias antes da corrida (07/out/2025 contra 06/out/2026). Mid-term (estadia de 28 noites ou mais) fora da curva.</p>
+  </div>
+  <div class="two">
+    <div class="panel"><h3>Como a F1 2025 encheu</h3><p class="small">Ocupação acumulada por antecedência da reserva (barras) e ADR das reservas feitas em cada janela (números). O ponto vermelho é onde estamos hoje.</p>__CURVE__</div>
+    <div class="panel"><h3>Prédios que existiam na F1 2025</h3><p class="small">Ocupação a 33 dias da corrida em 2025 vs hoje, ADR final de 2025 e preço pedido hoje.</p><div class="tbl" style="border:0"><table id="t-ly" style="min-width:520px"></table></div></div>
+  </div>
+  <div class="legend"><span><i style="width:14px;height:8px;background:var(--f1);border-radius:3px"></i>nossa ocupação</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90</span></div>
+  <div class="tbl"><table id="t-f1"></table></div>
+  <div class="panel">
+    <h3>Checkpoints para a F1 (com base na curva de 2025)</h3>
+    <ol class="steps">
+      <li><b>T-14 (sáb 25/out):</b> em 2025 a cidade estava em ~24%. Prédio abaixo de 15% e com índice de penetração abaixo de 0,5: corte até 10%, nunca abaixo do p50 do mercado. Prédio acima de 35%: suba 10–15%.</li>
+      <li><b>T-7 (sáb 1/nov):</b> em 2025 estava em ~58%. Prédio abaixo de 40%: traga para a faixa p50–p75. Acima de 70%: segure ou suba, porque a última semana teve o maior ADR em 2025.</li>
+      <li><b>Até lá:</b> não deixe regras automáticas de last-minute ou de gap aplicarem desconto nas noites 5–7/nov. Revise os mínimos (min price) no PriceLabs.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>Método e limites</h2>
+  <ul class="small" style="margin:0;padding-left:20px;display:grid;gap:6px;max-width:90ch">
+    <li>Ocupação = noites reservadas ÷ noites disponíveis (<code>availability = 1</code>) por prédio em SP. Preço pedido = <code>our_calendar_price</code> médio das noites ainda não vendidas. Mercado = <code>market_occupancy</code>, <code>market_pct_50/75/90</code> e <code>market_median_booked_price</code>, já calculados por unidade com o compset do PriceLabs.</li>
+    <li>O pace de 2025 usa <code>reservation.creation_date</code> e só enxerga reservas que não foram canceladas. Reservas canceladas depois de 07/out/2025 não aparecem, então o pace de 2025 pode estar levemente subestimado.</li>
+    <li>O portfólio cresceu (cerca de 960 unidades em SP hoje contra 570 em nov/2025). Só 7 prédios têm F1 2025 para comparar, e a comparação é feita em % de ocupação.</li>
+    <li>Alvos de preço são pontos de partida: o corte é limitado a 35% e a alta a 25–35% por ajuste. Arquivos em <code>analises/2026-10_sp_bts_f1/</code> no repositório Pricing-viva.</li>
+  </ul>
+</section>
+</div>
+
+<script>
+const DATA = __DATA__;
+const fmt = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+const pct = v => Math.round(v*100) + '%';
+function scale(x){
+  const lo = Math.min(x.mkt_p50, x.ask_unsold, x.target)*0.85, hi = Math.max(x.mkt_p90, x.ask_unsold, x.target)*1.05;
+  const X = v => 6 + (v-lo)/(hi-lo)*178;
+  const tick = (v,l) => `<line x1="${X(v)}" x2="${X(v)}" y1="9" y2="21" stroke="var(--muted)" stroke-width="1.5"/><text x="${X(v)}" y="32" font-size="8.5" text-anchor="middle" fill="var(--muted)" font-family="JetBrains Mono, monospace">${l}</text>`;
+  let s = `<svg class="scale" viewBox="0 0 190 34" role="img" aria-label="Pedido ${fmt(x.ask_unsold)}, alvo ${fmt(x.target)}, p50 ${fmt(x.mkt_p50)}, p75 ${fmt(x.mkt_p75)}, p90 ${fmt(x.mkt_p90)}"><line x1="6" x2="184" y1="15" y2="15" stroke="var(--line)" stroke-width="2"/>`;
+  s += tick(x.mkt_p50,'p50') + tick(x.mkt_p75,'p75') + tick(x.mkt_p90,'p90');
+  if (Math.abs(x.target - x.ask_unsold) > 1) s += `<line x1="${X(x.ask_unsold)}" x2="${X(x.target)}" y1="15" y2="15" stroke="var(--${x.tag==='up'?'up':'down'})" stroke-width="2"/><path d="M${X(x.target)-4} 7 L${X(x.target)+4} 7 L${X(x.target)} 14 Z" fill="var(--up)"/>`;
+  s += `<circle cx="${X(x.ask_unsold)}" cy="15" r="4" fill="var(--ink)"/></svg>`;
+  return s;
+}
+function table(id, rows, isF1){
+  let h = `<thead><tr><th>Prédio</th><th>Ação</th><th>Ocupação vs mercado</th><th class="r">Índice</th><th class="r">Vend. 7d</th><th class="r">ADR vendido</th><th>Preço pedido vs mercado</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
+  for (const x of rows){
+    const d = x.delta, dc = d>0.005?'up':(d<-0.005?'down':'');
+    h += `<tr><td><div class="bname">${x.code}</div><div class="bsub">${x.building.split(' - ').slice(1).join(' - ')} · ${Math.round(x.units)} un.</div></td>
+    <td><span class="chip ${x.tag}">${x.action}</span><div class="why">${x.why}</div></td>
+    <td><div class="occbar"><div class="num">${pct(x.occ)} <span class="bsub">vs ${pct(x.mkt_occ)}</span>${x.occ_mt>0.04?` <span class="bsub">(${pct(x.occ_mt)} mid-term)</span>`:''}</div><div class="t"><div class="o" style="width:${Math.min(100,x.occ*100)}%"></div><div class="m" style="left:${Math.min(99,x.mkt_occ*100)}%"></div></div></div></td>
+    <td class="r num">${x.pi.toFixed(2)}</td><td class="r num">${pct(x.booked_last7d)}</td>
+    <td class="r num">${x.adr_booked?fmt(x.adr_booked):'–'}</td><td>${scale(x)}</td>
+    <td class="r num">${fmt(x.ask_unsold)}</td><td class="r num">${fmt(x.target)}</td>
+    <td class="r num delta ${dc}">${dc?(d>0?'+':'')+Math.round(d*100)+'%':'–'}</td><td class="r num">${x.remaining}</td></tr>`;
+  }
+  document.getElementById(id).innerHTML = h + '</tbody>';
+}
+table('t-bts', DATA.BTS); table('t-f1', DATA.F1, true);
+let ly = `<thead><tr><th>Prédio</th><th class="r">Pace 2025</th><th class="r">Hoje</th><th class="r">Final 2025</th><th class="r">ADR 2025</th><th class="r">Pedido hoje</th></tr></thead><tbody>`;
+for (const x of DATA.F1.filter(x=>x.ly)){
+  const a = x.ly.occ_T33_2025, b = x.ly.occ_now_2026;
+  ly += `<tr><td class="bname">${x.code}</td><td class="r num">${pct(a)}</td><td class="r num" style="color:var(--${b>=a?'up':'down'})">${pct(b)}</td><td class="r num">${pct(x.ly.occ_final_2025)}</td><td class="r num">${fmt(x.ly.adr_final_2025)}</td><td class="r num">${fmt(x.ask_unsold)}</td></tr>`;
+}
+document.getElementById('t-ly').innerHTML = ly + '</tbody>';
+</script>
