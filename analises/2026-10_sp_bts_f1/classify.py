@@ -24,13 +24,17 @@ for r in rows('building_events.psv'):
     x['code'] = short(x['building'])
     x['remaining'] = round(x['unit_nights'] * (1 - occ))
     if x['ev'] == 'BTS':
-        b = rel[x['building']]
-        base_pi = b['base_st_T28'] / (b['base_mkt_T28'] / 100)
-        now_pi = b['bts_st_T28'] / (b['bts_mkt_T28'] / 100)
-        thin = b['base_st_T28'] * b['base_nights'] < 10
+        b = rel.get(x['building'])
+        if b:
+            base_pi = b['base_st_T28'] / (b['base_mkt_T28'] / 100)
+            now_pi = b['bts_st_T28'] / (b['bts_mkt_T28'] / 100)
+            thin = b['base_st_T28'] * b['base_nights'] < 10
+        else:  # prédio sem base histórica de T-28: usa a posição de hoje vs índice médio da cidade
+            base_pi, now_pi, thin = 0.39, pi, True
+            b = {'bts_st_T24': None, 'base_st_T24': None, 'bts_mkt_T28': 1, 'base_mkt_T28': 1}
         ri = now_pi / base_pi if base_pi and not thin else None
         x.update(base_pi=base_pi, now_pi=now_pi, ri=ri, thin=thin,
-                 own_lift=b['bts_st_T24'] / b['base_st_T24'] if b['base_st_T24'] else None,
+                 own_lift=b['bts_st_T24'] / b['base_st_T24'] if b['base_st_T24'] and b['bts_st_T24'] is not None else None,
                  mkt_lift=b['bts_mkt_T28'] / b['base_mkt_T28'])
         r_ = ri if ri is not None else pi / 0.39  # sem base própria: usa o índice médio da cidade (0,39)
         rtxt = f'Índice relativo {r_:.2f}: no T-28 temos {now_pi:.2f} do mercado, e o normal deste prédio é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade (0,39), o relativo é {r_:.2f}.'
@@ -73,7 +77,7 @@ for r in rows('building_events.psv'):
             act, tag = 'Vendeu à frente: proteger', 'up'
             tgt = max(ask * 1.15, min(p75, ask * 1.35))
             why = f'Já está em {occ:.0%} de ocupação, 30 dias antes. No ano passado a cidade estava em 7% nesse ponto. Suba o que sobrou e considere estadia mínima de 3 noites.'
-        elif ask < p50 * 0.95 and not behind_ly:
+        elif ask < p50 * 0.95 and not behind_ly and occ > 0.05:
             act, tag = 'Abaixo do mercado: subir', 'up'
             ref = x['ly']['adr_final_2025'] if l else 0
             tgt = min(max(p50, ref or 0), ask * 1.25)

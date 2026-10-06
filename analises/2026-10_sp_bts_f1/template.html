@@ -88,7 +88,7 @@ code{font-family:var(--mono);font-size:12.5px}
     <li><span class="dot" style="background:var(--down)"></span><p><b>BTS: o problema está em prédios específicos.</b> AYR, PVF, NXH, AYH, HBV e DGE estão bem abaixo do próprio padrão e com preço acima do p75: reduzir. ONZ, NXB, TOF, NUN, OMG e NXV também estão atrasados, mas com preço entre o p50 e o p75: corte de 5–10% e revisão de setup. AYM está no ritmo normal, mas pede acima do p90. KAS e NXD estão atrasados com preço já abaixo do p50, então o problema não é preço.</p></li>
     <li><span class="dot" style="background:var(--up)"></span><p><b>BTS: prédios acima do próprio padrão.</b> URB, FYP e HLK já estão com 54–69% de ocupação: suba 15%. SPZ, PVN, AGR e SCN vendem melhor que o normal com preço até o p75: suba 10%. PQJ, NXF e NXP também estão acima do normal, mas já pedem acima do p75: mantenha.</p></li>
     <li><span class="dot" style="background:var(--f1)"></span><p><b>F1: não é hora de baixar preço.</b> Em 2025, 33 dias antes da corrida a cidade estava em 6,8% de ocupação e fechou em 98%. As reservas da última semana saíram pelo maior ADR (R$ 528); as feitas entre 8 e 21 dias antes saíram mais baratas (R$ 383–403). Hoje estamos em 8,9%, à frente de 2025, com o mercado no mesmo ritmo.</p></li>
-    <li><span class="dot" style="background:var(--down)"></span><p><b>F1: prédios que já venderam demais.</b> HBV (64%), HLK (51%), PVN (26%) e URB (18%) já passaram do mercado. Suba o que sobrou e considere estadia mínima de 3 noites. O risco da F1 é o volume: temos ~2.300 noites à venda, contra ~1.600 noites no total da F1 de 2025.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>F1: prédios que já venderam demais.</b> HBV (64%), HLK (51%), PVN (26%) e URB (18%) já passaram do mercado. Suba o que sobrou e considere estadia mínima de 3 noites. O risco da F1 é o volume: temos ~2.550 noites à venda, contra ~1.600 noites no total da F1 de 2025.</p></li>
   </ul>
 </section>
 
@@ -131,6 +131,7 @@ code{font-family:var(--mono);font-size:12.5px}
     <li>Ocupação = noites reservadas ÷ noites disponíveis (<code>availability = 1</code>) por prédio em SP. Preço pedido = <code>our_calendar_price</code> médio das noites ainda não vendidas. Mercado = <code>market_occupancy</code>, <code>market_pct_50/75/90</code> e <code>market_median_booked_price</code>, já calculados por unidade com o compset do PriceLabs.</li>
     <li>O pace de 2025 usa <code>reservation.creation_date</code> e só enxerga reservas que não foram canceladas. Reservas canceladas depois de 07/out/2025 não aparecem, então o pace de 2025 pode estar levemente subestimado.</li>
     <li>O portfólio cresceu (cerca de 960 unidades em SP hoje contra 570 em nov/2025). Só 7 prédios têm F1 2025 para comparar, e a comparação é feita em % de ocupação.</li>
+    <li>Correção em 06/out: a primeira versão deixou de fora prédios com zero reservas nas noites analisadas (NXH, ONZ, DGE e UPR na F1; UPR no BTS). Eles já estão incluídos.</li>
     <li>Alvos de preço são pontos de partida: o corte é limitado a 35% e a alta a 25–35% por ajuste. Arquivos em <code>analises/2026-10_sp_bts_f1/</code> no repositório Pricing-viva.</li>
   </ul>
 </section>

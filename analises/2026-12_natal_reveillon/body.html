@@ -1,0 +1,133 @@
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Revenue · SP e Florianópolis · extração 06/out/2026</div>
+  <h1>Natal e Réveillon 2026: pace, mercado e ação por prédio</h1>
+  <p class="meta">Natal = noites de 21 a 27/dez. Réveillon = noites de 28/dez a 3/jan. Estamos a 76–89 dias das noites. O pace compara a ocupação reservada até 06/out de cada ano (2024, 2025 e 2026), sem mid-term. Mercado e preço pedido vêm de <code>views.listing_daily_stats</code> (base do dashboard 58); o histórico, da tabela Calendar.</p>
+</header>
+
+<div class="kpis">
+  <div class="kpi fln"><span class="eyebrow">FLN · Natal · pace</span><span class="v">__FLN_NAT__</span><span class="s">__FLN_NAT_S__</span></div>
+  <div class="kpi fln"><span class="eyebrow">FLN · Réveillon · pace</span><span class="v">__FLN_REV__</span><span class="s">__FLN_REV_S__</span></div>
+  <div class="kpi sp"><span class="eyebrow">SP · Natal · pace</span><span class="v">__SP_NAT__</span><span class="s">__SP_NAT_S__</span></div>
+  <div class="kpi sp"><span class="eyebrow">SP · Réveillon · pace</span><span class="v">__SP_REV__</span><span class="s">__SP_REV_S__</span></div>
+</div>
+
+<section>
+  <h2>Resumo</h2>
+  <ul class="findings">
+    <li><span class="dot" style="background:var(--fln)"></span><p><b>FLN 2025: seguramos demais e o resultado caiu.</b> No Natal, em 06/out estávamos com 3% vendido (12% em 2024). 32% das noites foram vendidas na última semana, a R$ 396 contra R$ 618 das reservas antecipadas (−36%), e 25% ficou sem vender. O RevPAR caiu de R$ 393 para R$ 367. No Réveillon, 2024 tinha 63% vendido a 30 dias, contra 39% em 2025, e o RevPAR caiu de R$ 715 para R$ 675. O melhor ano foi o que vendeu antes.</p></li>
+    <li><span class="dot" style="background:var(--up)"></span><p><b>FLN 2026 começou bem à frente.</b> Natal com 13% vendido (contra 3% e 12%) e Réveillon com 28% (contra 6% e 12%), com ADR acima dos anos anteriores. O risco agora é o contrário: CAN, ZEE, AGM e FST estão vendendo rápido com preço abaixo do p75 do mercado. Suba 10–15% por degrau e repita enquanto o ritmo se mantiver.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>FLN: onde 2025 pode se repetir.</b> ARB e TPV pedem 50–85% acima do ADR realizado em 2025. São prédios que vendem tarde (em 2025, 31–64% do que venderam veio na última semana) e têm 0–7% vendido hoje. Ajuste agora, não em dezembro. AQL no Réveillon pede acima do p75 com 10% vendido, contra 47% do mercado.</p></li>
+    <li><span class="dot" style="background:var(--sp)"></span><p><b>SP é de última hora e muda muito de prédio para prédio.</b> 30–36% das noites vendem na última semana, com desconto de 14–22%. Não dá para aplicar uma regra única. PQJ, NUN e HBV no Natal, e SPZ, NXB, NXF, NXD e NXV no Réveillon, fecharam 2025 acima de 80% cobrando bem abaixo da mediana vendida no mercado: subir o piso. AGR, AYM, KAS, NXH e PVP fecharam o Natal abaixo de 55%: agir cedo, com desconto para 5 ou 7 noites e abertura para mid-term. FYP, PVJ, URB, ONZ, HLK e PVF já estão à frente: subir 15%.</p></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head" style="--c:var(--fln)"><div class="eyebrow">Curvas de pickup · ocupação acumulada sem mid-term</div><h2>Como cada temporada encheu</h2>
+  <p class="small">Cada linha é uma temporada. O ponto preto é 2026 hoje. Os números abaixo de cada gráfico são o RevPAR e o ADR da última semana contra o ADR das reservas feitas com mais de 30 dias.</p></div>
+  <div class="legend"><span><i style="width:16px;height:3px;background:var(--y23)"></i>2023</span><span><i style="width:16px;height:3px;background:var(--y24)"></i>2024</span><span><i style="width:16px;height:3px;background:var(--y25)"></i>2025</span><span><i style="width:9px;height:9px;border-radius:50%;background:var(--y26)"></i>2026 hoje</span></div>
+  <div class="curves" id="curves"></div>
+</section>
+
+<section>
+  <div class="sec-head" style="--c:var(--fln)"><div class="eyebrow">Como agir até lá</div><h2>Checkpoints por cidade</h2></div>
+  <div class="two">
+    <div class="panel"><h3>Florianópolis: perseguir a curva de 2024</h3>
+      <p class="small">2024 foi o ano de maior RevPAR nas duas semanas e foi o que vendeu antes. Em cada checkpoint, compare cada prédio com a curva abaixo. Mais de 10 p.p. abaixo: corte 5–8% <b>na hora</b>. Mais de 10 p.p. acima: suba 5–10%. Na última semana, não passe de 15% de desconto.</p>
+      <div class="tbl" style="border:0"><table class="ck" id="ck-fln"></table></div></div>
+    <div class="panel"><h3>São Paulo: proteger quem tem demanda, adiantar quem não tem</h3>
+      <p class="small">SP vende tarde todo ano. A referência é a curva de 2025. Em T-14, prédio mais de 8 p.p. abaixo dela: corte até 10%. Desconto de última semana limitado a 10% nos prédios de demanda forte. Prédios de demanda fraca devem ter promoções para 5 ou 7 noites ativas desde já.</p>
+      <div class="tbl" style="border:0"><table class="ck" id="ck-sp"></table></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head" id="bhead" style="--c:var(--fln)"><div class="eyebrow">Por prédio</div><h2>Ação recomendada</h2>
+  <p class="small">“Pace” é a ocupação vendida até 06/out (2026 / 2025 / 2024). “Final 25” é a ocupação com que a temporada de 2025 fechou. ADR 25 e preço pedido estão na mesma base (<code>listing_daily_stats</code>). Ocupação de hoje vs mercado inclui mid-term.</p></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="legend"><span><i style="width:14px;height:8px;background:var(--c);border-radius:3px" id="lg"></i>nossa ocupação hoje</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90</span></div>
+  <div class="tbl"><table id="tb"></table></div>
+</section>
+
+<section>
+  <h2>Método e limites</h2>
+  <ul class="small" style="margin:0;padding-left:20px;display:grid;gap:6px;max-width:90ch">
+    <li>Pace e curvas: tabela Calendar, com as mesmas regras do dashboard “Revenue Overview (Calendar)”. Noite vendida = booked (inclui notas CXP-ECP/LCP); noites bloqueadas ficam fora. Estadias de 28 noites ou mais ficam fora para não distorcer a comparação.</li>
+    <li>Pace na mesma data: reservas com <code>creationDate</code> até 06/out do ano da temporada. Reservas que foram canceladas depois não aparecem nos anos anteriores, o que pode subestimar um pouco o pace histórico.</li>
+    <li>ADR da Calendar (<code>dailyPrice</code>) e ADR do <code>listing_daily_stats</code> (<code>accommodation_adr</code>) não são a mesma base. As curvas usam a primeira; a comparação com o preço pedido e o mercado usa a segunda.</li>
+    <li>O inventário cresceu: FLN tem ~1.530 noites por semana (contra ~1.100 em 2025) e SP ~6.850 (contra ~5.300). Prédios sem temporada anterior seguem a posição de mercado e a curva da cidade.</li>
+    <li>PVN está com preço pedido muito abaixo do mercado nas duas semanas (R$ 163 contra p50 de R$ 393 no Natal). Vale checar se há regra de mid-term ou desconto travando o preço antes de mexer.</li>
+    <li>Arquivos em <code>analises/2026-12_natal_reveillon/</code> no repositório Pricing-viva.</li>
+  </ul>
+</section>
+</div>
+
+<script>
+const D = __DATA__;
+const fmt = v => v==null?'–':'R$ ' + Math.round(v).toLocaleString('pt-BR');
+const pct = v => v==null?'–':Math.round(v*100) + '%';
+const PER = {NAT:'Natal', REV:'Réveillon'}, CITY = {FLN:'Florianópolis', SP:'São Paulo'};
+// curvas
+const cv = document.getElementById('curves');
+for (const key of ['FLN-NAT','FLN-REV','SP-NAT','SP-REV']){
+  const [c,p] = key.split('-'), C = D.curves[key];
+  const W=300,H=190,L=34,R=10,T=12,B=150, xs=i=>L+i*(W-L-R)/5, ys=v=>B-v*(B-T);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de pickup ${CITY[c]} ${PER[p]}">`;
+  for (const g of [0,.25,.5,.75,1]) s+=`<line x1="${L}" x2="${W-R}" y1="${ys(g)}" y2="${ys(g)}" stroke="var(--line)"/><text x="${L-5}" y="${ys(g)+3.5}" font-size="9.5" text-anchor="end" fill="var(--muted)" font-family="JetBrains Mono, monospace">${g*100}%</text>`;
+  D.labels.forEach((l,i)=>{ s+=`<text x="${xs(i)}" y="${B+15}" font-size="9.5" text-anchor="middle" fill="var(--muted)" font-family="JetBrains Mono, monospace">${l}</text>`; });
+  for (const y of ['2023','2024','2025']){ if(!C[y]) continue;
+    const pts=C[y].cum.map((v,i)=>`${xs(i)},${ys(v)}`).join(' ');
+    s+=`<polyline points="${pts}" fill="none" stroke="var(--y${y.slice(2)})" stroke-width="${y==='2024'?2.4:1.8}"/>`;
+    s+=`<text x="${xs(5)-3}" y="${ys(C[y].cum[5])-5}" font-size="9.5" text-anchor="end" fill="var(--y${y.slice(2)})" font-family="JetBrains Mono, monospace">${pct(C[y].cum[5])}</text>`;
+  }
+  const n=C['2026'].cum[0]; s+=`<circle cx="${xs(0)}" cy="${ys(n)}" r="4.5" fill="var(--y26)" stroke="var(--surface)" stroke-width="1.5"/><text x="${xs(0)+8}" y="${ys(n)+3.5}" font-size="10" font-weight="600" fill="var(--ink)" font-family="JetBrains Mono, monospace">${pct(n)}</text></svg>`;
+  const rows=['2023','2024','2025'].filter(y=>C[y]).map(y=>`<tr><td class="num">${y}</td><td class="r num">${fmt(C[y].revpar)}</td><td class="r num">${pct(C[y].last7_share)} <div class="bsub">${fmt(C[y].last7_adr)} vs ${fmt(C[y].early_adr)}</div></td></tr>`).join('');
+  cv.insertAdjacentHTML('beforeend', `<div class="panel" style="--c:var(--${c.toLowerCase()})"><h3>${CITY[c]} · ${PER[p]}</h3>${s}<div style="overflow-x:auto"><table class="ck"><thead><tr><th></th><th class="r">RevPAR</th><th class="r">Vendido na últ. semana · ADR vs antecipado</th></tr></thead><tbody>${rows}</tbody></table></div></div>`);
+}
+// checkpoints
+const CKD = {NAT:['06/out','25/out','24/nov','10/dez','17/dez','Final'], REV:['06/out','01/nov','01/dez','17/dez','24/dez','Final']};
+function ck(id, c, ref){
+  let h=`<thead><tr><th>Checkpoint</th><th class="r">Natal</th><th class="r">Réveillon</th></tr></thead><tbody>`;
+  ['06/out (hoje)','T-60','T-30','T-14','T-7','Final'].forEach((l,i)=>{
+    h+=`<tr><td>${l}<div class="bsub">Natal ${CKD.NAT[i]} · Rév. ${CKD.REV[i]}</div></td><td class="r num">${pct(D.curves[c+'-NAT'][ref].cum[i])}</td><td class="r num">${pct(D.curves[c+'-REV'][ref].cum[i])}</td></tr>`;
+  });
+  h+=`<tr><td><b>2026 hoje</b></td><td class="r num"><b>${pct(D.curves[c+'-NAT']['2026'].cum[0])}</b></td><td class="r num"><b>${pct(D.curves[c+'-REV']['2026'].cum[0])}</b></td></tr>`;
+  document.getElementById(id).innerHTML = h+'</tbody>';
+}
+ck('ck-fln','FLN','2024'); ck('ck-sp','SP','2025');
+// tabela por prédio
+function scale(x){
+  const lo=Math.min(x.p50,x.ask,x.target, x.ly_adr||1e9)*0.85, hi=Math.max(x.p90,x.ask,x.target)*1.05, X=v=>6+(v-lo)/(hi-lo)*178;
+  const tick=(v,l)=>`<line x1="${X(v)}" x2="${X(v)}" y1="9" y2="21" stroke="var(--muted)" stroke-width="1.5"/><text x="${X(v)}" y="32" font-size="8.5" text-anchor="middle" fill="var(--muted)" font-family="JetBrains Mono, monospace">${l}</text>`;
+  let s=`<svg class="scale" viewBox="0 0 190 34" role="img" aria-label="Pedido ${fmt(x.ask)}, alvo ${fmt(x.target)}"><line x1="6" x2="184" y1="15" y2="15" stroke="var(--line)" stroke-width="2"/>`+tick(x.p50,'p50')+tick(x.p75,'p75')+tick(x.p90,'p90');
+  if (x.ly_adr) s+=`<path d="M${X(x.ly_adr)} 10 l3 5 l-3 5 l-3 -5 z" fill="var(--y25)"><title>ADR 2025</title></path>`;
+  if (Math.abs(x.target-x.ask)>1) s+=`<line x1="${X(x.ask)}" x2="${X(x.target)}" y1="15" y2="15" stroke="var(--${x.target>x.ask?'up':'down'})" stroke-width="2"/><path d="M${X(x.target)-4} 7 L${X(x.target)+4} 7 L${X(x.target)} 14 Z" fill="var(--up)"/>`;
+  return s+`<circle cx="${X(x.ask)}" cy="15" r="4" fill="var(--ink)"/></svg>`;
+}
+function render(key){
+  const [c]=key.split('-'); document.getElementById('bhead').style.setProperty('--c',`var(--${c.toLowerCase()})`);
+  const tb=document.getElementById('tb'); tb.style.setProperty('--c',`var(--${c.toLowerCase()})`); document.getElementById('lg').style.background=`var(--${c.toLowerCase()})`;
+  let h=`<thead><tr><th>Prédio</th><th>Ação</th><th class="r">Pace 26 / 25 / 24</th><th class="r">Final 25</th><th>Ocupação hoje vs mercado</th><th>Pedido vs mercado</th><th class="r">ADR 25</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
+  for (const x of D.buildings[key]){
+    const d=x.delta, dc=d>0.005?'up':(d<-0.005?'down':'');
+    const pc = x.pace25==null?'':(x.pace>=x.pace25?'up':'down');
+    h+=`<tr><td><div class="bname">${x.code}</div><div class="bsub">${x.name} · ${x.st_nights} noites</div></td>
+    <td><span class="chip ${x.tag}">${x.action}</span><div class="why">${x.why}</div></td>
+    <td class="r num"><b style="color:var(--${pc||'ink'})">${pct(x.pace)}</b> / ${pct(x.pace25)} / ${pct(x.pace24)}</td>
+    <td class="r num">${pct(x.final25)}</td>
+    <td><div class="occbar"><div class="num">${pct(x.occ)} <span class="bsub">vs ${pct(x.mkt_occ)}</span></div><div class="t"><div class="o" style="width:${Math.min(100,x.occ*100)}%"></div><div class="m" style="left:${Math.min(99,x.mkt_occ*100)}%"></div></div></div></td>
+    <td>${scale(x)}</td><td class="r num">${fmt(x.ly_adr)}</td><td class="r num">${fmt(x.ask)}</td><td class="r num">${fmt(x.target)}</td>
+    <td class="r num delta ${dc}">${dc?(d>0?'+':'')+Math.round(d*100)+'%':'–'}</td><td class="r num">${x.remaining}</td></tr>`;
+  }
+  tb.innerHTML=h+'</tbody>';
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.k===key));
+  try{localStorage.setItem('nr-tab',key)}catch(e){}
+}
+const tabs=document.getElementById('tabs');
+for (const k of ['FLN-NAT','FLN-REV','SP-NAT','SP-REV']){ const [c,p]=k.split('-');
+  tabs.insertAdjacentHTML('beforeend',`<button class="tab" role="tab" data-k="${k}" aria-selected="false">${c} · ${PER[p]} <span class="pill">${D.buildings[k].length}</span></button>`); }
+tabs.addEventListener('click',e=>{const b=e.target.closest('.tab'); if(b) render(b.dataset.k);});
+let start='FLN-NAT'; try{const s=localStorage.getItem('nr-tab'); if(s&&D.buildings[s]) start=s;}catch(e){}
+render(start);
+</script>
