@@ -76,7 +76,7 @@ code{font-family:var(--mono);font-size:12.5px}
 
 <div class="kpis">
   <div class="kpi bts"><span class="eyebrow">BTS · ocupação</span><span class="v">__BTS_OCC__ <span class="small">vs __BTS_MKT__ mercado</span></span><span class="s">__BTS_REM__ noites ainda à venda em 28 prédios</span></div>
-  <div class="kpi bts"><span class="eyebrow">BTS · demanda do mercado</span><span class="v">2,5×</span><span class="s">Mercado a 28 dias: 49–50% ocupado. Mesmo fim de semana de 2025: 19–20%.</span></div>
+  <div class="kpi bts"><span class="eyebrow">BTS · índice relativo (T-28)</span><span class="v">0,93 <span class="small">no agregado</span></span><span class="s">Nós ÷ mercado no BTS: 0,36. Normal nos fins de semana de jul–set: 0,39. Estamos perto do nosso padrão.</span></div>
   <div class="kpi f1"><span class="eyebrow">F1 · nosso pace vs 2025</span><span class="v">8,9% <span class="small">vs 6,8%</span></span><span class="s">Ocupação (sem mid-term) ~33 dias antes da corrida. Em 2025 terminamos em 98%.</span></div>
   <div class="kpi f1"><span class="eyebrow">F1 · ocupação vs mercado</span><span class="v">__F1_OCC__ <span class="small">vs __F1_MKT__ mercado</span></span><span class="s">Mercado em linha com 2025: 27–33% hoje, 29–38% a 28 dias em 2025.</span></div>
 </div>
@@ -84,8 +84,9 @@ code{font-family:var(--mono);font-size:12.5px}
 <section>
   <h2>Resumo</h2>
   <ul class="findings">
-    <li><span class="dot" style="background:var(--bts)"></span><p><b>BTS: estamos esticados.</b> O mercado já vendeu 64% das noites 30–31/out e nós vendemos 25%. Nosso preço pedido médio (R$ 612) está bem acima da mediana anunciada no mercado. Oito prédios estão acima do p75 com menos de um terço da ocupação do mercado (AYM, AYR, PVF, PQJ, NXH, AYH, HBV, DGE). Faltam só 24 dias, então essas noites precisam ir para a faixa p50–p75 agora.</p></li>
-    <li><span class="dot" style="background:var(--up)"></span><p><b>BTS: três prédios vendem mais rápido que o mercado</b> (URB, FYP, HLK, com 54–69% de ocupação). O que sobrou neles deve subir 15%.</p></li>
+    <li><span class="dot" style="background:var(--bts)"></span><p><b>BTS: no agregado, estamos no nosso ritmo normal.</b> Nós sempre vendemos mais tarde que o mercado. Num fim de semana normal, 28 dias antes, temos 7,7% vendido contra ~20% do mercado (índice 0,39). No BTS temos 18% contra 50% (0,36). O mercado acelerou 2,5× e nós 2,4×. A ocupação crua (25% vs 64%) exagera o problema.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>BTS: o problema está em prédios específicos.</b> AYR, PVF, NXH, AYH, HBV e DGE estão bem abaixo do próprio padrão e com preço acima do p75: reduzir. ONZ, NXB, TOF, NUN, OMG e NXV também estão atrasados, mas com preço entre o p50 e o p75: corte de 5–10% e revisão de setup. AYM está no ritmo normal, mas pede acima do p90. KAS e NXD estão atrasados com preço já abaixo do p50, então o problema não é preço.</p></li>
+    <li><span class="dot" style="background:var(--up)"></span><p><b>BTS: prédios acima do próprio padrão.</b> URB, FYP e HLK já estão com 54–69% de ocupação: suba 15%. SPZ, PVN, AGR e SCN vendem melhor que o normal com preço até o p75: suba 10%. PQJ, NXF e NXP também estão acima do normal, mas já pedem acima do p75: mantenha.</p></li>
     <li><span class="dot" style="background:var(--f1)"></span><p><b>F1: não é hora de baixar preço.</b> Em 2025, 33 dias antes da corrida a cidade estava em 6,8% de ocupação e fechou em 98%. As reservas da última semana saíram pelo maior ADR (R$ 528); as feitas entre 8 e 21 dias antes saíram mais baratas (R$ 383–403). Hoje estamos em 8,9%, à frente de 2025, com o mercado no mesmo ritmo.</p></li>
     <li><span class="dot" style="background:var(--down)"></span><p><b>F1: prédios que já venderam demais.</b> HBV (64%), HLK (51%), PVN (26%) e URB (18%) já passaram do mercado. Suba o que sobrou e considere estadia mínima de 3 noites. O risco da F1 é o volume: temos ~2.300 noites à venda, contra ~1.600 noites no total da F1 de 2025.</p></li>
   </ul>
@@ -95,7 +96,7 @@ code{font-family:var(--mono);font-size:12.5px}
   <div class="sec-head" style="--c:var(--bts)">
     <div class="eyebrow">Show · Morumbi · 28, 30 e 31/out</div>
     <h2>BTS: posição relativa ao mercado</h2>
-    <p class="small">O critério é o índice de penetração (nossa ocupação ÷ ocupação do mercado do PriceLabs) somado à posição do preço pedido nas noites não vendidas frente aos percentis p50, p75 e p90 do mercado. A quarta 28/out segue o mesmo padrão: 24% de ocupação contra 54% do mercado.</p>
+    <p class="small">Nós vendemos mais tarde que o mercado, então a comparação crua engana. O <b>índice relativo</b> compara a nossa posição contra o mercado 28 dias antes das noites do BTS com a mesma posição, também 28 dias antes, nas sextas e sábados de jul–set/2026: (nossa ocupação ÷ ocupação do mercado no BTS) ÷ (nossa ocupação ÷ ocupação do mercado no normal). Mid-term (28 noites ou mais) fica fora. 1,0 = no padrão do prédio. Abaixo de 0,8 = atrasado. Acima de 1,2 = vendendo melhor que o normal. Prédios com pouca base usam o índice médio da cidade (0,39).</p>
   </div>
   <div class="legend"><span><i style="width:14px;height:8px;background:var(--bts);border-radius:3px"></i>nossa ocupação</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90 do mercado</span></div>
   <div class="tbl"><table id="t-bts"></table></div>
@@ -126,6 +127,7 @@ code{font-family:var(--mono);font-size:12.5px}
 <section>
   <h2>Método e limites</h2>
   <ul class="small" style="margin:0;padding-left:20px;display:grid;gap:6px;max-width:90ch">
+    <li>BTS relativo: nossa ocupação a T-28 vem de <code>reservation.creation_date</code> em <code>listing_daily_stats</code>; a do mercado a T-28 vem de <code>mkt_occ_pre_28</code> da tabela Calendar. A base são 24 noites de sexta e sábado entre 1/jul e 27/set/2026. As colunas de ocupação da tabela mostram a posição de hoje (T-24, com mid-term), e o índice relativo usa T-28 sem mid-term.</li>
     <li>Ocupação = noites reservadas ÷ noites disponíveis (<code>availability = 1</code>) por prédio em SP. Preço pedido = <code>our_calendar_price</code> médio das noites ainda não vendidas. Mercado = <code>market_occupancy</code>, <code>market_pct_50/75/90</code> e <code>market_median_booked_price</code>, já calculados por unidade com o compset do PriceLabs.</li>
     <li>O pace de 2025 usa <code>reservation.creation_date</code> e só enxerga reservas que não foram canceladas. Reservas canceladas depois de 07/out/2025 não aparecem, então o pace de 2025 pode estar levemente subestimado.</li>
     <li>O portfólio cresceu (cerca de 960 unidades em SP hoje contra 570 em nov/2025). Só 7 prédios têm F1 2025 para comparar, e a comparação é feita em % de ocupação.</li>
@@ -149,13 +151,13 @@ function scale(x){
   return s;
 }
 function table(id, rows, isF1){
-  let h = `<thead><tr><th>Prédio</th><th>Ação</th><th>Ocupação vs mercado</th><th class="r">Índice</th><th class="r">Vend. 7d</th><th class="r">ADR vendido</th><th>Preço pedido vs mercado</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
+  let h = `<thead><tr><th>Prédio</th><th>Ação</th><th>Ocupação hoje vs mercado</th>${isF1?'<th class="r">Índice</th>':'<th class="r">T-28 hoje / normal</th><th class="r">Relativo</th>'}<th class="r">Vend. 7d</th><th class="r">ADR vendido</th><th>Preço pedido vs mercado</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
   for (const x of rows){
     const d = x.delta, dc = d>0.005?'up':(d<-0.005?'down':'');
     h += `<tr><td><div class="bname">${x.code}</div><div class="bsub">${x.building.split(' - ').slice(1).join(' - ')} · ${Math.round(x.units)} un.</div></td>
     <td><span class="chip ${x.tag}">${x.action}</span><div class="why">${x.why}</div></td>
     <td><div class="occbar"><div class="num">${pct(x.occ)} <span class="bsub">vs ${pct(x.mkt_occ)}</span>${x.occ_mt>0.04?` <span class="bsub">(${pct(x.occ_mt)} mid-term)</span>`:''}</div><div class="t"><div class="o" style="width:${Math.min(100,x.occ*100)}%"></div><div class="m" style="left:${Math.min(99,x.mkt_occ*100)}%"></div></div></div></td>
-    <td class="r num">${x.pi.toFixed(2)}</td><td class="r num">${pct(x.booked_last7d)}</td>
+    ${isF1?`<td class="r num">${x.pi.toFixed(2)}</td>`:`<td class="r num">${x.now_pi.toFixed(2)} / ${x.base_pi.toFixed(2)}</td><td class="r num" style="font-weight:600;color:var(--${x.ri===null?'muted':(x.ri>=1.2?'up':(x.ri<0.8?'down':'ink'))})">${x.ri===null?'base curta':x.ri.toFixed(2)}</td>`}<td class="r num">${pct(x.booked_last7d)}</td>
     <td class="r num">${x.adr_booked?fmt(x.adr_booked):'–'}</td><td>${scale(x)}</td>
     <td class="r num">${fmt(x.ask_unsold)}</td><td class="r num">${fmt(x.target)}</td>
     <td class="r num delta ${dc}">${dc?(d>0?'+':'')+Math.round(d*100)+'%':'–'}</td><td class="r num">${x.remaining}</td></tr>`;

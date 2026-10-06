@@ -9,6 +9,7 @@ def rows(name):
 
 num = lambda v: float(v) if v not in ('', None) else None
 ly = {r['building']: r for r in rows('f1_ly_same_store.psv')}
+rel = {r['building']: {k: num(v) for k, v in r.items() if k != 'building'} for r in rows('bts_relative_base.psv')}
 
 def short(b):
     return b.split(' - ', 1)[0].strip()
@@ -23,30 +24,46 @@ for r in rows('building_events.psv'):
     x['code'] = short(x['building'])
     x['remaining'] = round(x['unit_nights'] * (1 - occ))
     if x['ev'] == 'BTS':
-        if occ >= 0.5 or pi >= 0.75:
+        b = rel[x['building']]
+        base_pi = b['base_st_T28'] / (b['base_mkt_T28'] / 100)
+        now_pi = b['bts_st_T28'] / (b['bts_mkt_T28'] / 100)
+        thin = b['base_st_T28'] * b['base_nights'] < 10
+        ri = now_pi / base_pi if base_pi and not thin else None
+        x.update(base_pi=base_pi, now_pi=now_pi, ri=ri, thin=thin,
+                 own_lift=b['bts_st_T24'] / b['base_st_T24'] if b['base_st_T24'] else None,
+                 mkt_lift=b['bts_mkt_T28'] / b['base_mkt_T28'])
+        r_ = ri if ri is not None else pi / 0.39  # sem base própria: usa o índice médio da cidade (0,39)
+        rtxt = f'Índice relativo {r_:.2f}: no T-28 temos {now_pi:.2f} do mercado, e o normal deste prédio é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade (0,39), o relativo é {r_:.2f}.'
+        if occ >= 0.5:
             act, tag = 'Proteger e subir', 'up'
             tgt = max(ask * 1.15, p75)
-            why = f'Já vendeu {occ:.0%} (mercado {mo:.0%}). Suba o que sobrou para no mínimo o p75 do mercado (R$ {p75:.0f}).'
-        elif pi < 0.35 and ask > p75 * 1.05:
+            why = f'Já vendeu {occ:.0%} das noites. {rtxt} Suba o que sobrou para no mínimo o p75 (R$ {p75:.0f}).'
+        elif r_ >= 1.2 and ask > p75 and occ < 0.35:
+            act, tag = 'Acima do normal: manter', 'hold'; tgt = ask
+            why = f'{rtxt} Vende melhor que o seu padrão, mas o pedido já está acima do p75 (R$ {p75:.0f}) e só {occ:.0%} está vendido. Mantenha o preço, sem subir.'
+        elif r_ >= 1.2:
+            act, tag = 'Acima do normal: subir', 'up'
+            tgt = min(ask * 1.10, max(ask, p90))
+            why = f'{rtxt} Está vendendo melhor que o seu padrão. Suba 10% o que sobrou.'
+        elif r_ >= 0.8:
+            if ask > p90:
+                act, tag = 'No normal, mas acima do p90', 'down'; tgt = p90
+                why = f'{rtxt} Ritmo normal, mas o pedido está acima do p90 (R$ {p90:.0f}). Traga para o p90.'
+            else:
+                act, tag = 'Manter', 'hold'; tgt = ask
+                why = f'{rtxt} Ritmo dentro do padrão do prédio.'
+        elif ask > p75 * 1.05:
             act, tag = 'Esticado: reduzir', 'down'
-            tgt = max(p75 if pi >= 0.2 else (p50 + p75) / 2, ask * 0.65)
-            why = f'Ocupação {occ:.0%} contra {mo:.0%} do mercado, com preço pedido acima do p75 (R$ {p75:.0f}).' + (' Corte limitado a 35% neste ajuste; reavalie em 3 dias.' if tgt == ask * 0.65 else '')
-        elif pi < 0.35 and ask >= p50:
-            act, tag = 'Revisar setup e ajustar', 'down'
-            tgt = ask * 0.9
-            why = f'Preço entre o p50 e o p75, mas a ocupação ({occ:.0%}) é muito menor que a do mercado ({mo:.0%}). Corte 10% e revise estadia mínima, restrições e distribuição.'
-        elif pi < 0.35:
+            tgt = max(p75 if r_ >= 0.5 else (p50 + p75) / 2, ask * (0.75 if r_ >= 0.5 else 0.65))
+            why = f'{rtxt} Abaixo do padrão, com pedido acima do p75 (R$ {p75:.0f}).'
+        elif ask >= p50:
+            act, tag = 'Ajustar e revisar setup', 'down'
+            tgt = ask * (0.95 if r_ >= 0.5 else 0.9)
+            why = f'{rtxt} Abaixo do padrão com preço entre o p50 e o p75. Corte {5 if r_ >= 0.5 else 10}% e confira estadia mínima, restrições e distribuição.'
+        else:
             act, tag = 'Não é preço: revisar setup', 'check'
             tgt = ask
-            why = f'Preço já abaixo do p50 do mercado (R$ {p50:.0f}) e mesmo assim a ocupação ({occ:.0%}) está muito abaixo da do mercado ({mo:.0%}). Antes de baixar mais, confira estadia mínima, bloqueios, canais e conteúdo.'
-        elif ask > p75 and x['booked_last7d'] < 0.1:
-            act, tag = 'Ajuste leve', 'down'
-            tgt = max(p75, ask * 0.9)
-            why = f'Ocupação razoável ({occ:.0%} vs {mo:.0%}), mas o pedido está acima do p75 e a venda dos últimos 7 dias foi fraca.'
-        else:
-            act, tag = 'Manter', 'hold'
-            tgt = ask
-            why = f'Ritmo compatível com o mercado ({occ:.0%} vs {mo:.0%}); {x["booked_last7d"]:.0%} das noites vendidas nos últimos 7 dias.'
+            why = f'{rtxt} O preço já está abaixo do p50 (R$ {p50:.0f}). Antes de baixar mais, confira estadia mínima, bloqueios, canais e conteúdo.'
     else:
         l = ly.get(x['building'])
         x['ly'] = {k: num(v) for k, v in l.items() if k != 'building'} if l else None
@@ -82,6 +99,6 @@ json.dump(out, open(os.path.join(os.path.dirname(__file__), 'recomendacoes.json'
 for ev in out:
     print(ev)
     for x in out[ev]:
-        print(f"  {x['code']:5} {x['action']:28} occ {x['occ']:.2f} mo {x['mkt_occ']:.2f} pi {x['pi']:.2f} ask {x['ask_unsold']:.0f} p50 {x['mkt_p50']:.0f} p75 {x['mkt_p75']:.0f} -> {x['target']} ({x['delta']:+.0%}) rem {x['remaining']}")
+        print(f"  {x['code']:5} {x['action']:28} ri {x.get('ri') or 0:.2f} occ {x['occ']:.2f} mo {x['mkt_occ']:.2f} pi {x['pi']:.2f} ask {x['ask_unsold']:.0f} p50 {x['mkt_p50']:.0f} p75 {x['mkt_p75']:.0f} -> {x['target']} ({x['delta']:+.0%}) rem {x['remaining']}")
     tot = sum(x['unit_nights'] for x in out[ev]); occn = sum(x['unit_nights']*x['occ'] for x in out[ev]); mo = sum(x['unit_nights']*x['mkt_occ'] for x in out[ev])
     print(f"  TOTAL nights {tot:.0f} occ {occn/tot:.3f} mkt {mo/tot:.3f}")
