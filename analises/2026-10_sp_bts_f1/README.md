@@ -1,6 +1,6 @@
 # SP: BTS (30–31/out/2026) e F1 (5–7/nov/2026)
 
-Análise de pricing por prédio feita em 06/out/2026 e atualizada em 12/out/2026 (BTS a T-18, F1 a T-27).
+Análise de pricing por prédio feita em 06/out/2026 e atualizada em 12/out (BTS a T-18, F1 a T-27) e 15/out/2026 (BTS a T-15, F1 a T-24; compara com 12/out via `data/recomendacoes_12out.json`).
 
 - `data/`: extrações de `views.listing_daily_stats` (BigQuery, base do dashboard 58 "Us vs Market") e da tabela `Calendar` (VivaAnalytics, pace de mercado).
 - `classify.py`: aplica as regras de recomendação e gera `recomendacoes.json`.

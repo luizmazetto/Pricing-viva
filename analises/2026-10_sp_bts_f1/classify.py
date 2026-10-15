@@ -1,5 +1,5 @@
 """Classifica prédios de SP para BTS (30-31/out) e F1 (5-7/nov) e gera recomendacoes.json.
-Fonte: views.listing_daily_stats (BigQuery, base do dashboard 58 Us vs Market), extraída em 2026-10-12 (BTS a T-18, F1 a T-27 da corrida)."""
+Fonte: views.listing_daily_stats (BigQuery, base do dashboard 58 Us vs Market), extraída em 2026-10-15 (BTS a T-15, F1 a T-24 da corrida). Compara com a recomendação de 12/out (data/recomendacoes_12out.json)."""
 import csv, json, os
 D = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -9,7 +9,7 @@ def rows(name):
 
 num = lambda v: float(v) if v not in ('', None) else None
 ly = {r['building']: r for r in rows('f1_ly_same_store.psv')}
-CITY_IDX = 0.51  # nós ÷ mercado a T-18 nos fins de semana de jul–set/2026 (13,1% vs 25,5%)
+CITY_IDX = 0.59  # nós ÷ mercado a T-15 nos fins de semana de jul–set/2026 (16,6% vs 27,9%)
 rel = {r['building']: {k: num(v) for k, v in r.items() if k != 'building'} for r in rows('bts_relative_base.psv')}
 
 def short(b):
@@ -38,11 +38,17 @@ for r in rows('building_events.psv'):
                  own_lift=b['bts_st'] / b['base_st'] if b['base_st'] and b['bts_st'] is not None else None,
                  mkt_lift=b['bts_mkt'] / b['base_mkt'])
         r_ = ri if ri is not None else pi / CITY_IDX  # sem base própria: usa o índice médio da cidade
-        rtxt = f'Índice relativo {r_:.2f}: hoje (T-18) temos {now_pi:.2f} do mercado, e o normal deste prédio a T-18 é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade ({CITY_IDX:.2f}), o relativo é {r_:.2f}.'
-        if occ >= 0.5:
+        rtxt = f'Índice relativo {r_:.2f}: hoje (T-15) temos {now_pi:.2f} do mercado, e o normal deste prédio a T-15 é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade ({CITY_IDX:.2f}), o relativo é {r_:.2f}.'
+        if occ >= 0.5 and ask >= p90:
+            act, tag = 'Vendeu bem, já no p90: manter', 'hold'; tgt = ask
+            why = f'Já vendeu {occ:.0%} das noites, mas o pedido já está acima do p90 (R$ {p90:.0f}). {rtxt} Segure o preço, sem subir mais.'
+        elif occ >= 0.5 and ri is not None and ri < 0.8:
+            act, tag = 'Vendeu 50%, abaixo do padrão: manter', 'hold'; tgt = ask
+            why = f'Já vendeu {occ:.0%} das noites, mas ainda abaixo do ritmo normal do prédio. {rtxt} Segure o preço: nem corte nem alta.'
+        elif occ >= 0.5:
             act, tag = 'Proteger e subir', 'up'
-            tgt = max(ask * 1.15, p75)
-            why = f'Já vendeu {occ:.0%} das noites. {rtxt} Suba o que sobrou para no mínimo o p75 (R$ {p75:.0f}).'
+            tgt = min(max(ask * 1.15, p75), ask * 1.25)
+            why = f'Já vendeu {occ:.0%} das noites. {rtxt} Suba o que sobrou em direção ao p75 (R$ {p75:.0f}), no máximo 25% por ajuste.'
         elif r_ >= 1.2 and ask > p75 and occ < 0.35:
             act, tag = 'Acima do normal: manter', 'hold'; tgt = ask
             why = f'{rtxt} Vende melhor que o seu padrão, mas o pedido já está acima do p75 (R$ {p75:.0f}) e só {occ:.0%} está vendido. Mantenha o preço, sem subir.'
@@ -74,10 +80,13 @@ for r in rows('building_events.psv'):
         x['ly'] = {k: num(v) for k, v in l.items() if k != 'building'} if l else None
         behind_ly = bool(l) and num(l['occ_now_2026']) is not None and num(l['occ_now_2026']) < num(l['occ_pace_2025'])
         x['behind_ly'] = behind_ly
-        if occ >= 0.18 or (pi >= 0.75 and occ >= 0.15):
+        if (occ >= 0.18 or (pi >= 0.75 and occ >= 0.15)) and ask >= p90:
+            act, tag = 'À frente, já no p90: manter', 'hold'; tgt = ask
+            why = f'Já está em {occ:.0%} de ocupação, mas o pedido já está acima do p90 do mercado (R$ {p90:.0f}). Segure o preço e considere estadia mínima de 3 noites.'
+        elif occ >= 0.18 or (pi >= 0.75 and occ >= 0.15):
             act, tag = 'Vendeu à frente: proteger', 'up'
             tgt = max(ask * 1.15, min(p75, ask * 1.35))
-            why = f'Já está em {occ:.0%} de ocupação, 27 dias antes da corrida. No ano passado a cidade estava em 9% nesse ponto. Suba o que sobrou e considere estadia mínima de 3 noites.'
+            why = f'Já está em {occ:.0%} de ocupação, 24 dias antes da corrida. No ano passado estávamos em 12% nesse ponto. Suba o que sobrou e considere estadia mínima de 3 noites.'
         elif ask < p50 * 0.95 and not behind_ly and occ > 0.05:
             act, tag = 'Abaixo do mercado: subir', 'up'
             ref = x['ly']['adr_final_2025'] if l else 0
@@ -98,6 +107,33 @@ for r in rows('building_events.psv'):
     x.update(action=act, tag=tag, target=round(tgt), delta=tgt / ask - 1 if ask else 0, why=why)
     out[x['ev']].append(x)
 
+prev = json.load(open(os.path.join(D, 'recomendacoes_12out.json')))
+SIGN = {'up': 1, 'down': -1, 'check': 0, 'hold': 0}
+for ev in out:
+    pm = {p['building']: p for p in prev[ev]}
+    for x in out[ev]:
+        p = pm.get(x['building'])
+        if not p:
+            x.update(prev_action=None, prev_occ=None, prev_ask=None, prev_target=None, chg='Novo', chg_tag='new')
+            continue
+        a, b = SIGN[p['tag']], SIGN[x['tag']]
+        if a == b == 0:
+            chg, ct = 'Segue sem ajuste', 'keep'
+        elif a == b:
+            chg, ct = ('Segue subindo' if b > 0 else 'Segue reduzindo'), 'keep'
+        elif a == 0:
+            chg, ct = ('Incluir: subir' if b > 0 else 'Incluir: reduzir'), 'add'
+        elif b == 0:
+            chg, ct = ('Tirar: parar de subir' if a > 0 else 'Tirar: parar de reduzir'), 'drop'
+        else:
+            chg, ct = ('Inverter: agora subir' if b > 0 else 'Inverter: agora reduzir'), 'flip'
+        applied = None
+        if p['tag'] == 'up':
+            applied = x['ask_unsold'] >= p['ask_unsold'] * 1.03
+        elif p['tag'] == 'down':
+            applied = x['ask_unsold'] <= p['ask_unsold'] * 0.97
+        x.update(prev_action=p['action'], prev_occ=p['occ'], prev_ask=p['ask_unsold'], prev_target=p['target'], chg=chg, chg_tag=ct, applied=applied)
+
 for ev in out:
     out[ev].sort(key=lambda x: (['up', 'down', 'check', 'hold'].index(x['tag']), -x['unit_nights']))
 json.dump(out, open(os.path.join(os.path.dirname(__file__), 'recomendacoes.json'), 'w'), ensure_ascii=False, indent=1)
@@ -106,4 +142,6 @@ for ev in out:
     for x in out[ev]:
         print(f"  {x['code']:5} {x['action']:28} ri {x.get('ri') or 0:.2f} occ {x['occ']:.2f} mo {x['mkt_occ']:.2f} pi {x['pi']:.2f} ask {x['ask_unsold']:.0f} p50 {x['mkt_p50']:.0f} p75 {x['mkt_p75']:.0f} -> {x['target']} ({x['delta']:+.0%}) rem {x['remaining']}")
     tot = sum(x['unit_nights'] for x in out[ev]); occn = sum(x['unit_nights']*x['occ'] for x in out[ev]); mo = sum(x['unit_nights']*x['mkt_occ'] for x in out[ev])
+    for x in out[ev]:
+        print(f"    {x['code']:5} {x['chg']:26} occ {x['prev_occ'] or 0:.2f}->{x['occ']:.2f} ask {x['prev_ask'] or 0:.0f}->{x['ask_unsold']:.0f} (alvo 12/out {x['prev_target'] or 0}, aplicado {x.get('applied')}) | {x['prev_action']} -> {x['action']}")
     print(f"  TOTAL nights {tot:.0f} occ {occn/tot:.3f} mkt {mo/tot:.3f}")
