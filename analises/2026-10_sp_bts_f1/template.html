@@ -70,34 +70,34 @@ code{font-family:var(--mono);font-size:12.5px}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Revenue · São Paulo · extração 15/out/2026 · compara com a recomendação de 12/out</div>
+  <div class="eyebrow">Revenue · São Paulo · extração 18/out/2026 · compara com a recomendação de 15/out</div>
   <h1>Preços de SP para o BTS (30–31/out) e a F1 (5–7/nov)</h1>
-  <p class="meta">Base: <code>views.listing_daily_stats</code> (BigQuery), a mesma que alimenta o dashboard 58 “Us vs Market”, com mercado do PriceLabs por unidade. Pace do mercado de 2025 vem da tabela Calendar (VivaAnalytics). Noites analisadas: BTS sexta e sábado 30–31/out (15–16 dias de antecedência); F1 quinta a sábado 5–7/nov (corrida no domingo 8/nov, 21–23 dias de antecedência).</p>
+  <p class="meta">Base: <code>views.listing_daily_stats</code> (BigQuery), a mesma que alimenta o dashboard 58 “Us vs Market”, com mercado do PriceLabs por unidade. Pace do mercado de 2025 vem da tabela Calendar (VivaAnalytics). Noites analisadas: BTS sexta e sábado 30–31/out (12–13 dias de antecedência); F1 quinta a sábado 5–7/nov (corrida no domingo 8/nov, 18–20 dias de antecedência).</p>
 </header>
 
 <div class="kpis">
   <div class="kpi bts"><span class="eyebrow">BTS · ocupação</span><span class="v">__BTS_OCC__ <span class="small">vs __BTS_MKT__ mercado</span></span><span class="s">__BTS_REM__ noites ainda à venda em __BTS_NB__ prédios</span></div>
-  <div class="kpi bts"><span class="eyebrow">BTS · índice relativo (T-15)</span><span class="v">0,98 <span class="small">no agregado (0,91 em 12/out)</span></span><span class="s">Nós ÷ mercado no BTS: 0,58. Normal a T-15 nos fins de semana de jul–set: 0,59. Voltamos ao nosso padrão.</span></div>
-  <div class="kpi f1"><span class="eyebrow">F1 · nosso pace vs 2025</span><span class="v">13,3% <span class="small">vs 12,4%</span></span><span class="s">Ocupação (sem mid-term) 24 dias antes da corrida. Nos mesmos 24 prédios: 16,4% vs 16,1%. Em 2025 terminamos em 98%.</span></div>
-  <div class="kpi f1"><span class="eyebrow">F1 · ocupação vs mercado</span><span class="v">__F1_OCC__ <span class="small">vs __F1_MKT__ mercado</span></span><span class="s">Mercado em linha com 2025: 31–38% hoje; em 2025 ia de 29–38% (T-28) para 35–45% (T-21).</span></div>
+  <div class="kpi bts"><span class="eyebrow">BTS · índice relativo (T-12)</span><span class="v">0,91 <span class="small">no agregado (0,98 em 15/out)</span></span><span class="s">Nós ÷ mercado no BTS: 0,62. Normal a T-12 nos fins de semana de jul–set: 0,68. O mercado acelerou mais que nós na reta final.</span></div>
+  <div class="kpi f1"><span class="eyebrow">F1 · nosso pace vs 2025</span><span class="v">14,3% <span class="small">vs 14,9%</span></span><span class="s">Ocupação (sem mid-term) 21 dias antes da corrida. Passamos para trás de 2025 (em 15/out: 13,3% vs 12,4%). Nos mesmos 24 prédios: 17,5% vs 18,5%.</span></div>
+  <div class="kpi f1"><span class="eyebrow">F1 · ocupação vs mercado</span><span class="v">__F1_OCC__ <span class="small">vs __F1_MKT__ mercado</span></span><span class="s">Mercado em linha com 2025: 36–43% hoje, contra 35–45% no mesmo ponto (T-21) de 2025.</span></div>
 </div>
 
 <section>
   <h2>Resumo</h2>
   <ul class="findings">
-    <li><span class="dot" style="background:var(--bts)"></span><p><b>BTS: os prédios atrasados recuperaram e voltamos ao nosso padrão.</b> Ocupação de 33% para 41% em três dias (mercado de 71% para 73%), e o índice relativo subiu de 0,91 para 0,98. Os ganhos vieram justamente de quem estava atrás: NXH 24→54%, NXB 30→54%, AYR 10→38%, NXF 38→57%, ONZ 43→58%, NXD 11→28%, UPR 0→25%, HBV 4→21% e NUN 12→23%.</p></li>
-    <li><span class="dot" style="background:var(--up)"></span><p><b>BTS, incluir alta:</b> NXB (+19%), NXH (+15%, antes era corte) e NXF (+15%) já passaram de 50%. AGR, NUN e NXD estão acima do próprio padrão: +10%. <b>Seguir subindo:</b> URB, ONZ, HLK e SCN (+15–25%), NXP e OMG (+10%). Em URB, NXP, OMG, HLK e SCN a alta de 12/out não chegou ao preço: o pedido ficou igual ou caiu.</p></li>
-    <li><span class="dot" style="background:var(--muted)"></span><p><b>BTS, tirar:</b> parar de reduzir AYR, TOF, UPR e CNZ, que recuperaram volume; mantenha o preço atual. Parar de subir PVN (no ritmo normal) e FYP (68% vendido, mas já acima do p90).</p></li>
-    <li><span class="dot" style="background:var(--down)"></span><p><b>BTS, seguir reduzindo:</b> AYM (17% vendido contra 77% do mercado, e o corte de 12/out não foi aplicado), PVP (até o p75), HEG e DGE (até o p90). Corte de 5–10% em KAS, PVJ, PVF, AYH, HBV e NXV. SPZ, MEL, MOU e PED já estão abaixo do p50: revise o setup, não o preço.</p></li>
-    <li><span class="dot" style="background:var(--f1)"></span><p><b>F1: seguimos um pouco à frente de 2025, então ainda não é hora de desconto.</b> Estamos em 13,3% (sem mid-term) contra 12,4% no mesmo ponto de 2025. Nos mesmos 24 prédios: 16,4% contra 16,1%. O mercado está no mesmo ritmo. Em 2025, ~85% das noites foram reservadas nos últimos 21 dias antes da corrida, e a última semana teve o maior ADR (R$ 527).</p></li>
-    <li><span class="dot" style="background:var(--up)"></span><p><b>F1, incluir alta:</b> NXV (11→44%), AYH (10→30%) e NXF (10→19%): +15%. NXD: +7%, até o p50. <b>Seguir subindo:</b> PVP, PVN, FYP, HLK e HBV; nenhum deles teve a alta de 12/out aplicada.</p></li>
-    <li><span class="dot" style="background:var(--muted)"></span><p><b>F1, tirar:</b> parar de subir AYM e HEG (já acima do p90) e OMG (caiu de 21% para 17%). Parar de aparar AYR e PVF: o corte foi aplicado e eles já estão abaixo do p90. <b>Reduzir:</b> só DGE (0% vendido, e o pedido subiu). KAS, SPZ, ONZ, PQJ, NUN, TOF, NXH, CNZ, SCN e UPR estão atrás do próprio pace de 2025: mantenha e decida no T-14 (sáb 25/out).</p></li>
+    <li><span class="dot" style="background:var(--bts)"></span><p><b>BTS: a ocupação seguiu subindo, mas o mercado acelerou mais.</b> De 41% para 47% em três dias (mercado de 73% para 75%). O índice relativo caiu de 0,98 para 0,91: na reta final o mercado ganha mais rápido do que no nosso padrão. Destaques da semana: ONZ 58→74%, NXD 28→50%, PVF 24→47%, KAS 22→32% e HBV 21→32%.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>Atenção: preços andando contra a recomendação.</b> No BTS o pedido caiu onde era para subir (URB −7%, FYP −11%, NXP −11%, PQJ −11%; PVN −12% onde era para manter) e subiu onde era para manter ou reduzir (AYR +35%, PVF +19%, UPR +11%, AYH +8%, DGE +8%). Na F1, caiu em prédios à frente (HBV −9%, HLK −8%, NXV −11%, NXF −10%). O padrão sugere regras automáticas do PriceLabs (last-minute, ocupação, gaps) ou overrides manuais. Confira as regras dessas noites antes de aplicar os alvos.</p></li>
+    <li><span class="dot" style="background:var(--up)"></span><p><b>BTS, subir:</b> URB, FYP, NXP, ONZ, NXB, NXH e HLK +15%; NXD e SCN +25%; AGR e PQJ +10%. Entram FYP (agora abaixo do p90) e PQJ. NXB e NXH já subiram desde 15/out e seguem vendendo.</p></li>
+    <li><span class="dot" style="background:var(--muted)"></span><p><b>BTS, manter (tirar o ajuste):</b> PVP, TOF, NXF, CNZ e NXV passaram de 50% mas seguem abaixo do próprio padrão e do mercado: nem corte nem alta. PVF vendeu bem (24→47%): pare de reduzir; o pedido subiu 19%, confira se foi intencional. NUN e OMG param de subir; PVN fica como está.</p></li>
+    <li><span class="dot" style="background:var(--down)"></span><p><b>BTS, reduzir:</b> AYM (15%, o pior do portfólio contra 80% do mercado), AYR, AYH e DGE (o pedido subiu e voltou para acima do p75), UPR e HEG. Corte de 5% em KAS, PVJ e HBV. SPZ, MEL, MOU e PED: revisar setup, não preço.</p></li>
+    <li><span class="dot" style="background:var(--f1)"></span><p><b>F1: passamos para levemente atrás de 2025, mas ainda não é hora de desconto geral.</b> 14,3% contra 14,9% (sem mid-term); nos mesmos 24 prédios, 17,5% contra 18,5%. Em três dias ganhamos 1 ponto, e 2025 ganhou 2,5 no mesmo trecho. O mercado segue no ritmo de 2025. Em 2025, ~74% das noites foram reservadas nos últimos 14 dias, então a decisão de corte fica para o T-14 (sáb 25/out).</p></li>
+    <li><span class="dot" style="background:var(--up)"></span><p><b>F1, subir:</b> HBV (91%), HLK (74%), NXV (44%), AYH (32%) e PVN (29%), até +25%; NXD até o p50. <b>Tirar:</b> parar de subir PVP (20% contra 32% no mesmo ponto de 2025), FYP e NXF. <b>Aparar:</b> AYR (o pedido subiu 23%, para acima do p90) e DGE. <b>Manter até o T-14:</b> KAS, SPZ, ONZ, PQJ, NUN, TOF, NXH, CNZ, SCN e UPR, atrás do próprio pace de 2025. Se no T-14 eles seguirem atrás, corte de até 10%, sem ir abaixo do p50.</p></li>
   </ul>
 </section>
 
 <section>
-  <h2>O que mudou desde 12/out</h2>
-  <p class="small">Cada prédio comparado com a recomendação de 12/out. "Ajuste não aplicado" = o preço pedido médio das noites não vendidas não andou pelo menos 3% na direção recomendada. É uma média: quando as unidades mais baratas vendem, o pedido médio do que sobra sobe sozinho, então confira no PriceLabs.</p>
+  <h2>O que mudou desde 15/out</h2>
+  <p class="small">Cada prédio comparado com a recomendação de 15/out. "Ajuste não aplicado" = o preço pedido médio das noites não vendidas não andou pelo menos 3% na direção recomendada. "Contra a recomendação" = andou 5% ou mais na direção oposta (ou 10% ou mais quando a recomendação era manter). É uma média: quando as unidades mais baratas vendem, o pedido médio do que sobra sobe sozinho, então confira no PriceLabs.</p>
   <div class="two" id="changes"></div>
 </section>
 
@@ -105,7 +105,7 @@ code{font-family:var(--mono);font-size:12.5px}
   <div class="sec-head" style="--c:var(--bts)">
     <div class="eyebrow">Show · Morumbi · 28, 30 e 31/out</div>
     <h2>BTS: posição relativa ao mercado</h2>
-    <p class="small">Nós vendemos mais tarde que o mercado, então a comparação crua engana. O <b>índice relativo</b> compara a nossa posição contra o mercado hoje (15 dias antes das noites do BTS) com a mesma posição, também 15 dias antes, nas sextas e sábados de jul–set/2026: (nossa ocupação ÷ ocupação do mercado no BTS) ÷ (nossa ocupação ÷ ocupação do mercado no normal). Mid-term (28 noites ou mais) fica fora. 1,0 = no padrão do prédio. Abaixo de 0,8 = atrasado. Acima de 1,2 = vendendo melhor que o normal. Prédios com pouca base usam o índice médio da cidade (0,59).</p>
+    <p class="small">Nós vendemos mais tarde que o mercado, então a comparação crua engana. O <b>índice relativo</b> compara a nossa posição contra o mercado hoje (12 dias antes das noites do BTS) com a mesma posição, também 12 dias antes, nas sextas e sábados de jul–set/2026: (nossa ocupação ÷ ocupação do mercado no BTS) ÷ (nossa ocupação ÷ ocupação do mercado no normal). Mid-term (28 noites ou mais) fica fora. 1,0 = no padrão do prédio. Abaixo de 0,8 = atrasado. Acima de 1,2 = vendendo melhor que o normal. Prédios com pouca base usam o índice médio da cidade (0,68).</p>
   </div>
   <div class="legend"><span><i style="width:14px;height:8px;background:var(--bts);border-radius:3px"></i>nossa ocupação</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90 do mercado</span></div>
   <div class="tbl"><table id="t-bts"></table></div>
@@ -115,11 +115,11 @@ code{font-family:var(--mono);font-size:12.5px}
   <div class="sec-head" style="--c:var(--f1)">
     <div class="eyebrow">GP de São Paulo · Interlagos · 6–8/nov</div>
     <h2>F1: pace contra 2025</h2>
-    <p class="small">Mesma antecedência: reservas criadas até 24 dias antes da corrida (16/out/2025 contra 15/out/2026). Mid-term (estadia de 28 noites ou mais) fora da curva.</p>
+    <p class="small">Mesma antecedência: reservas criadas até 21 dias antes da corrida (19/out/2025 contra 18/out/2026). Mid-term (estadia de 28 noites ou mais) fora da curva.</p>
   </div>
   <div class="two">
     <div class="panel"><h3>Como a F1 2025 encheu</h3><p class="small">Ocupação acumulada por antecedência da reserva (barras) e ADR das reservas feitas em cada janela (números). O ponto vermelho é onde estamos hoje.</p>__CURVE__</div>
-    <div class="panel"><h3>Prédios que existiam na F1 2025</h3><p class="small">Ocupação a 24 dias da corrida em 2025 vs hoje, ADR final de 2025 e preço pedido hoje.</p><div class="tbl" style="border:0"><table id="t-ly" style="min-width:520px"></table></div></div>
+    <div class="panel"><h3>Prédios que existiam na F1 2025</h3><p class="small">Ocupação a 21 dias da corrida em 2025 vs hoje, ADR final de 2025 e preço pedido hoje.</p><div class="tbl" style="border:0"><table id="t-ly" style="min-width:520px"></table></div></div>
   </div>
   <div class="legend"><span><i style="width:14px;height:8px;background:var(--f1);border-radius:3px"></i>nossa ocupação</span><span><i style="width:2px;height:12px;background:var(--ink)"></i>ocupação do mercado</span><span>Régua de preço: <b>●</b> pedido atual · <b style="color:var(--up)">▲</b> alvo · traços = p50 / p75 / p90</span></div>
   <div class="tbl"><table id="t-f1"></table></div>
@@ -136,11 +136,11 @@ code{font-family:var(--mono);font-size:12.5px}
 <section>
   <h2>Método e limites</h2>
   <ul class="small" style="margin:0;padding-left:20px;display:grid;gap:6px;max-width:90ch">
-    <li>BTS relativo: nossa ocupação a T-15 vem de <code>reservation.creation_date</code> em <code>listing_daily_stats</code> (sem mid-term). O mercado no BTS é o <code>mkt_occ</code> atual da tabela Calendar; o mercado a T-15 na base é interpolado entre <code>mkt_occ_pre_21</code> e <code>mkt_occ_pre_14</code>. A base são as noites de sexta e sábado entre 1/jul e 27/set/2026. As colunas de ocupação da tabela mostram a posição de hoje com mid-term. Em 06/out o índice foi calculado a T-28 e em 12/out a T-18.</li>
+    <li>BTS relativo: nossa ocupação a T-12 vem de <code>reservation.creation_date</code> em <code>listing_daily_stats</code> (sem mid-term). O mercado no BTS é o <code>mkt_occ</code> atual da tabela Calendar; o mercado a T-12 na base é interpolado entre <code>mkt_occ_pre_14</code> e <code>mkt_occ_pre_7</code>. A base são as noites de sexta e sábado entre 1/jul e 27/set/2026. As colunas de ocupação da tabela mostram a posição de hoje com mid-term. Em 06/out o índice foi calculado a T-28, em 12/out a T-18 e em 15/out a T-15.</li>
     <li>Ocupação = noites reservadas ÷ noites disponíveis (<code>availability = 1</code>) por prédio em SP. Preço pedido = <code>our_calendar_price</code> médio das noites ainda não vendidas. Mercado = <code>market_occupancy</code>, <code>market_pct_50/75/90</code> e <code>market_median_booked_price</code>, já calculados por unidade com o compset do PriceLabs.</li>
-    <li>O pace de 2025 usa <code>reservation.creation_date</code> e só enxerga reservas que não foram canceladas. Reservas canceladas depois de 16/out/2025 não aparecem, então o pace de 2025 pode estar levemente subestimado.</li>
+    <li>O pace de 2025 usa <code>reservation.creation_date</code> e só enxerga reservas que não foram canceladas. Reservas canceladas depois de 19/out/2025 não aparecem, então o pace de 2025 pode estar levemente subestimado.</li>
     <li>O portfólio cresceu (cerca de 960 unidades em SP hoje contra 570 em nov/2025). 24 prédios têm F1 2025 para comparar (em 06/out eram 7: a extração antiga filtrava a cidade pelo cadastro do anúncio e perdia prédios), e a comparação é feita em % de ocupação.</li>
-    <li>Atualização em 15/out: BTS a T-15 e F1 a T-24. Três ajustes nas regras: alta limitada a +25% no BTS; prédio que já pede acima do p90 não sobe mais (BTS e F1); prédio do BTS que passou de 50% mas segue abaixo do próprio padrão fica em "manter". Atualização em 12/out: BTS a T-18 e F1 a T-27. Entraram HEG, MEL, MOU e PED (2–3 unidades cada). Correção em 06/out: a primeira versão deixou de fora prédios com zero reservas nas noites analisadas (NXH, ONZ, DGE e UPR na F1; UPR no BTS). Eles já estão incluídos.</li>
+    <li>Atualização em 18/out: BTS a T-12 e F1 a T-21. Regras: na F1, "vendeu à frente" agora exige 22% de ocupação (~1,5× 2025 no mesmo ponto) e não estar atrás do próprio pace de 2025; alta limitada a +25% também na F1; no BTS, "vendeu 50%, abaixo do padrão: manter" só vale se o prédio também estiver abaixo do mercado. Atualização em 15/out: BTS a T-15 e F1 a T-24. Três ajustes nas regras: alta limitada a +25% no BTS; prédio que já pede acima do p90 não sobe mais (BTS e F1); prédio do BTS que passou de 50% mas segue abaixo do próprio padrão fica em "manter". Atualização em 12/out: BTS a T-18 e F1 a T-27. Entraram HEG, MEL, MOU e PED (2–3 unidades cada). Correção em 06/out: a primeira versão deixou de fora prédios com zero reservas nas noites analisadas (NXH, ONZ, DGE e UPR na F1; UPR no BTS). Eles já estão incluídos.</li>
     <li>Alvos de preço são pontos de partida: o corte é limitado a 35% e a alta a 25–35% por ajuste. Arquivos em <code>analises/2026-10_sp_bts_f1/</code> no repositório Pricing-viva.</li>
   </ul>
 </section>
@@ -165,11 +165,12 @@ function since(x){
   if (!x.prev_action) return '<span class="bsub">novo</span>';
   const c = x.chg_tag==='flip' ? (x.tag==='up'?'up':'down') : (x.chg_tag==='add' ? (x.tag==='up'?'up':'down') : CHG_COLOR[x.chg_tag]);
   let h = `<div style="font-weight:600;color:var(--${c})">${x.chg}</div><div class="bsub">${pct(x.prev_occ)} → ${pct(x.occ)} vendido</div>`;
-  if (x.applied===false && x.chg_tag==='keep') h += '<div class="bsub" style="color:var(--down)">ajuste de 12/out não aplicado</div>';
+  if (x.against) h += `<div class="bsub" style="color:var(--down);font-weight:600">pedido ${x.ask_move>0?'+':''}${Math.round(x.ask_move*100)}% contra a recomendação</div>`;
+  else if (x.applied===false && x.chg_tag==='keep') h += '<div class="bsub" style="color:var(--down)">ajuste de 15/out não aplicado</div>';
   return h;
 }
 function table(id, rows, isF1){
-  let h = `<thead><tr><th>Prédio</th><th>Ação</th><th>Desde 12/out</th><th>Ocupação hoje vs mercado</th>${isF1?'<th class="r">Índice</th>':'<th class="r">T-15 hoje / normal</th><th class="r">Relativo</th>'}<th class="r">Vend. 7d</th><th class="r">ADR vendido</th><th>Preço pedido vs mercado</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
+  let h = `<thead><tr><th>Prédio</th><th>Ação</th><th>Desde 15/out</th><th>Ocupação hoje vs mercado</th>${isF1?'<th class="r">Índice</th>':'<th class="r">T-12 hoje / normal</th><th class="r">Relativo</th>'}<th class="r">Vend. 7d</th><th class="r">ADR vendido</th><th>Preço pedido vs mercado</th><th class="r">Pedido</th><th class="r">Alvo</th><th class="r">Δ</th><th class="r">Noites a vender</th></tr></thead><tbody>`;
   for (const x of rows){
     const d = x.delta, dc = d>0.005?'up':(d<-0.005?'down':'');
     h += `<tr><td><div class="bname">${x.code}</div><div class="bsub">${x.building.split(' - ').slice(1).join(' - ')} · ${Math.round(x.units)} un.</div></td>
@@ -191,7 +192,7 @@ for (const ev of ['BTS','F1']){
   for (const [g, lab] of GROUPS){
     const xs = DATA[ev].filter(x => x.chg_tag===g && (g!=='keep' || x.tag==='up' || x.tag==='down'));
     if (!xs.length) continue;
-    ch += `<div><div class="eyebrow">${lab}</div><ul class="small" style="margin:4px 0 0;padding-left:18px;display:grid;gap:3px">` + xs.map(x => `<li><b>${x.code}</b>: ${x.chg.replace(/^(Incluir|Inverter|Tirar|Segue)[^:]*: ?/,'') || x.chg} · ${pct(x.prev_occ)}→${pct(x.occ)} · pedido ${fmt(x.ask_unsold)}${Math.abs(x.target-x.ask_unsold)>1?' → '+fmt(x.target):''}${x.applied===false&&g==='keep'?' · <span style="color:var(--down)">12/out não aplicado</span>':''}</li>`).join('') + '</ul></div>';
+    ch += `<div><div class="eyebrow">${lab}</div><ul class="small" style="margin:4px 0 0;padding-left:18px;display:grid;gap:3px">` + xs.map(x => `<li><b>${x.code}</b>: ${x.chg.replace(/^(Incluir|Inverter|Tirar|Segue)[^:]*: ?/,'') || x.chg} · ${pct(x.prev_occ)}→${pct(x.occ)} · pedido ${fmt(x.ask_unsold)}${Math.abs(x.target-x.ask_unsold)>1?' → '+fmt(x.target):''}${x.against?` · <span style="color:var(--down);font-weight:600">pedido ${x.ask_move>0?'+':''}${Math.round(x.ask_move*100)}% contra a recomendação</span>`:(x.applied===false&&g==='keep'?' · <span style="color:var(--down)">15/out não aplicado</span>':'')}</li>`).join('') + '</ul></div>';
   }
   ch += '</div>';
 }
