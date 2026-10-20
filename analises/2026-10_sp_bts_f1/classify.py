@@ -1,5 +1,5 @@
 """Classifica prédios de SP para BTS (30-31/out) e F1 (5-7/nov) e gera recomendacoes.json.
-Fonte: views.listing_daily_stats (BigQuery, base do dashboard 58 Us vs Market), extraída em 2026-10-18 (BTS a T-12, F1 a T-21 da corrida). Compara com a recomendação anterior, de 15/out (data/recomendacoes_anterior.json)."""
+Fonte: views.listing_daily_stats (BigQuery, base do dashboard 58 Us vs Market), extraída em 2026-10-20 (BTS a T-10, F1 a T-19 da corrida). Compara com a recomendação anterior, de 18/out (data/recomendacoes_anterior.json)."""
 import csv, json, os
 D = os.path.join(os.path.dirname(__file__), 'data')
 
@@ -9,8 +9,8 @@ def rows(name):
 
 num = lambda v: float(v) if v not in ('', None) else None
 ly = {r['building']: r for r in rows('f1_ly_same_store.psv')}
-F1_PROTECT = 0.22  # ~1,5x a ocupação de 2025 no mesmo ponto (14,9% a T-21)
-CITY_IDX = 0.68  # nós ÷ mercado a T-12 nos fins de semana de jul–set/2026 (20,5% vs 30,1%)
+F1_PROTECT = 0.25  # ~1,5x a ocupação de 2025 no mesmo ponto (16,8% a T-19)
+CITY_IDX = 0.76  # nós ÷ mercado a T-10 nos fins de semana de jul–set/2026 (24,8% vs 32,4%)
 rel = {r['building']: {k: num(v) for k, v in r.items() if k != 'building'} for r in rows('bts_relative_base.psv')}
 
 def short(b):
@@ -39,7 +39,7 @@ for r in rows('building_events.psv'):
                  own_lift=b['bts_st'] / b['base_st'] if b['base_st'] and b['bts_st'] is not None else None,
                  mkt_lift=b['bts_mkt'] / b['base_mkt'])
         r_ = ri if ri is not None else pi / CITY_IDX  # sem base própria: usa o índice médio da cidade
-        rtxt = f'Índice relativo {r_:.2f}: hoje (T-12) temos {now_pi:.2f} do mercado, e o normal deste prédio a T-12 é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade ({CITY_IDX:.2f}), o relativo é {r_:.2f}.'
+        rtxt = f'Índice relativo {r_:.2f}: hoje (T-10) temos {now_pi:.2f} do mercado, e o normal deste prédio a T-10 é {base_pi:.2f}.' if ri is not None else f'Base histórica curta; comparado ao índice médio da cidade ({CITY_IDX:.2f}), o relativo é {r_:.2f}.'
         if occ >= 0.5 and ask >= p90:
             act, tag = 'Vendeu bem, já no p90: manter', 'hold'; tgt = ask
             why = f'Já vendeu {occ:.0%} das noites, mas o pedido já está acima do p90 (R$ {p90:.0f}). {rtxt} Segure o preço, sem subir mais.'
@@ -88,7 +88,7 @@ for r in rows('building_events.psv'):
         elif ahead:
             act, tag = 'Vendeu à frente: proteger', 'up'
             tgt = max(ask * 1.15, min(p75, ask * 1.25))
-            why = f'Já está em {occ:.0%} de ocupação, 21 dias antes da corrida. No ano passado estávamos em 15% nesse ponto. Suba o que sobrou (no máximo 25% por ajuste) e considere estadia mínima de 3 noites.'
+            why = f'Já está em {occ:.0%} de ocupação, 19 dias antes da corrida. No ano passado estávamos em 17% nesse ponto. Suba o que sobrou (no máximo 25% por ajuste) e considere estadia mínima de 3 noites.'
         elif ask < p50 * 0.95 and not behind_ly and occ > 0.05:
             act, tag = 'Abaixo do mercado: subir', 'up'
             ref = x['ly']['adr_final_2025'] if l else 0
