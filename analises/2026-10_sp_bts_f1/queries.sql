@@ -1,4 +1,4 @@
--- Queries usadas na extração de 20/out/2026, rodadas pelo Metabase (execute_sql).
+-- Queries usadas na extração de 21/out/2026, rodadas pelo Metabase (execute_sql).
 -- Para um novo checkpoint, troque: a data de "vendido nos últimos 7 dias" (q1), o T-N de hoje para o BTS (q2, q3)
 -- e o T-N da F1 (q4, q5; N = dias entre hoje e 08/11/2026; em 2025 a referência é 09/11/2025).
 
@@ -6,7 +6,7 @@
 select string_agg(format('%s|%s|%.1f|%.3f|%.3f|%.3f|%s|%s|%.3f|%.0f|%.0f|%.0f|%.0f|%.3f|%s', ev, b, u, occ, occ_mt, l7, coalesce(cast(round(adr) as string),''), coalesce(cast(round(ask) as string),''), mo, mp, p50, p75, p90, coalesce(ab75,0), cast(nights as string)), '\n' order by ev, b) from (
 select case when s.date in ('2026-10-30','2026-10-31') then 'BTS' else 'F1' end ev, s.buildingName b,
 count(*)/count(distinct s.date) u, avg(occupancy) occ, avg(if(occupancy>0 and reservation.los>=28,1,0)) occ_mt,
-avg(if(occupancy>0 and reservation.creation_date >= '2026-10-13',1,0)) l7,
+avg(if(occupancy>0 and reservation.creation_date >= '2026-10-14',1,0)) l7,
 avg(if(occupancy>0, accommodation_adr, null)) adr, avg(if(occupancy=0, our_calendar_price, null)) ask,
 avg(market_occupancy) mo, avg(market_median_booked_price) mp, avg(market_pct_50) p50, avg(market_pct_75) p75, avg(market_pct_90) p90,
 safe_divide(countif(occupancy=0 and our_calendar_price>market_pct_75), countif(occupancy=0)) ab75, count(*) nights
@@ -15,17 +15,17 @@ where (l.city='São Paulo' or s.city='São Paulo') and availability=1 and s.date
 group by 1,2);
 
 -- q2 · bts_relative_base.psv (nossa parte, sem mid-term) · database 7
-select string_agg(format('%s|%s|%s|%.4f|%.4f|%.4f', per, coalesce(b,'TOTAL'), cast(n as string), o28, o10, ofin), '\n' order by per, b) from (
+select string_agg(format('%s|%s|%s|%.4f|%.4f|%.4f', per, coalesce(b,'TOTAL'), cast(n as string), o28, o9, ofin), '\n' order by per, b) from (
 select if(s.date >= '2026-10-01','BTS','BASE') per, s.buildingName b, countif(not (occupancy>0 and reservation.los>=28)) n,
 safe_divide(countif(occupancy>0 and reservation.los<28 and reservation.creation_date <= date_sub(s.date, interval 28 day)), countif(not (occupancy>0 and reservation.los>=28))) o28,
-safe_divide(countif(occupancy>0 and reservation.los<28 and reservation.creation_date <= date_sub(s.date, interval 10 day)), countif(not (occupancy>0 and reservation.los>=28))) o10,
+safe_divide(countif(occupancy>0 and reservation.los<28 and reservation.creation_date <= date_sub(s.date, interval 9 day)), countif(not (occupancy>0 and reservation.los>=28))) o9,
 safe_divide(countif(occupancy>0 and reservation.los<28), countif(not (occupancy>0 and reservation.los>=28))) ofin
 from `views.listing_daily_stats` s left join `replicas.vivadb_listing` l on s.idlisting=l.id_
 where (l.city='São Paulo' or s.city='São Paulo') and availability=1 and ((s.date between '2026-07-01' and '2026-09-27' and extract(dayofweek from s.date) in (6,7)) or s.date in ('2026-10-30','2026-10-31'))
 group by rollup(1,2) having per is not null);
 
 -- q3 · bts_relative_base.psv (mercado) · database 6 (Postgres, tabela Calendar)
--- base_mkt (T-10) = m14 + (m7 - m14) * 4/7 ; bts_mkt = mo (mkt_occ atual das noites do BTS)
+-- base_mkt (T-9) = m14 + (m7 - m14) * 5/7 ; bts_mkt = mo (mkt_occ atual das noites do BTS)
 select string_agg(concat_ws('|', per, coalesce(b,'TOTAL'), n_rows, coalesce(m28::text,''), coalesce(m14::text,''), coalesce(m7::text,''), coalesce(mo::text,'')), chr(10) order by per, b) from (
 select case when "date"::date in ('2026-10-30','2026-10-31') then 'BTS' else 'BASE' end per, "buildingName" b, count(*) n_rows,
 round(avg(mkt_occ_pre_28)::numeric,1) m28, round(avg(mkt_occ_pre_14)::numeric,1) m14, round(avg(mkt_occ_pre_7)::numeric,1) m7, round(avg(mkt_occ)::numeric,1) mo
@@ -33,14 +33,14 @@ from "Calendar" where city ilike '%paulo%' and coalesce(deleted,false)=false and
 and (("date"::date between '2026-07-01' and '2026-09-27' and extract(dow from "date"::date) in (5,6) and mkt_occ_pre_7 is not null and mkt_occ_pre_14 is not null) or "date"::date in ('2026-10-30','2026-10-31'))
 group by rollup(1,2) having (case when "date"::date in ('2026-10-30','2026-10-31') then 'BTS' else 'BASE' end) is not null) t;
 
--- q4 · f1_ly_same_store.psv · database 7 (occ_pace = ocupação com reservas criadas até T-19)
+-- q4 · f1_ly_same_store.psv · database 7 (occ_pace = ocupação com reservas criadas até T-18)
 select string_agg(format('%d|%s|%.1f|%.3f|%.3f|%.3f|%s|%s|%s|%.3f', y, b, u, occ_fin, occ_pace, occ_mt, coalesce(cast(round(adr_fin) as string),''), coalesce(cast(round(adr_pace) as string),''), coalesce(cast(round(ask) as string),''), mo), '\n' order by b, y) from (
 select extract(year from s.date) y, s.buildingName b, count(*)/count(distinct s.date) u,
 avg(occupancy) occ_fin,
-avg(if(occupancy>0 and reservation.creation_date <= date_sub(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), interval 19 day),1,0)) occ_pace,
+avg(if(occupancy>0 and reservation.creation_date <= date_sub(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), interval 18 day),1,0)) occ_pace,
 avg(if(occupancy>0 and reservation.los>=28,1,0)) occ_mt,
 avg(if(occupancy>0, accommodation_adr, null)) adr_fin,
-avg(if(occupancy>0 and reservation.creation_date <= date_sub(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), interval 19 day), accommodation_adr, null)) adr_pace,
+avg(if(occupancy>0 and reservation.creation_date <= date_sub(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), interval 18 day), accommodation_adr, null)) adr_pace,
 avg(if(occupancy=0, our_calendar_price, null)) ask,
 avg(market_occupancy) mo
 from `views.listing_daily_stats` s left join `replicas.vivadb_listing` l on s.idlisting=l.id_
@@ -53,7 +53,7 @@ select extract(year from s.date) y,
 case when occupancy=0 then -1 when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 60 then 61
 when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 33 then 34
 when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 27 then 28
-when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 18 then 19
+when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 17 then 18
 when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 14 then 15
 when date_diff(if(extract(year from s.date)=2025, date '2025-11-09', date '2026-11-08'), reservation.creation_date, day) > 7 then 8
 else 0 end lt,

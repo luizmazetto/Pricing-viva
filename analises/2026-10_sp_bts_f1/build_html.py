@@ -6,9 +6,9 @@ def agg(ev):
     return (sum(x['unit_nights']*x['occ'] for x in d[ev])/t, sum(x['unit_nights']*x['mkt_occ'] for x in d[ev])/t, sum(x['remaining'] for x in d[ev]))
 p = lambda v: f"{round(v*100)}%"
 bo, bm, br = agg('BTS'); fo, fm, fr = agg('F1')
-# Curva F1 2025 (sem mid-term): noites por janela de antecedência, total 1609 (extração 20/out/2026)
-buckets = [('61+',56,485),('34–60',55,462),('28–33',37,302),('19–27',123,477),('15–18',118,392),('8–14',554,402),('0–7',640,528)]
-tot = 1609; cum = 0
+# Curva F1 2025 (sem mid-term): noites por janela de antecedência, total 1606 (extração 21/out/2026)
+buckets = [('61+',56,485),('34–60',55,462),('28–33',37,302),('18–27',164,464),('15–17',77,374),('8–14',554,402),('0–7',637,527)]
+tot = 1606; cum = 0
 W, Hh, L, B = 520, 250, 46, 200
 bw = (W - L - 20) / len(buckets)
 svg = [f'<svg viewBox="0 0 {W} {Hh}" role="img" aria-label="Ocupação acumulada da F1 2025 por antecedência da reserva">']
@@ -22,9 +22,9 @@ for i, (lab, n, adr) in enumerate(buckets):
     svg.append(f'<text x="{x+(bw-16)/2:.1f}" y="{B-h-18:.1f}" font-size="11.5" text-anchor="middle" fill="var(--ink)" font-weight="600" font-family="JetBrains Mono, monospace">{round(c*100)}%</text>')
     svg.append(f'<text x="{x+(bw-16)/2:.1f}" y="{B-h-5:.1f}" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="JetBrains Mono, monospace">R${adr}</text>')
     svg.append(f'<text x="{x+(bw-16)/2:.1f}" y="{B+16:.1f}" font-size="11" text-anchor="middle" fill="var(--muted)" font-family="JetBrains Mono, monospace">{lab}</text>')
-    if lab == '19–27':
-        yn = B - 0.157*170
-        svg.append(f'<circle cx="{x+(bw-16)/2:.1f}" cy="{yn:.1f}" r="5" fill="var(--f1)" stroke="var(--surface)" stroke-width="2"/><text x="{x+(bw-16)/2+9:.1f}" y="{yn+20:.1f}" font-size="11" fill="var(--f1)" font-weight="600" font-family="JetBrains Mono, monospace">2026 hoje: 15,7%</text>')
+    if lab == '18–27':
+        yn = B - 0.170*170
+        svg.append(f'<circle cx="{x+(bw-16)/2:.1f}" cy="{yn:.1f}" r="5" fill="var(--f1)" stroke="var(--surface)" stroke-width="2"/><text x="{x+(bw-16)/2+9:.1f}" y="{yn+20:.1f}" font-size="11" fill="var(--f1)" font-weight="600" font-family="JetBrains Mono, monospace">2026 hoje: 17,0%</text>')
 svg.append(f'<text x="{(L+W)/2:.0f}" y="{B+36}" font-size="11" text-anchor="middle" fill="var(--muted)">dias antes da corrida em que a reserva foi criada (cumulativo até a janela)</text></svg>')
 html = open(os.path.join(H, 'template.html')).read()
 for k, v in {'__BTS_OCC__': p(bo), '__BTS_MKT__': p(bm), '__BTS_REM__': f"{br:,}".replace(',', '.'), '__BTS_NB__': str(len(d['BTS'])),
