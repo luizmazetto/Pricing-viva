@@ -9,10 +9,13 @@ Preenche o `Inputs_Demanda.xlsx` (BP PropCo) com o histórico por prédio e proj
 - Reviews (Airbnb e Booking) e mercado Pricelabs vêm das pastas `../2026-11_reviews_premio/data` e `../2026-11_premio_mercado/data`.
 - `build_inputs.py` gera a planilha. Depois rode o recálculo (LibreOffice) para gravar os valores.
 
-Abas preenchidas: RevPar Mercado, Prêmio de Mercado, Reviews Booking/Airbnb (média móvel 6 meses), % Airbnb/Booking/outros.
+Abas preenchidas: RevPar Mercado, Prêmio de Mercado, Reviews Booking/Airbnb (média móvel 12 meses), % Airbnb/Booking/outros.
+ADR Acomodação e Ocupação (Disponível): a partir de set/26 puxam de Buildup ADR / Buildup Ocupação.
 Realizado até ago/26 só onde a linha (prédio × contrato) tinha ADR no mês; set–out/26 em verde (realizado no Metabase, depois
 do fechamento do Report DB). Abas novas: Premissas, Premissas por prédio, Sazonalidade Prêmio, Buildup RevPAR e Aux (cinza).
 
-Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal da cidade × exp(0,95 × %Airbnb × Δnota Airbnb 12m
+Reviews: cenário 1 = nota atual (12m) de cada prédio; cenário 2 = meta de portfólio 4,75 (prédios abaixo do piso sobem ao piso, ~4,71).
+Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal (do prédio, ou da cidade para prédios novos) × exp(0,95 × %Airbnb × Δnota Airbnb 12m
 + β Booking × %Booking × Δnota Booking 12m) − 1. RevPAR nosso = RevPAR mercado × (1 + prêmio) × fator de calibração
-(Report DB ÷ Metabase, mai–ago/26).
+(Report DB ÷ Metabase, mai–ago/26). Ocupação = mesmo mês do ano anterior × (1 + variação da cidade); ADR = RevPAR ÷ Ocupação.
+- `data/ocupacao_predio_mes.psv`: ocupação mensal por prédio (Metabase), usada em set–out/26 e na base de prédios em ramp-up.

@@ -84,8 +84,8 @@ thin = Side(style='thin', color='BFBFBF')
 TITLES = {
     'RevPar Mercado': ('RevPar Mercado', 'R$ por noite disponível', '#,##0.00'),
     'Prêmio de Mercado': ('Prêmio de Mercado', '% acima do RevPAR de mercado', '0.0%'),
-    'Reviews Booking': ('Reviews Booking', 'nota 0–10, média móvel 6 meses', '0.00'),
-    'Reviews Airbnb': ('Reviews Airbnb', 'nota 1–5, média móvel 6 meses', '0.00'),
+    'Reviews Booking': ('Reviews Booking', 'nota 0–10, média móvel 12 meses', '0.00'),
+    'Reviews Airbnb': ('Reviews Airbnb', 'nota 1–5, média móvel 12 meses', '0.00'),
     '% Airbnb': ('% Airbnb', '% da receita de hospedagem', '0.0%'),
     '% Booking': ('% Booking', '% da receita de hospedagem', '0.0%'),
     '% outros': ('% outros', '% da receita de hospedagem', '0.0%'),
@@ -93,8 +93,8 @@ TITLES = {
 NOTES = {
     'RevPar Mercado': 'RevPAR de mercado = diária mediana fechada × ocupação do mercado (Pricelabs), média das noites disponíveis das nossas unidades. Mesma base do dashboard 58. Projeção: mesmo mês do ano anterior × (1 + variação da cidade em Premissas).',
     'Prêmio de Mercado': 'Prêmio = RevPAR de hospedagem nosso ÷ RevPAR de mercado − 1 (dashboard 58). Projeção: (1 + prêmio base) × exp(β Airbnb × %Airbnb × Δnota Airbnb 12m + β Booking × %Booking × Δnota Booking 12m) − 1.',
-    'Reviews Booking': 'Média dos reviews do Booking (general × 2, escala 0–10) criados nos últimos 6 meses. Projeção: nota mensal e volume em Premissas.',
-    'Reviews Airbnb': 'Média dos reviews do Airbnb (general, 1–5) criados nos últimos 6 meses. Projeção: nota mensal e volume em Premissas.',
+    'Reviews Booking': 'Média dos reviews do Booking (general × 2, escala 0–10) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas).',
+    'Reviews Airbnb': 'Média dos reviews do Airbnb (general, 1–5) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas). É a nota usada na fórmula do prêmio.',
     '% Airbnb': 'Receita de hospedagem de reservas Airbnb ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
     '% Booking': 'Receita de hospedagem de reservas Booking ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
     '% outros': 'Demais canais (direto, B2B, corretores, outras OTAs). Projeção: média nov/25–out/26.',
@@ -108,8 +108,8 @@ def value_for(sheet, c, k):
         if not h or h['tot'] <= 0: return None
         a, b = h['air'] / h['tot'], h['bk'] / h['tot']
         return {'% Airbnb': a, '% Booking': b, '% outros': max(0.0, 1 - a - b)}[sheet]
-    if sheet == 'Reviews Airbnb': return window(RA, c, k, 6)[0]
-    if sheet == 'Reviews Booking': return window(RB, c, k, 6)[0]
+    if sheet == 'Reviews Airbnb': return window(RA, c, k, 12)[0]
+    if sheet == 'Reviews Booking': return window(RB, c, k, 12)[0]
 
 def active(r): return ROWINFO[r]['st'] == 'Ativo'
 def had_units(r, k): return isinstance(ADR.cell(r, 6 + k).value, (int, float))
@@ -150,34 +150,28 @@ def month_header(ws, k0=0, k1=K_END):
         c = ws.cell(4, 6 + k, f'{MESES[m]}/{str(y)[2:]}'); c.font = F_B; c.fill = FILL_HEAD; c.alignment = Alignment(horizontal='center')
 
 AUX = {}
-for canal, R, scale_note, nota_cell in (('Airbnb', RA, 'nota 1–5', 'Premissas!$C$11'), ('Booking', RB, 'nota 0–10', 'Premissas!$C$12')):
+for canal, R, scale_note, nota_cell in (('Airbnb', RA, 'nota 1–5', "'Premissas por prédio'!$M"), ('Booking', RB, 'nota 0–10', "'Premissas por prédio'!$P")):
     q = mirror(f'Aux Qtd Reviews {canal}', f'Quantidade de reviews {canal} por mês',
                'Realizado: reviews criados no mês (Metabase, mesma base do dashboard 70). Projeção: volume mensal de "Premissas por prédio".')
     s = mirror(f'Aux Soma Notas {canal}', f'Soma das notas dos reviews {canal} por mês ({scale_note})',
                'Realizado: soma das notas dos reviews do mês. Projeção: quantidade × nota mensal assumida em Premissas.')
-    n12 = mirror(f'Aux Nota 12m {canal}', f'Nota {canal} média móvel 12 meses ({scale_note})',
-                 'Janela usada na fórmula do prêmio (foi a janela estimada na análise de reviews × prêmio). Realizado calculado com o histórico desde dez/22.')
-    for ws in (q, s, n12): month_header(ws)
+    for ws in (q, s): month_header(ws)
     for r in ROWS:
         cd = ROWINFO[r]['code']
-        q.cell(r, 5, 'reviews no mês'); s.cell(r, 5, 'soma das notas'); n12.cell(r, 5, scale_note)
+        q.cell(r, 5, 'reviews no mês'); s.cell(r, 5, 'soma das notas')
         for k in range(0, K_OUT + 1):
             x = R[cd].get(k)
             if x:
                 q.cell(r, 6 + k, x[0]).font = F_IN; s.cell(r, 6 + k, round(x[1], 2)).font = F_IN
-            v12 = window(R, cd, k, 12)[0]
-            if v12 is not None: n12.cell(r, 6 + k, round(v12, 4)).font = F_IN; n12.cell(r, 6 + k).number_format = '0.00'
         if not active(r): continue
         vol_col = 'E' if canal == 'Airbnb' else 'F'
         for k in range(K_NOV, K_END + 1):
             cl = col(k)
             q.cell(r, 6 + k, f"='Premissas por prédio'!${vol_col}{r}").font = F_LINK
             q.cell(r, 6 + k).number_format = '0.0'
-            s.cell(r, 6 + k, f"='Aux Qtd Reviews {canal}'!{cl}{r}*{nota_cell}").font = F_CALC
+            s.cell(r, 6 + k, f"='Aux Qtd Reviews {canal}'!{cl}{r}*{nota_cell}{r}").font = F_CALC
             s.cell(r, 6 + k).number_format = '0.0'
-            n12.cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas {canal}'!{col(k-11)}{r}:{cl}{r})/SUM('Aux Qtd Reviews {canal}'!{col(k-11)}{r}:{cl}{r}),\"\")").font = F_CALC
-            n12.cell(r, 6 + k).number_format = '0.00'
-    AUX[canal] = (q, s, n12)
+    AUX[canal] = (q, s)
 
 # base de mercado (nov/25–out/26) para a 1ª volta da projeção, completando prédios novos
 bm = mirror('Aux Base Mercado', 'Base de RevPAR de mercado (nov/25–out/26) para projetar nov/26–out/27',
@@ -247,6 +241,27 @@ for city, rr in SZROW.items():
     SZ.cell(rr, 14, ', '.join(ss)).font = Font(name=ARIAL, size=9)
 SZ.column_dimensions['A'].width = 10; SZ.column_dimensions['N'].width = 120
 
+SZB = mirror('Sazonalidade Prêmio Prédio', 'Sazonalidade do prêmio por prédio (usada na projeção)',
+             'Prédio com os 12 meses de nov/25–out/26 operando há 3+ meses: índice próprio = (1 + prêmio do mês) ÷ média de (1 + prêmio) em jul–out/26. Demais: índice da cidade (aba Sazonalidade Prêmio). Editável.')
+for m in range(12):
+    c = SZB.cell(4, 6 + m, MESES[m]); c.font = F_B; c.fill = FILL_HEAD; c.alignment = Alignment(horizontal='center')
+SZB.cell(4, 18, 'Origem').font = F_B
+for r in ROWS:
+    if not active(r): continue
+    cd = ROWINFO[r]['code']; fk = kof(FIRST[cd][:7]) if cd in FIRST else None
+    ok = all(H.get(cd, {}).get(k) and H[cd][k]['mrev'] and (fk is None or k - fk >= 3) for k in range(22, 34))
+    if ok:
+        one = {k: H[cd][k]['rev'] / H[cd][k]['mrev'] for k in range(22, 34)}
+        base = sum(one[k] for k in range(30, 34)) / 4
+        idx = {(K0 + k) % 12: one[k] / base for k in one}
+    for m in range(12):
+        if ok:
+            x = SZB.cell(r, 6 + m, round(idx[m], 4)); x.font = F_IN
+        else:
+            x = SZB.cell(r, 6 + m, f"='Sazonalidade Prêmio'!{L(2 + m)}{SZROW[ROWINFO[r]['city']]}"); x.font = F_LINK
+        x.number_format = '0.00'; x.fill = FILL_KEY
+    SZB.cell(r, 18, 'próprio' if ok else 'cidade')
+
 # ------------------------------------------------------------------ Premissas
 P = wb.create_sheet('Premissas', 1)
 P.column_dimensions['A'].width = 3; P.column_dimensions['B'].width = 52
@@ -269,45 +284,88 @@ for city, (row, g, why) in MKT_G.items():
     put(f'B{row}', city)
     for c in 'CDE': put(f'{c}{row}', g, F_IN, FILL_KEY, '0.0%')
     put(f'F{row}', why)
-put('B10', '2. Reviews · nota mensal assumida para todos os prédios', F_B)
-for c, h in zip('BCDF', ['Canal', 'Nota mensal', 'Escala', 'Racional']):
-    put(f'{c}10', h if c != 'B' else '2. Reviews · nota mensal assumida para todos os prédios', F_B, FILL_HEAD if c != 'B' else None)
-put('B11', 'Airbnb'); put('C11', 4.75, F_IN, FILL_KEY, '0.00'); put('D11', '1–5')
-put('F11', 'Premissa do usuário. Volume mensal por prédio = média de reviews/mês de nov/25–out/26 (aba Premissas por prédio, editável).')
-put('B12', 'Booking'); put('C12', 8.5, F_IN, FILL_KEY, '0.0'); put('D12', '0–10')
-put('F12', 'Premissa do usuário. Mesmo critério de volume.')
-put('B14', '3. Prêmio de mercado', F_B)
-put('B15', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C15', 0.95, F_IN, FILL_KEY, '0.00')
-put('F15', 'Estimado na análise Reviews × prêmio (nível prédio, nota 12m): 0,95 (intervalo de 90%: 0,49 a 1,41). Ex.: 50% Airbnb e +0,1★ → +4,9% de prêmio.')
-put('B16', 'β Booking (por ponto 0–10 × %Booking no GMV)'); put('C16', 0.0, F_IN, FILL_KEY, '0.00')
-put('F16', 'Estimado −0,08 (intervalo −0,19 a +0,02), não significativo: zero por padrão.')
-put('B17', 'Base do prêmio: 1 = média jul–out/26 constante · 2 = média jul–out/26 × sazonalidade da cidade'); put('C17', 2, F_IN, FILL_KEY, '0')
-put('F17', '1 = sua sugestão, sem sazonalidade. 2 (padrão) = mesma média, ajustada mês a mês pelo padrão do prêmio da cidade (aba Sazonalidade Prêmio). Em FLN o prêmio same store vai de ~0% no verão a ~+40% no inverno: sem isso o RevPAR de jan/fev sai muito alto.')
-put('B18', 'Meses da base (opção 1)'); put('C18', 'jul–out/26')
-put('B20', '4. Canais', F_B)
-put('B21', '% Airbnb, % Booking e % outros'); put('C21', 'média nov/25–out/26, constante')
-put('B23', 'Como o prêmio é projetado', F_B)
+# piso de nota para a meta de portfólio (resolvido aqui; conferência em Premissas)
+def vol_base(R, cd):
+    ks = [k for k in range(22, 34) if H.get(cd, {}).get(k) or R[cd].get(k)]
+    return (sum(R[cd][k][0] for k in ks if R[cd].get(k)) / len(ks)) if ks else 0.0
+def solve_floor(R, target):
+    pts = []
+    for r in ROWS:
+        if not active(r): continue
+        cd = ROWINFO[r]['code']; v = vol_base(R, cd); b = window(R, cd, 33, 12)[0]
+        if v > 0: pts.append((v, b if b is not None else target))
+    V = sum(v for v, _ in pts); lo, hi = 0.0, 10.0
+    for _ in range(80):
+        x = (lo + hi) / 2
+        if sum(v * max(b, x) for v, b in pts) / V < target: lo = x
+        else: hi = x
+    cur = sum(v * b for v, b in pts) / V
+    return round(hi, 3), cur
+FLOOR_A, CUR_A = solve_floor(RA, 4.75)
+FLOOR_B, CUR_B = solve_floor(RB, 8.5)
+
+for c, h in zip('BCF', ['2. Reviews · nota mensal dos reviews novos', 'Valor', 'Racional']):
+    put(f'{c}10', h, F_B, FILL_HEAD if c != 'B' else None)
+put('B11', 'Cenário: 1 = nota atual de cada prédio · 2 = meta de portfólio'); put('C11', 1, F_IN, FILL_KEY, '0')
+put('F11', 'Cenário 1 (base): cada prédio continua recebendo, por mês, a nota média dos seus reviews dos últimos 12 meses. Cenário 2 (melhoria): prédios abaixo do piso passam a receber o piso; quem está acima mantém a própria nota.')
+put('B12', 'Meta Airbnb: média do portfólio (ponderada pelo volume de reviews)'); put('C12', 4.75, F_IN, FILL_KEY, '0.00')
+put('F12', f'Meta do usuário. Hoje o portfólio está em {CUR_A:.2f} (nota 12m até out/26, ponderada pelo volume). Também é a nota usada para prédio sem histórico.'.replace('.', ',', 1) if False else f'Meta do usuário. Hoje o portfólio está em {CUR_A:.2f}'.replace('.', ',') + ' (nota 12m até out/26, ponderada pelo volume). Também é a nota usada para prédio sem histórico.')
+put('B13', 'Piso Airbnb no cenário 2'); put('C13', FLOOR_A, F_IN, FILL_KEY, '0.00')
+put('F13', 'Calculado para a média do portfólio dar exatamente a meta (conferência na linha abaixo). Se mudar a meta: Dados > Teste de hipóteses > Atingir meta, definindo C14 = C12 alterando C13.')
+put('B14', 'Média Airbnb resultante no cenário 2 (conferência)')
+put('C14', "=SUMPRODUCT('Premissas por prédio'!$E$5:$E$57,'Premissas por prédio'!$L$5:$L$57)/SUM('Premissas por prédio'!$E$5:$E$57)", F_CALC, None, '0.000')
+put('B15', 'Meta Booking: média do portfólio (0–10)'); put('C15', 8.5, F_IN, FILL_KEY, '0.00')
+put('F15', f'Premissa do usuário. Hoje o portfólio está em {CUR_B:.2f}'.replace('.', ',') + '. Nota do Booking não entra no prêmio (β Booking = 0), só no acompanhamento.')
+put('B16', 'Piso Booking no cenário 2'); put('C16', FLOOR_B, F_IN, FILL_KEY, '0.00')
+put('B17', 'Média Booking resultante no cenário 2 (conferência)')
+put('C17', "=SUMPRODUCT('Premissas por prédio'!$F$5:$F$57,'Premissas por prédio'!$O$5:$O$57)/SUM('Premissas por prédio'!$F$5:$F$57)", F_CALC, None, '0.000')
+put('B18', 'Volume de reviews por mês'); put('C18', 'média nov/25–out/26')
+put('F18', 'Por prédio, na aba Premissas por prédio (colunas E e F), editável.')
+put('B20', '3. Prêmio de mercado', F_B)
+put('B21', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C21', 0.95, F_IN, FILL_KEY, '0.00')
+put('F21', 'Estimado na análise Reviews × prêmio (nível prédio, nota 12m): 0,95 (intervalo de 90%: 0,49 a 1,41). Ex.: 50% Airbnb e +0,1★ → +4,9% de prêmio.')
+put('B22', 'β Booking (por ponto 0–10 × %Booking no GMV)'); put('C22', 0.0, F_IN, FILL_KEY, '0.00')
+put('F22', 'Estimado −0,08 (intervalo −0,19 a +0,02), não significativo: zero por padrão.')
+put('B23', 'Base do prêmio: 1 = média jul–out/26 constante · 2 = média jul–out/26 × sazonalidade da cidade'); put('C23', 2, F_IN, FILL_KEY, '0')
+put('F23', '2 (padrão) = média de jul–out/26 do prédio, ajustada mês a mês pela sazonalidade do próprio prédio (quem tem 12 meses maduros) ou da cidade (aba Sazonalidade Prêmio Prédio). Em FLN o prêmio vai de ~0% no verão a ~+40% no inverno.')
+put('B25', '4. Canais', F_B)
+put('B26', '% Airbnb, % Booking e % outros'); put('C26', 'média nov/25–out/26, constante')
+put('B28', '5. Ocupação × ADR · variação da nossa ocupação vs mesmo mês do ano anterior', F_B)
+for c, h in zip('BCDEF', ['Cidade', '2026 (nov–dez)', '2027', '2028', 'Racional']):
+    put(f'{c}29', h, F_B, FILL_HEAD)
+OCC_G = {'SP': (30, 0.02, 'Igual à variação da ocupação de mercado em SP em 2026 (+1,2 p.p. sobre ~60%, ≈ +2%), com o mesmo RevPAR de mercado de 2026.'),
+         'FLN': (31, -0.035, 'Em 2026 a ocupação de mercado caiu ~7,5% para um RevPAR de −10,7%. Com mercado −5%, metade disso: −3,5%.'),
+         'BC': (32, 0.003, 'Igual a 2026 (+0,1 p.p.).')}
+for city, (row, g, why) in OCC_G.items():
+    put(f'B{row}', city)
+    for c in 'CDE': put(f'{c}{row}', g, F_IN, FILL_KEY, '0.0%')
+    put(f'F{row}', why)
+put('B33', 'Teto de ocupação'); put('C33', 0.95, F_IN, FILL_KEY, '0.0%')
+put('F33', 'Limite da ocupação projetada.')
+put('B35', 'Como funciona', F_B)
 lines = [
-    'Prêmio(t) = (1 + Prêmio base) × exp( β Airbnb × %Airbnb(t) × [Nota Airbnb 12m(t) − Nota Airbnb 12m base] + β Booking × %Booking(t) × [Nota Booking 12m(t) − Nota Booking 12m base] ) − 1',
-    'Nota 12m(t) = soma das notas ÷ quantidade de reviews dos últimos 12 meses (abas Aux), com o realizado até out/26 e, depois, volume mensal × nota mensal assumida.',
-    'A fórmula usa a nota de 12 meses porque foi a janela em que a relação nota × prêmio apareceu; a de 6 meses (abas Reviews) fica como acompanhamento.',
-    'Nota base = média da nota 12m em jul–out/26, o mesmo período do prêmio base: só a mudança de nota a partir de hoje mexe no prêmio.',
-    'RevPAR nosso (aba Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio, que converte a base do Metabase na base do Report DB (mai–ago/26).',
-    'Próximo passo: abrir o RevPAR nosso em Ocupação × ADR (ver sugestão na resposta), antes de levar para as abas de input do BP.',
+    'RevPAR de mercado(t) = mesmo mês do ano anterior × (1 + variação da cidade, item 1).',
+    'Prêmio(t) = (1 + prêmio base) × sazonalidade (do prédio ou da cidade) × exp( β Airbnb × %Airbnb × [Nota Airbnb 12m(t) − nota base] + β Booking × %Booking × [Nota Booking 12m(t) − nota base] ) − 1.',
+    'Nota 12m(t) (abas Reviews) = soma das notas ÷ quantidade de reviews dos últimos 12 meses: realizado até out/26 e, depois, volume mensal × nota mensal do cenário (item 2). Nota base = média jul–out/26.',
+    'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mai–ago/26).',
+    'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
+    'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
 for i, t in enumerate(lines):
-    put(f'B{24+i}', t, Font(name=ARIAL, size=10)); P.merge_cells(f'B{24+i}:F{24+i}')
-put('B31', 'Legenda', F_B)
-put('B32', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
+    put(f'B{36+i}', t, Font(name=ARIAL, size=10)); P.merge_cells(f'B{36+i}:F{36+i}')
+put('B43', 'Legenda', F_B)
+put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
 
 # ------------------------------------------------------------------ Premissas por prédio
 PP = mirror('Premissas por prédio', 'Premissas por prédio', 'Calculadas a partir do realizado; podem ser sobrescritas (ex.: volume de reviews de prédio novo).')
 heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/mês (média nov/25–out/26)', 7: 'Prêmio base (média jul–out/26)',
          8: 'Nota Airbnb 12m base (média jul–out/26)', 9: 'Nota Booking 12m base (média jul–out/26)',
-         10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mai–ago/26)'}
+         10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mai–ago/26)',
+         11: 'Nota Airbnb atual (12m até out/26)', 12: 'Nota Airbnb no cenário meta (máx. entre atual e piso)', 13: 'Nota Airbnb mensal usada na projeção',
+         14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta', 16: 'Nota Booking mensal usada na projeção'}
 for c, h in heads.items():
     x = PP.cell(4, c, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(c)].width = 20
-PP.row_dimensions[4].height = 64
+PP.row_dimensions[4].height = 78
 for r in ROWS:
     PP.cell(r, 5).value = None
     if not active(r): continue
@@ -315,8 +373,14 @@ for r in ROWS:
         5: (f"=IFERROR(AVERAGE('Aux Qtd Reviews Airbnb'!AC{r}:AM{r}),0)", '0.0'),
         6: (f"=IFERROR(AVERAGE('Aux Qtd Reviews Booking'!AC{r}:AM{r}),0)", '0.0'),
         7: (f"=IFERROR(AVERAGE('Prêmio de Mercado'!AJ{r}:AM{r}),\"\")", '0.0%'),
-        8: (f"=IFERROR(AVERAGE('Aux Nota 12m Airbnb'!AJ{r}:AM{r}),\"\")", '0.00'),
-        9: (f"=IFERROR(AVERAGE('Aux Nota 12m Booking'!AJ{r}:AM{r}),\"\")", '0.00'),
+        8: (f"=IFERROR(AVERAGE('Reviews Airbnb'!AJ{r}:AM{r}),\"\")", '0.00'),
+        9: (f"=IFERROR(AVERAGE('Reviews Booking'!AJ{r}:AM{r}),\"\")", '0.00'),
+        11: (f"=IF(ISNUMBER('Reviews Airbnb'!AM{r}),'Reviews Airbnb'!AM{r},\"\")", '0.00'),
+        12: (f"=IF(ISNUMBER(K{r}),MAX(K{r},Premissas!$C$13),Premissas!$C$12)", '0.00'),
+        13: (f"=IF(Premissas!$C$11=2,L{r},IF(ISNUMBER(K{r}),K{r},Premissas!$C$12))", '0.00'),
+        14: (f"=IF(ISNUMBER('Reviews Booking'!AM{r}),'Reviews Booking'!AM{r},\"\")", '0.00'),
+        15: (f"=IF(ISNUMBER(N{r}),MAX(N{r},Premissas!$C$16),Premissas!$C$15)", '0.00'),
+        16: (f"=IF(Premissas!$C$11=2,O{r},IF(ISNUMBER(N{r}),N{r},Premissas!$C$15))", '0.00'),
         10: (f"=IFERROR(SUMPRODUCT('ADR Acomodação'!AH{r}:AK{r},'Ocupação (Disponível)'!AH{r}:AK{r})/SUMPRODUCT('RevPar Mercado'!AH{r}:AK{r},1+'Prêmio de Mercado'!AH{r}:AK{r}),1)", '0.000'),
     }
     for c, (fx, fmt) in f.items():
@@ -347,12 +411,12 @@ for r in ROWS:
             wb[nm].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r}),\"\")").font = F_CALC
         # reviews 6m
         for canal in ('Airbnb', 'Booking'):
-            wb[f'Reviews {canal}'].cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas {canal}'!{col(k-5)}{r}:{cl}{r})/SUM('Aux Qtd Reviews {canal}'!{col(k-5)}{r}:{cl}{r}),\"\")").font = F_CALC
+            wb[f'Reviews {canal}'].cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas {canal}'!{col(k-11)}{r}:{cl}{r})/SUM('Aux Qtd Reviews {canal}'!{col(k-11)}{r}:{cl}{r}),\"\")").font = F_CALC
         # prêmio
-        idx = f"'Sazonalidade Prêmio'!${L(2 + m)}${SZROW[ROWINFO[r]['city']]}"
-        basep = f"(1+'Premissas por prédio'!$G{r})*IF(Premissas!$C$17=2,{idx},1)"
-        ta = f"IFERROR(Premissas!$C$15*'% Airbnb'!{cl}{r}*('Aux Nota 12m Airbnb'!{cl}{r}-'Premissas por prédio'!$H{r}),0)"
-        tb = f"IFERROR(Premissas!$C$16*'% Booking'!{cl}{r}*('Aux Nota 12m Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
+        idx = f"'Sazonalidade Prêmio Prédio'!${L(6 + m)}{r}"
+        basep = f"(1+'Premissas por prédio'!$G{r})*IF(Premissas!$C$23=2,{idx},1)"
+        ta = f"IFERROR(Premissas!$C$21*'% Airbnb'!{cl}{r}*('Reviews Airbnb'!{cl}{r}-'Premissas por prédio'!$H{r}),0)"
+        tb = f"IFERROR(Premissas!$C$22*'% Booking'!{cl}{r}*('Reviews Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
         wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb})-1,\"\")").font = F_CALC
 
 # ------------------------------------------------------------------ Buildup RevPAR
@@ -373,19 +437,98 @@ for r in ROWS:
     if not active(r):
         for j in range(1, 6): BU.cell(r, j).fill = PatternFill('solid', fgColor='E7E6E6')
 
+# ------------------------------------------------------------------ Ocupação e ADR
+MO = {}
+for rr_ in rd('data/ocupacao_predio_mes.psv'):
+    MO[(code(rr_['b']), kof(rr_['m']))] = float(rr_['occ'])
+def num_(v): return isinstance(v, (int, float))
+def occ_real(r, k):
+    if k <= K_LAST_REAL:
+        v = OCC.cell(r, 6 + k).value
+        return v if num_(v) and v > 0 else None
+    v = MO.get((ROWINFO[r]['code'], k)); return v if v else None
+def fk_of(cd): return kof(FIRST[cd][:7]) if cd in FIRST else None
+occ_idx = {}
+for city in ('SP', 'FLN', 'BC'):
+    rs = [r for r in ROWS if ROWINFO[r]['city'] == city and active(r)]
+    ss_r = [r for r in rs if FIRST.get(ROWINFO[r]['code'], '9') < '2025-01-01'] or rs
+    prof = {}
+    for k in BASE_K:
+        v = [occ_real(r, k) for r in ss_r if occ_real(r, k)]
+        prof[k] = sum(v) / len(v) if v else None
+    base = sum(prof[k] for k in range(30, 34) if prof[k]) / len([k for k in range(30, 34) if prof[k]])
+    occ_idx[city] = {k: (prof[k] / base if prof[k] else 1.0) for k in BASE_K}
+bo = mirror('Aux Base Ocupação', 'Base de ocupação (nov/25–out/26) para projetar nov/26–out/27',
+            'Ocupação realizada da linha (Report DB até ago/26; Metabase em set–out/26). Mês em ramp-up (menos de 3 meses de operação) ou sem dado: média do prédio em jul–out/26 × sazonalidade de ocupação da cidade (verde).')
+for i, k in enumerate(BASE_K):
+    y = (K0 + k) // 12; m = (K0 + k) % 12
+    c = bo.cell(4, 6 + i, f'{MESES[m]}/{str(y)[2:]}'); c.font = F_B; c.fill = FILL_HEAD
+bo.cell(4, 18, 'Meses completados').font = F_B
+for r in ROWS:
+    if not active(r): continue
+    cd = ROWINFO[r]['code']; fk = fk_of(cd)
+    rec = [occ_real(r, k) for k in range(30, 34) if occ_real(r, k)]
+    recent = sum(rec) / len(rec) if rec else None
+    nfill = 0
+    for i, k in enumerate(BASE_K):
+        v = occ_real(r, k)
+        ok = v is not None and (fk is None or k - fk >= 3)
+        if not ok:
+            if recent is None: continue
+            v = recent * occ_idx[ROWINFO[r]['city']][k]; nfill += 1
+        c = bo.cell(r, 6 + i, round(min(v, 0.97), 4)); c.font = F_IN; c.number_format = '0.0%'
+        if not ok: c.fill = FILL_ACT
+    bo.cell(r, 18, nfill)
+
+def ogcell(r, k):
+    y = (K0 + k) // 12
+    return f"Premissas!${'C' if y == 2026 else ('D' if y == 2027 else 'E')}${OCC_G[ROWINFO[r]['city']][0]}"
+BO = mirror('Buildup Ocupação', 'Ocupação (noites ocupadas ÷ disponíveis)',
+            'Até ago/26: aba Ocupação (Disponível) (Report DB). Set–out/26: realizado no Metabase. Depois: mesmo mês do ano anterior × (1 + variação da cidade em Premissas, item 5), com teto.')
+BA = mirror('Buildup ADR', 'ADR Acomodação (R$ por noite ocupada)',
+            'Até ago/26: aba ADR Acomodação (Report DB). Set/26 em diante: RevPAR nosso (Buildup RevPAR) ÷ Ocupação (Buildup Ocupação).')
+for ws in (BO, BA): month_header(ws)
+for r in ROWS:
+    BO.cell(r, 5, 'noites ocupadas ÷ disponíveis'); BA.cell(r, 5, 'R$ por noite ocupada')
+    for k in range(0, K_END + 1):
+        cl = col(k)
+        if k <= K_LAST_REAL:
+            BO.cell(r, 6 + k, f"=IF(ISNUMBER('Ocupação (Disponível)'!{cl}{r}),'Ocupação (Disponível)'!{cl}{r},\"\")").font = F_LINK
+            BA.cell(r, 6 + k, f"=IF(ISNUMBER('ADR Acomodação'!{cl}{r}),'ADR Acomodação'!{cl}{r},\"\")").font = F_LINK
+        elif active(r):
+            if k <= K_OUT:
+                v = MO.get((ROWINFO[r]['code'], k))
+                if v:
+                    c = BO.cell(r, 6 + k, round(v, 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
+            else:
+                base = f"'Aux Base Ocupação'!{L(6 + (k - K_NOV))}{r}" if k - K_NOV < 12 else f"{col(k - 12)}{r}"
+                c = BO.cell(r, 6 + k, f"=IFERROR(MIN(Premissas!$C$33,{base}*(1+{ogcell(r, k)})),\"\")"); c.font = F_CALC; c.fill = FILL_IN
+            c = BA.cell(r, 6 + k, f"=IFERROR('Buildup RevPAR'!{cl}{r}/'Buildup Ocupação'!{cl}{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN
+            # liga nas abas de input do BP
+            for sh, src in (('ADR Acomodação', 'Buildup ADR'), ('Ocupação (Disponível)', 'Buildup Ocupação')):
+                x = wb[sh].cell(r, 6 + k)
+                x.value = f"=IF(ISNUMBER('{src}'!{cl}{r}),'{src}'!{cl}{r},\"\")"
+                f2 = copy.copy(x.font); f2.color = '008000'; x.font = f2
+        BO.cell(r, 6 + k).number_format = '0.0%'; BA.cell(r, 6 + k).number_format = '#,##0.00'
+    if not active(r):
+        for ws in (BO, BA):
+            for j in range(1, 6): ws.cell(r, j).fill = PatternFill('solid', fgColor='E7E6E6')
+for sh in ('ADR Acomodação', 'Ocupação (Disponível)'):
+    wb[sh]['AL3'] = 'Set/26 em diante: puxa do Buildup (Premissas)'
+
 # fonte Arial nas abas novas
 for ws in wb.worksheets:
-    if ws.title in DATA_SHEETS or ws.title.startswith('Aux') or ws.title in ('Premissas', 'Premissas por prédio', 'Buildup RevPAR', 'Sazonalidade Prêmio'):
+    if ws.title in DATA_SHEETS or ws.title.startswith('Aux') or ws.title in ('Premissas', 'Premissas por prédio', 'Buildup RevPAR', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup Ocupação', 'Buildup ADR'):
         for row in ws.iter_rows():
             for c in row:
                 if c.value is not None and (c.font is None or c.font.name != ARIAL):
                     f = copy.copy(c.font); f.name = ARIAL; c.font = f
-order = ['Leia-me', 'Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Buildup RevPAR'] + DATA_SHEETS
+order = ['Leia-me', 'Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup RevPAR', 'Buildup Ocupação', 'Buildup ADR'] + DATA_SHEETS
 rest = [w for w in wb.sheetnames if w not in order and not w.startswith('Aux')]
 aux = [w for w in wb.sheetnames if w.startswith('Aux')]
 wb._sheets = [wb[n] for n in order + rest + aux]
 for n in aux: wb[n].sheet_properties.tabColor = 'BFBFBF'
-for n in ('Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Buildup RevPAR'): wb[n].sheet_properties.tabColor = 'F4CB4F'
+for n in ('Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup RevPAR', 'Buildup Ocupação', 'Buildup ADR'): wb[n].sheet_properties.tabColor = 'F4CB4F'
 wb.active = 1
 wb.save(OUT)
 print('ok', OUT)
