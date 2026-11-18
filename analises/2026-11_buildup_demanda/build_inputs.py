@@ -97,7 +97,7 @@ NOTES = {
     'Reviews Airbnb': 'Média dos reviews do Airbnb (general, 1–5) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas). É a nota usada na fórmula do prêmio.',
     '% Airbnb': 'Receita de hospedagem de reservas Airbnb ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
     '% Booking': 'Receita de hospedagem de reservas Booking ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
-    '% outros': 'Demais canais (direto, B2B, corretores, outras OTAs). Projeção: média nov/25–out/26.',
+    '% outros': 'Demais canais (direto, B2B, corretores, outras OTAs). Projeção: média nov/25–out/26 + aumento de share da coluna S de Premissas por prédio (a partir de jan/27).',
 }
 
 def value_for(sheet, c, k):
@@ -342,17 +342,27 @@ for city, (row, gs, why) in OCC_G.items():
     put(f'F{row}', why)
 put('B33', 'Teto de ocupação'); put('C33', 0.95, F_IN, FILL_KEY, '0.0%')
 put('F33', 'Limite da ocupação projetada.')
-put('B35', 'Como funciona', F_B)
+put('B34', 'Como funciona', F_B)
 lines = [
     'RevPAR de mercado(t) = mesmo mês do ano anterior × (1 + variação da cidade, item 1).',
     'Prêmio(t) = (1 + prêmio base) × sazonalidade (do prédio ou da cidade) × exp( β Airbnb × %Airbnb × [Nota Airbnb 12m(t) − nota base] + β Booking × %Booking × [Nota Booking 12m(t) − nota base] ) − 1.',
     'Nota 12m(t) (abas Reviews) = soma das notas ÷ quantidade de reviews dos últimos 12 meses: realizado até out/26 e, depois, volume mensal × nota mensal do cenário (item 2). Nota base = média jul–out/26.',
     'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
+    'Outros canais (item 6): se o share de outros sobe Δ a partir de jan/27, o prêmio é multiplicado por (1 + ganho líquido × Δ), e Airbnb/Booking perdem share proporcionalmente.',
     'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
 for i, t in enumerate(lines):
-    put(f'B{36+i}', t, Font(name=ARIAL, size=10)); P.merge_cells(f'B{36+i}:F{36+i}')
+    put(f'B{35+i}', t, Font(name=ARIAL, size=10)); P.merge_cells(f'B{35+i}:F{35+i}')
+put('B46', '6. Outros canais · demanda nova vs canibalização do OTA', F_B)
+put('B47', 'Ocupação média que define prédio "cheio"'); put('C47', 0.80, F_IN, FILL_KEY, '0%')
+put('F47', 'Média do prédio em nov/25–out/26 (Premissas por prédio, coluna Q).')
+put('B48', 'Ganho líquido por ponto de outros · prédio cheio'); put('C48', 0.41, F_IN, FILL_KEY, '0.00')
+put('F48', 'Estimado (17 prédios com ocupação média ≥ 80%): cada 1 ponto de prêmio vindo de outros canais tira 0,59 do OTA, sobra 0,41 (intervalo 0,29 a 0,66). Noite vendida por outro canal tira noite que o Airbnb venderia.')
+put('B49', 'Ganho líquido por ponto de outros · prédio com folga'); put('C49', 0.92, F_IN, FILL_KEY, '0.00')
+put('F49', 'Estimado (21 prédios com ocupação média < 80%): sobra 0,92 (intervalo 0,53 a 1,14). Outros canais preenchem noites vazias.')
+put('B50', 'Aumento de share de outros (por prédio)'); put('C50', 'coluna S de Premissas por prédio, a partir de jan/27')
+put('F50', 'Prêmio × (1 + ganho líquido × Δ share). Airbnb e Booking perdem share na proporção. Padrão 0 p.p. (caso base sem mudança de mix).')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
 
@@ -362,7 +372,8 @@ heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/
          8: 'Nota Airbnb 12m base (média jul–out/26)', 9: 'Nota Booking 12m base (média jul–out/26)',
          10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mai–ago/26)',
          11: 'Nota Airbnb atual (12m até out/26)', 12: 'Nota Airbnb no cenário meta (máx. entre atual e piso)', 13: 'Nota Airbnb mensal usada na projeção',
-         14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta', 16: 'Nota Booking mensal usada na projeção'}
+         14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta', 16: 'Nota Booking mensal usada na projeção',
+         17: 'Ocupação média (nov/25–out/26)', 18: 'Ganho líquido por ponto de outros canais', 19: 'Δ share de outros a partir de jan/27 (p.p.)'}
 for c, h in heads.items():
     x = PP.cell(4, c, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(c)].width = 20
 PP.row_dimensions[4].height = 78
@@ -381,10 +392,13 @@ for r in ROWS:
         14: (f"=IF(ISNUMBER('Reviews Booking'!AM{r}),'Reviews Booking'!AM{r},\"\")", '0.00'),
         15: (f"=IF(ISNUMBER(N{r}),MAX(N{r},Premissas!$C$16),Premissas!$C$15)", '0.00'),
         16: (f"=IF(Premissas!$C$11=2,O{r},IF(ISNUMBER(N{r}),N{r},Premissas!$C$15))", '0.00'),
+        17: (f"=IFERROR(AVERAGE('Buildup Ocupação'!AC{r}:AM{r}),\"\")", '0.0%'),
+        18: (f"=IF(ISNUMBER(Q{r}),IF(Q{r}>=Premissas!$C$47,Premissas!$C$48,Premissas!$C$49),Premissas!$C$49)", '0.00'),
         10: (f"=IFERROR(SUMPRODUCT('ADR Acomodação'!AH{r}:AK{r},'Ocupação (Disponível)'!AH{r}:AK{r})/SUMPRODUCT('RevPar Mercado'!AH{r}:AK{r},1+'Prêmio de Mercado'!AH{r}:AK{r}),1)", '0.000'),
     }
     for c, (fx, fmt) in f.items():
         x = PP.cell(r, c, fx); x.font = F_CALC; x.number_format = fmt; x.fill = FILL_IN
+    x = PP.cell(r, 19, 0); x.font = F_IN; x.fill = FILL_KEY; x.number_format = '0.0%'
 
 # AVERAGE ignora células vazias: volume de reviews deve contar meses sem review como zero
 for canal in ('Airbnb', 'Booking'):
@@ -407,8 +421,10 @@ for r in ROWS:
         base = f"'Aux Base Mercado'!{L(6 + (k - K_NOV))}{r}" if k - K_NOV < 12 else f"{col(k - 12)}{r}"
         wb['RevPar Mercado'].cell(r, 6 + k, f"=IFERROR({base}*(1+{gcell(r, k)}),\"\")").font = F_CALC
         # canais
-        for nm in ('% Airbnb', '% Booking', '% outros'):
-            wb[nm].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r}),\"\")").font = F_CALC
+        ds = f"'Premissas por prédio'!$S{r}" if k >= 36 else "0"
+        wb['% outros'].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r})+{ds},\"\")").font = F_CALC
+        for nm in ('% Airbnb', '% Booking'):
+            wb[nm].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r})*(1-'% outros'!{cl}{r})/(1-AVERAGE('% outros'!$AC{r}:$AM{r})),\"\")").font = F_CALC
         # reviews 6m
         for canal in ('Airbnb', 'Booking'):
             wb[f'Reviews {canal}'].cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas {canal}'!{col(k-11)}{r}:{cl}{r})/SUM('Aux Qtd Reviews {canal}'!{col(k-11)}{r}:{cl}{r}),\"\")").font = F_CALC
@@ -417,7 +433,8 @@ for r in ROWS:
         basep = f"(1+'Premissas por prédio'!$G{r})*IF(Premissas!$C$23=2,{idx},1)"
         ta = f"IFERROR(Premissas!$C$21*'% Airbnb'!{cl}{r}*('Reviews Airbnb'!{cl}{r}-'Premissas por prédio'!$H{r}),0)"
         tb = f"IFERROR(Premissas!$C$22*'% Booking'!{cl}{r}*('Reviews Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
-        wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb})-1,\"\")").font = F_CALC
+        mixf = f"*(1+'Premissas por prédio'!$R{r}*'Premissas por prédio'!$S{r})" if k >= 36 else ""
+        wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}-1,\"\")").font = F_CALC
 
 # ------------------------------------------------------------------ Buildup RevPAR
 BU = mirror('Buildup RevPAR', 'RevPAR nosso (R$ por noite disponível)',
