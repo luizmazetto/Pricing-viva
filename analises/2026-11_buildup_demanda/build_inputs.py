@@ -97,7 +97,7 @@ NOTES = {
     'Reviews Airbnb': 'Média dos reviews do Airbnb (general, 1–5) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas). É a nota usada na fórmula do prêmio.',
     '% Airbnb': 'Receita de hospedagem de reservas Airbnb ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
     '% Booking': 'Receita de hospedagem de reservas Booking ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
-    '% outros': 'Demais canais (direto, B2B, corretores, outras OTAs). Projeção: média nov/25–out/26 + aumento de share da coluna S de Premissas por prédio (a partir de jan/27).',
+    '% outros': 'Tudo que não é Airbnb nem Booking (Expedia ~50%, Swap, Homelike, DIVID, Direct, Extensão, Yuca, Decolar, corretores, B2B). Projeção: média nov/25–out/26 + aumento de share da coluna S de Premissas por prédio (a partir de jan/27).',
 }
 
 def value_for(sheet, c, k):
@@ -357,10 +357,10 @@ for i, t in enumerate(lines):
 put('B46', '6. Outros canais · demanda nova vs canibalização do OTA', F_B)
 put('B47', 'Ocupação média que define prédio "cheio"'); put('C47', 0.80, F_IN, FILL_KEY, '0%')
 put('F47', 'Média do prédio em nov/25–out/26 (Premissas por prédio, coluna Q).')
-put('B48', 'Ganho líquido por ponto de outros · prédio cheio'); put('C48', 0.41, F_IN, FILL_KEY, '0.00')
-put('F48', 'Estimado (17 prédios com ocupação média ≥ 80%): cada 1 ponto de prêmio vindo de outros canais tira 0,59 do OTA, sobra 0,41 (intervalo 0,29 a 0,66). Noite vendida por outro canal tira noite que o Airbnb venderia.')
-put('B49', 'Ganho líquido por ponto de outros · prédio com folga'); put('C49', 0.92, F_IN, FILL_KEY, '0.00')
-put('F49', 'Estimado (21 prédios com ocupação média < 80%): sobra 0,92 (intervalo 0,53 a 1,14). Outros canais preenchem noites vazias.')
+put('B48', 'Ganho líquido por ponto de outros · prédio cheio'); put('C48', 0.42, F_IN, FILL_KEY, '0.00')
+put('F48', 'Estimado (17 prédios com ocupação média ≥ 80%): cada 1 ponto de prêmio vindo de outros canais tira 0,58 do OTA, sobra 0,42 (intervalo 0,30 a 0,69). Noite vendida por outro canal tira noite que o Airbnb venderia.')
+put('B49', 'Ganho líquido por ponto de outros · prédio com folga'); put('C49', 0.91, F_IN, FILL_KEY, '0.00')
+put('F49', 'Estimado (21 prédios com ocupação média < 80%): sobra 0,91 (intervalo 0,51 a 1,13). Outros canais preenchem noites vazias.')
 put('B50', 'Aumento de share de outros (por prédio)'); put('C50', 'coluna S de Premissas por prédio, a partir de jan/27')
 put('F50', 'Prêmio × (1 + ganho líquido × Δ share). Airbnb e Booking perdem share na proporção. Padrão 0 p.p. (caso base sem mudança de mix).')
 put('B43', 'Legenda', F_B)
