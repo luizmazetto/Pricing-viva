@@ -25,3 +25,7 @@ Canais (Premissas, item 8): cenário 1 = mix de jul–out/26 de cada prédio, co
 mesmo multiplicador sobre o próprio share de jul–out/26 (hoje 1,37x Expedia e 1,71x demais). Prédios com mais de 50% fora de
 Airbnb/Booking (Homelike, Cannes, Equalize) ficam como estão. Airbnb e Booking dividem o resto na proporção atual do prédio.
 O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,41 × ΔExpedia + 0,41 ou 1,00 × Δdemais).
+
+Cenário geral (Premissas, C3): 1 = base (nota atual de cada prédio + mix de canais de jul–out/26); 2 (padrão) = crescimento
+(meta de reviews Airbnb 4,75 / Booking 8,5 + Expedia 15% e demais 12% em dez/27). C11 (reviews) e C65 (canais) seguem C3,
+mas podem ser sobrescritos.

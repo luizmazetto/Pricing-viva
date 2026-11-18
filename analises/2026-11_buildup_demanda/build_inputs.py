@@ -332,7 +332,10 @@ FLOOR_B, CUR_B = solve_floor_keep(RB, 8.5)
 
 for c, h in zip('BCF', ['2. Reviews · nota mensal dos reviews novos', 'Valor', 'Racional']):
     put(f'{c}10', h, F_B, FILL_HEAD if c != 'B' else None)
-put('B11', 'Cenário: 1 = nota atual de cada prédio · 2 = meta de portfólio'); put('C11', 1, F_IN, FILL_KEY, '0')
+put('B3', 'CENÁRIO GERAL: 1 = base (notas e mix de canais atuais) · 2 = crescimento (meta de reviews + crescimento de canais)', F_B)
+put('C3', 2, F_IN, FILL_KEY, '0')
+put('F3', 'Comanda o cenário de reviews (C11) e o de canais (C65). Para combinar diferente (ex.: só reviews), digite 1 ou 2 direto em C11 ou C65 no lugar da fórmula =C3.')
+put('B11', 'Cenário: 1 = nota atual de cada prédio · 2 = meta de portfólio'); put('C11', '=C3', F_LINK, FILL_KEY, '0')
 put('F11', 'Cenário 1 (base): cada prédio continua recebendo, por mês, a nota média dos seus reviews dos últimos 12 meses. Cenário 2 (melhoria): prédios abaixo do piso passam a receber o piso; quem está acima mantém a própria nota.')
 put('B12', 'Meta Airbnb: média do portfólio (ponderada pelo volume de reviews)'); put('C12', 4.75, F_IN, FILL_KEY, '0.00')
 put('F12', f'Meta do usuário. Hoje o portfólio está em {CUR_A:.2f} (nota 12m até out/26, ponderada pelo volume). Também é a nota usada para prédio sem histórico.'.replace('.', ',', 1) if False else f'Meta do usuário. Hoje o portfólio está em {CUR_A:.2f}'.replace('.', ',') + ' (nota 12m até out/26, ponderada pelo volume). Também é a nota usada para prédio sem histórico.')
@@ -409,7 +412,7 @@ put('B62', 'Margem para entrar/sair da faixa'); put('C62', 0.05, F_IN, FILL_KEY,
 put('F62', 'Entra na faixa só com nota ≥ corte + margem (8,05) e sai só abaixo de corte − margem (7,95); entre os dois mantém a faixa do mês anterior (aba Aux Faixa Booking).')
 PPN = "'Premissas por prédio'"
 put('B64', '8. Crescimento de canais · Expedia e demais outros canais', F_B)
-put('B65', 'Cenário de canais: 1 = proporções atuais (jul–out/26) · 2 = crescimento até a meta'); put('C65', 2, F_IN, FILL_KEY, '0')
+put('B65', 'Cenário de canais: 1 = proporções atuais (jul–out/26) · 2 = crescimento até a meta'); put('C65', '=C3', F_LINK, FILL_KEY, '0')
 put('F65', '1 = % de cada canal fica no mix de jul–out/26 do prédio (mesma base do prêmio), constante. 2 = parte do mix de jul–out/26 de cada prédio e Expedia e demais crescem em linha reta (nov/26 até o mês da meta), no mesmo multiplicador para todos os prédios que crescem; Airbnb e Booking dividem o resto na proporção atual de cada prédio.')
 put('B66', 'Meta · Expedia no portfólio'); put('C66', 0.15, F_IN, FILL_KEY, '0.0%')
 put('B67', 'Meta · demais outros canais no portfólio'); put('C67', 0.12, F_IN, FILL_KEY, '0.0%')
