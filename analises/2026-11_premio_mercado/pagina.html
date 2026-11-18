@@ -103,6 +103,21 @@ nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--c26)}
 nav.tabs a:hover,nav.tabs a:focus-visible{color:var(--ink);outline:none}
 .cil{stroke:var(--muted);stroke-width:2;stroke-linecap:round}
 .t-win{min-width:620px} .t-lag{min-width:380px} .t-split{min-width:900px} .t-lst{min-width:600px}
+.formula{gap:6px;font-size:15.5px}
+.formula p{max-width:none}
+.t-sens{min-width:820px}
+.t-sens td .ci{display:block;font-size:11px;color:var(--muted)}
+.calc{gap:16px}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.fld{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.fld.wide,.chk.wide{grid-column:1/-1}
+.fld input,.fld select{font:15px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0}
+.fld input:focus-visible,.fld select:focus-visible,.chk input:focus-visible{outline:2px solid var(--c26);outline-offset:1px}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.calc-out{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.calc-out>div{display:grid;gap:2px}
+.calc-out .v{font:700 28px var(--display);font-variant-numeric:tabular-nums}
+.calc-out .s{font-size:13px;color:var(--muted)}
 .barp{fill:var(--cnew)} .barn{fill:var(--neg)}
 .sc{fill-opacity:.85}
 .t-est{min-width:640px} .t-share{min-width:640px} .t-dim{min-width:560px} .t-sub2{min-width:560px} .t-bld{min-width:1140px} .t-bld td,.t-bld th{padding-inline:7px}

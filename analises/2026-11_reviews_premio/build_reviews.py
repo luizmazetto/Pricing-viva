@@ -204,9 +204,11 @@ body = f'''
     <li><b>Prêmio do prédio:</b> mesma conta do dashboard 58 (RevPAR de hospedagem ÷ RevPAR do mercado), por mês, com pelo menos 150 noites disponíveis.</li>
     <li><b>Estimativa:</b> regressão do log do prêmio na nota com efeito fixo de prédio (cada prédio contra ele mesmo) e de mês (tira o que afeta todos no mês), ponderada pelas noites disponíveis. Intervalos de 90% por bootstrap sorteando prédios.</li>
     <li><b>Canal:</b> participação do Airbnb e do Booking na receita de hospedagem de 2026 (<code>partnerName</code> da reserva, a mesma informação da <code>Calendar</code>).</li>
-    <li><b>Limites:</b> com {TP['n_predios']} prédios e notas que mudam pouco, os intervalos são largos. Use como ordem de grandeza: ~+3% a +5% de prêmio por +0,1★ no Airbnb em prédios onde o Airbnb é metade ou mais da receita, perto de zero nos demais, e zero para a nota do Booking. É correlação ao longo do tempo: uma melhora operacional pode subir nota e preço juntos.</li>
+    <li><b>Limites:</b> com {TP['n_predios']} prédios e notas que mudam pouco, os intervalos são largos. Use a fórmula da seção 6 como ordem de grandeza (+0,1★ no Airbnb ≈ +4,9% de prêmio com o Airbnb em 50% do GMV), com cautela abaixo de ~35% de Airbnb, e zero para a nota do Booking. É correlação ao longo do tempo: uma melhora operacional pode subir nota e preço juntos.</li>
   </ul>
 </section>
 '''
+from build_formula import SECTION
+body = body.replace('<section class="method">', SECTION + '\n<section class="method">', 1)
 open('reviews_body.html', 'w', encoding='utf-8').write(body)
 print('ok', len(body))
