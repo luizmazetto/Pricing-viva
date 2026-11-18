@@ -3,43 +3,42 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: memorando de revenue management (mesma família dos relatórios de Natal e BTS/F1): resumo e KPIs no topo, depois same store, prédios novos e mercados, cada um com gráfico + tabela por prédio */
+/* Layout: memorando de revenue management por cidade: definição e cartões por cidade no topo; depois um bloco por cidade (nosso prêmio, mercado, submercados, semana × fim de semana, pace, tabelas por prédio) */
 :root{
   --bg:#f5f6f8; --surface:#ffffff; --ink:#18202b; --muted:#5b6575; --line:#dde1e8; --soft:#eef1f5;
   --c25:#3a6fc4; --c26:#c2410c; --cnew:#00917f;
-  --pos:#1f7a4d; --neg:#b4471a; --warn:#8a6d00; --warn-bg:#f6efcc;
+  --pos:#1f7a4d; --neg:#b4471a;
   --display:"Archivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#12161c; --surface:#1a2029; --ink:#e6e9ee; --muted:#9aa4b2; --line:#2c3440; --soft:#222934;
-  --c25:#5b8fe0; --c26:#e2632a; --cnew:#14a893;
-  --pos:#5cc78f; --neg:#f08a5d; --warn:#e3c54f; --warn-bg:#352e10; color-scheme:dark}}
+  --c25:#5b8fe0; --c26:#e2632a; --cnew:#14a893; --pos:#5cc78f; --neg:#f08a5d; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#12161c; --surface:#1a2029; --ink:#e6e9ee; --muted:#9aa4b2; --line:#2c3440; --soft:#222934;
-  --c25:#5b8fe0; --c26:#e2632a; --cnew:#14a893;
-  --pos:#5cc78f; --neg:#f08a5d; --warn:#e3c54f; --warn-bg:#352e10; color-scheme:dark}
+  --c25:#5b8fe0; --c26:#e2632a; --cnew:#14a893; --pos:#5cc78f; --neg:#f08a5d; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 72px;display:grid;gap:44px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 72px;display:grid;gap:48px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
 h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.01em}
 h2{font-size:24px;font-weight:700}
-h3{font-size:17px;font-weight:700}
-p{margin:0;max-width:74ch}
+h3{font-size:17px;font-weight:700;margin-top:8px}
+p{margin:0;max-width:76ch}
 .eyebrow{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 header{display:grid;gap:10px}
-.meta{color:var(--muted);font-size:14px;max-width:90ch}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.meta{color:var(--muted);font-size:14px;max-width:92ch}
+nav.cities{display:flex;flex-wrap:wrap;gap:8px}
+nav.cities a{font:600 13px var(--body);color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--surface)}
+nav.cities a:hover,nav.cities a:focus-visible{border-color:var(--ink);outline:none}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:4px;align-content:start;color:inherit;text-decoration:none}
+.kpi:hover,.kpi:focus-visible{border-color:var(--muted);outline:none}
 .kpi .v{font:700 28px var(--display);font-variant-numeric:tabular-nums}
 .kpi .s{font-size:13px;color:var(--muted)}
-.kpi.warn{background:var(--warn-bg);border-color:transparent}
-.kpi.warn .v{color:var(--neg)}
-.findings{display:grid;gap:12px;padding:0;margin:0;list-style:none}
-.findings li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
-.findings .dot{width:10px;height:10px;border-radius:50%;margin-top:8px;background:var(--muted)}
-.findings .dot.ss{background:var(--c26)} .findings .dot.neg{background:var(--neg)} .findings .dot.new{background:var(--cnew)}
-.findings .dot.all{background:var(--ink)} .findings .dot.mkt,.findings .dot.sp{background:var(--c25)}
-section{display:grid;gap:16px}
+.kpi .mk{font-size:13px;border-top:1px solid var(--line);padding-top:8px;margin-top:6px}
+.bul{margin:0;padding-left:20px;display:grid;gap:8px;max-width:100ch}
+.bul li{padding-left:2px}
+section{display:grid;gap:14px}
+section.city{border-top:3px solid var(--ink);padding-top:18px}
 .sec-head{display:grid;gap:6px}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:10px;min-width:0}
 .panel svg{width:100%;height:auto;display:block}
@@ -48,6 +47,9 @@ section{display:grid;gap:16px}
 .legend i.c25{background:var(--c25)} .legend i.c26{background:var(--c26)} .legend i.cnew{background:var(--cnew)}
 .legend i.dt{width:10px;height:10px;border-radius:50%}
 .small{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.t-wk td:first-child,.t-prem td:first-child{white-space:nowrap}
+.col{display:grid;gap:10px;align-content:start;min-width:0}
 /* svg */
 .grid{stroke:var(--line);stroke-width:1}
 .axis0{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:3 3}
@@ -61,31 +63,31 @@ section{display:grid;gap:16px}
 .ln.y25{stroke:var(--c25)} .ln.y26{stroke:var(--c26)} .ln.new{stroke:var(--cnew);stroke-dasharray:6 4}
 .dot{stroke:var(--surface);stroke-width:2}
 .dot.y25{fill:var(--c25)} .dot.y26{fill:var(--c26)} .dot.new{fill:var(--cnew)}
-.hit{fill:transparent;cursor:default}
+.hit{fill:transparent}
 .bar{stroke-width:4;stroke-linecap:round}
 .bar.up{stroke:color-mix(in srgb,var(--cnew) 45%,transparent)} .bar.dn{stroke:color-mix(in srgb,var(--neg) 45%,transparent)}
 /* tabelas */
 .tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:bottom}
+th{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:bottom}
 td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
 tr:last-child td{border-bottom:0}
 .r{text-align:right}
 .num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 .b{font-weight:600}
-.bname{font-weight:700}
-.bsub{font-size:12px;color:var(--muted);white-space:nowrap;display:block}
+.bname{font-weight:700;display:block}
+.bsub{font-size:12px;color:var(--muted);display:block;white-space:nowrap}
 .muted{color:var(--muted)}
 .pos{color:var(--pos)} .neg{color:var(--neg)} .zero{color:var(--muted)}
-tr.em td{background:var(--soft);font-weight:600}
-tr.sub td{background:var(--soft);font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.t-ss{min-width:1060px} .t-new{min-width:900px} .t-city{min-width:1060px} .t-mkt{min-width:1040px} .t-per{min-width:900px}
+tr.em td{background:var(--soft)}
+.t-prem{min-width:860px} .t-ss{min-width:1080px} .t-new{min-width:880px} .t-city{min-width:1000px} .t-mkt{min-width:1000px}
+.t-sub{min-width:1120px} .t-pace{min-width:620px} .t-wk{min-width:420px}
+.t-pace td,.t-pace th{padding-inline:8px}
+.t-pace th:first-child{white-space:normal;min-width:180px}
 .hm{background:color-mix(in srgb,var(--pos) var(--a),transparent)}
 .hm[data-t="neg"]{background:color-mix(in srgb,var(--neg) var(--a),transparent)}
 .hm.neu{color:var(--muted)}
 .hm.ytd{font-weight:700;border-left:2px solid var(--line)}
-th.cityh{font:700 13px var(--display);letter-spacing:0;text-transform:none;color:var(--ink);vertical-align:top;padding-top:10px;border-right:1px solid var(--line)}
-tr.grp td,tr.grp th{border-top:2px solid var(--line)}
 .mlab{white-space:nowrap;font-size:13px}
 .method{display:grid;gap:10px;font-size:14.5px}
 .method ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:100ch}
@@ -96,901 +98,902 @@ code{font:12.5px var(--mono);background:var(--soft);padding:1px 5px;border-radiu
 <div class="wrap">
 <header>
   <span class="eyebrow">Revenue management · Pricing · 18/nov/2026</span>
-  <h1>Prêmio de mercado 2026: same store, prédios novos e mercados</h1>
-  <p class="meta">Prêmio = nosso RevPAR de hospedagem ÷ RevPAR do mercado (diária mediana fechada × ocupação, Pricelabs), a mesma conta do dashboard 58 "Us vs. Market", já com a nova metodologia do Pricelabs. Comparação 2026 vs 2025 nos meses fechados (jan–out) e em nov 1–17 contra nov 1–17 do ano passado.</p>
+  <h1>Prêmio de mercado 2026 por cidade</h1>
+  <p class="meta">2026 vs 2025 nos meses fechados (jan–out) e em nov 1–17 contra nov 1–17 do ano passado. Dados de mercado do Pricelabs já com a nova metodologia.</p>
+  <nav class="cities"><a href="#sp">São Paulo</a><a href="#fln">Florianópolis</a><a href="#bc">Balneário Camboriú</a><a href="#metodo">Método</a></nav>
 </header>
 
 <section>
-  <div class="kpis">
-<div class="kpi"><span class="eyebrow">Same store · jan–out</span><span class="v">+14,3%</span><span class="s">2025: +14,6% · −0,4 p.p.</span></div>
-<div class="kpi warn"><span class="eyebrow">Same store · out e nov 1–17</span><span class="v">+10% · +5%</span><span class="s">2025: +16% · +25%</span></div>
-<div class="kpi"><span class="eyebrow">Prédios novos · jan–out/26</span><span class="v">+26,8%</span><span class="s">Entradas de fev/25 em diante · same store: +14,3%</span></div>
-<div class="kpi"><span class="eyebrow">RevPAR do mercado · jan–out</span><span class="v">−2,9%</span><span class="s">SP −1,1% · FLN −10,7% · BC +1,0%</span></div></div>
-  <ul class="findings"><li><span class="dot ss"></span><p><b>Same store estável no acumulado.</b> Nos 24 prédios que já operávamos antes de 2025, o prêmio de jan–out foi de +14,6% para +14,3% (−0,4 p.p.). Nosso RevPAR andou −1,6% e o do mercado desses prédios −1,3%: acompanhamos o mercado, sem abrir nem perder distância. Melhoramos no 1º tri (+2,3 p.p.) e ficamos estáveis no 2º e 3º tri.</p></li>
-<li><span class="dot neg"></span><p><b>O prêmio same store caiu em outubro e no começo de novembro.</b> Outubro: +16,0% → +9,7%; nov 1–17: +25,1% → +4,8%. Em outubro o mercado subiu mais rápido que a gente (RevPAR do mercado +18,7%, nosso +12,3%). Em novembro nossa ocupação caiu de 84% para 73% com diária parada (R$ 297 → R$ 297), enquanto a diária fechada do mercado subiu +8%. A queda é geral: 23 dos 24 prédios perderam prêmio em nov 1–17.</p></li>
-<li><span class="dot new"></span><p><b>Prédios novos rodam com prêmio maior e crescente.</b> Os prédios que entraram de fev/25 em diante tiveram prêmio de +26,8% em jan–out/26, contra +14,3% do same store. 13 de 15 aumentaram o prêmio dos 3 primeiros meses para ago–out/26; os maiores saltos foram AGR, URB, PVF e PVP. Exceções: PVN segue abaixo do mercado (−19% em ago–out; diária R$ 244 contra R$ 399 do mercado) e ONZ caiu de +19% para +8%.</p></li>
-<li><span class="dot all"></span><p><b>No portfólio inteiro o prêmio subiu</b> de +17,2% para +19,4% em jan–out, por mix: as unidades novas (prêmio maior) passaram a pesar 43% das noites disponíveis.</p></li>
-<li><span class="dot mkt"></span><p><b>O mercado ficou um pouco mais fraco em 2026.</b> Nos mesmos prédios, ponderado pelas nossas unidades, o RevPAR de mercado de jan–out andou −2,9%: SP −1,1%, Florianópolis −10,7%, Balneário Camboriú +1,0%. A diária fechada caiu (−2,7%) enquanto o preço anunciado subiu (+3,0%): o mercado anuncia mais caro e fecha mais barato. A oferta no comp set do Pricelabs cresceu +51%.</p></li>
-<li><span class="dot sp"></span><p><b>SP virou em outubro.</b> RevPAR de mercado +19% em outubro (ocupação +6,5 p.p., preço anunciado +13%), depois de 9 meses entre −12% e +7%. É esse movimento que o nosso same store não acompanhou.</p></li></ul>
+  <div class="kpis"><a class="kpi" href="#sp"><span class="eyebrow">São Paulo</span>
+<span class="v">+14,0%</span><span class="s">Same store jan–out (2025: +13,3%)</span><span class="s">Ago–out +15% → +15% · nov 1–17 +21% → +4%</span>
+<span class="mk">Mercado jan–out: RevPAR <b>−1,1%</b> · ocupação +1,2 p.p. · diária −3,4% · oferta +47%</span></a>
+<a class="kpi" href="#fln"><span class="eyebrow">Florianópolis</span>
+<span class="v">+15,1%</span><span class="s">Same store jan–out (2025: +18,4%)</span><span class="s">Ago–out +41% → +27% · nov 1–17 +49% → +11%</span>
+<span class="mk">Mercado jan–out: RevPAR <b>−10,7%</b> · ocupação −3,9 p.p. · diária −1,2% · oferta +65%</span></a>
+<a class="kpi" href="#bc"><span class="eyebrow">Balneário Camboriú</span>
+<span class="v">+165,2%</span><span class="s">TSO ago–out (2025: +138,4%)</span><span class="s">Nov 1–17 +73% → +75%</span>
+<span class="mk">Mercado jan–out: RevPAR <b>+1,0%</b> · ocupação +0,1 p.p. · diária +1,4% · oferta +105%</span></a></div>
+  <ul class="bul"><li><b>Definição.</b> Prêmio = nosso RevPAR de hospedagem (<code>accommodation_adr</code>, diária sem taxas, zero nas noites não vendidas) ÷ RevPAR do mercado (diária mediana fechada do Pricelabs × ocupação do mercado). É a conta do dashboard 58.</li>
+<li><b>Same store no portfólio:</b> jan–out +14,6% → +14,3%; nov 1–17 +25,1% → +4,8%. Separando por cidade: SP ficou estável no ano e só caiu em nov 1–17; Florianópolis cai desde agosto. A queda de outubro do portfólio é quase toda de Florianópolis; em nov 1–17 as duas cidades caem.</li>
+<li><b>Mercados:</b> SP −1,1% de RevPAR no ano, com oferta e demanda crescendo juntas e pressão na diária fechada; melhora desde ago–out. Florianópolis −10,7%, por ocupação, com oferta crescendo mais que a demanda e verão vendendo atrás do ano passado. BC +1,0%.</li></ul>
 </section>
 
-<section>
-  <div class="sec-head">
-    <span class="eyebrow">1 · Same store</span>
-    <h2>Mesmos 24 prédios: prêmio estável no ano, queda em out–nov</h2>
-    <p class="small">Prédios em operação desde antes de 1/jan/2025: AGM 85, AQL 1420, ARB 301, AYR 423, CAN 203, CNZ 366, DGE 197, FYP 441, HLK 407, KAS 99, NUN 61, NXB 1333, NXD 382, NXF 444, NXH 720, NXP 950, NXV 601, PQJ 155, SCN 59, SPZ 648, TOF 1485, TPV 869, UPR 1577, ZEE 135.</p>
+
+<section id="sp" class="city">
+  <div class="sec-head"><span class="eyebrow">São Paulo</span><h2>Prêmio same store estável no ano (+13,3% → +14,0%), queda forte só em nov 1–17</h2></div>
+  <h3>Nosso prêmio</h3>
+  <ul class="bul"><li>Nos 18 prédios same store de SP o prêmio de jan–out subiu de +13,3% para +14,0% e ficou estável em ago–out (+15,1% → +14,9%). Outubro recuou pouco (+10,9% → +9,4%).</li><li>A queda está em nov 1–17: +20,9% → +3,8%. O mercado subiu a diária fechada +6,7% e perdeu 2,2 p.p. de ocupação; nossa ocupação same store caiu de 85% para 75% com a diária parada em R$ 314. Ou seja, não acompanhamos a alta de preço do mercado e ainda perdemos mais ocupação que ele.</li><li>Os prédios novos de SP rodam com +15,1% em jan–out e +20,2% em ago–out, acima do same store.</li></ul>
+  <div class="tbl"><table class="t-prem"><thead><tr><th>Grupo</th><th class="r">Jan–out 25 → 26</th><th class="r">Δ</th><th class="r">Ago–out</th><th class="r">Δ</th><th class="r">Outubro</th><th class="r">Δ</th><th class="r">Nov 1–17</th><th class="r">Δ</th></tr></thead>
+<tbody><tr class="em"><td>Same store (18 prédios)</td><td class="num r">+13,3% → <b>+14,0%</b></td><td class="num r pos">+0,7 p.p.</td><td class="num r">+15,1% → <b>+14,9%</b></td><td class="num r zero">−0,2 p.p.</td><td class="num r">+10,9% → <b>+9,4%</b></td><td class="num r neg">−1,5 p.p.</td><td class="num r">+20,9% → <b>+3,8%</b></td><td class="num r neg">−17,1 p.p.</td></tr><tr class=""><td>Prédios novos (12 prédios)</td><td class="num r">– → <b>+15,1%</b></td><td class="num r muted"></td><td class="num r">– → <b>+20,2%</b></td><td class="num r muted"></td><td class="num r">– → <b>+17,4%</b></td><td class="num r muted"></td><td class="num r">– → <b>+24,1%</b></td><td class="num r muted"></td></tr><tr class=""><td>Total da cidade</td><td class="num r">+13,8% → <b>+14,5%</b></td><td class="num r pos">+0,6 p.p.</td><td class="num r">+16,3% → <b>+17,3%</b></td><td class="num r pos">+1,0 p.p.</td><td class="num r">+12,2% → <b>+13,0%</b></td><td class="num r pos">+0,9 p.p.</td><td class="num r">+27,0% → <b>+13,1%</b></td><td class="num r neg">−13,9 p.p.</td></tr></tbody></table></div>
+  <div class="panel"><div class="legend"><span><i class="c25"></i>Same store ’25</span><span><i class="c26"></i>Same store ’26</span><span><i class="cnew"></i>Novos ’26 (tracejado)</span><span>* nov = dias 1 a 17</span></div><svg viewBox="0 0 760 280" role="img" aria-label="Prêmio mensal em São Paulo">
+<line x1="56" x2="642" y1="248.0" y2="248.0" class="grid"/>
+<text x="48" y="252.0" class="tick" text-anchor="end">−10%</text>
+<line x1="56" x2="642" y1="190.0" y2="190.0" class="axis0"/>
+<text x="48" y="194.0" class="tick" text-anchor="end">0%</text>
+<line x1="56" x2="642" y1="132.0" y2="132.0" class="grid"/>
+<text x="48" y="136.0" class="tick" text-anchor="end">+10%</text>
+<line x1="56" x2="642" y1="74.0" y2="74.0" class="grid"/>
+<text x="48" y="78.0" class="tick" text-anchor="end">+20%</text>
+<line x1="56" x2="642" y1="16.0" y2="16.0" class="grid"/>
+<text x="48" y="20.0" class="tick" text-anchor="end">+30%</text>
+<text x="56.0" y="270" class="tick" text-anchor="middle">jan</text>
+<text x="114.6" y="270" class="tick" text-anchor="middle">fev</text>
+<text x="173.2" y="270" class="tick" text-anchor="middle">mar</text>
+<text x="231.8" y="270" class="tick" text-anchor="middle">abr</text>
+<text x="290.4" y="270" class="tick" text-anchor="middle">mai</text>
+<text x="349.0" y="270" class="tick" text-anchor="middle">jun</text>
+<text x="407.6" y="270" class="tick" text-anchor="middle">jul</text>
+<text x="466.2" y="270" class="tick" text-anchor="middle">ago</text>
+<text x="524.8" y="270" class="tick" text-anchor="middle">set</text>
+<text x="583.4" y="270" class="tick" text-anchor="middle">out</text>
+<text x="642.0" y="270" class="tick" text-anchor="middle">nov*</text>
+<polyline points="56.0,145.9 114.6,148.2 173.2,123.5 231.8,126.3 290.4,69.7 349.0,87.2 407.6,132.6 466.2,97.4 524.8,82.9 583.4,126.8 642.0,68.8" class="ln y25"/>
+<circle cx="56.0" cy="145.9" r="4" class="dot y25"><title>Same store ’25 · jan: prêmio +7,6%</title></circle>
+<circle cx="56.0" cy="145.9" r="11" class="hit"><title>Same store ’25 · jan: prêmio +7,6%</title></circle>
+<circle cx="114.6" cy="148.2" r="4" class="dot y25"><title>Same store ’25 · fev: prêmio +7,2%</title></circle>
+<circle cx="114.6" cy="148.2" r="11" class="hit"><title>Same store ’25 · fev: prêmio +7,2%</title></circle>
+<circle cx="173.2" cy="123.5" r="4" class="dot y25"><title>Same store ’25 · mar: prêmio +11,5%</title></circle>
+<circle cx="173.2" cy="123.5" r="11" class="hit"><title>Same store ’25 · mar: prêmio +11,5%</title></circle>
+<circle cx="231.8" cy="126.3" r="4" class="dot y25"><title>Same store ’25 · abr: prêmio +11,0%</title></circle>
+<circle cx="231.8" cy="126.3" r="11" class="hit"><title>Same store ’25 · abr: prêmio +11,0%</title></circle>
+<circle cx="290.4" cy="69.7" r="4" class="dot y25"><title>Same store ’25 · mai: prêmio +20,7%</title></circle>
+<circle cx="290.4" cy="69.7" r="11" class="hit"><title>Same store ’25 · mai: prêmio +20,7%</title></circle>
+<circle cx="349.0" cy="87.2" r="4" class="dot y25"><title>Same store ’25 · jun: prêmio +17,7%</title></circle>
+<circle cx="349.0" cy="87.2" r="11" class="hit"><title>Same store ’25 · jun: prêmio +17,7%</title></circle>
+<circle cx="407.6" cy="132.6" r="4" class="dot y25"><title>Same store ’25 · jul: prêmio +9,9%</title></circle>
+<circle cx="407.6" cy="132.6" r="11" class="hit"><title>Same store ’25 · jul: prêmio +9,9%</title></circle>
+<circle cx="466.2" cy="97.4" r="4" class="dot y25"><title>Same store ’25 · ago: prêmio +16,0%</title></circle>
+<circle cx="466.2" cy="97.4" r="11" class="hit"><title>Same store ’25 · ago: prêmio +16,0%</title></circle>
+<circle cx="524.8" cy="82.9" r="4" class="dot y25"><title>Same store ’25 · set: prêmio +18,5%</title></circle>
+<circle cx="524.8" cy="82.9" r="11" class="hit"><title>Same store ’25 · set: prêmio +18,5%</title></circle>
+<circle cx="583.4" cy="126.8" r="4" class="dot y25"><title>Same store ’25 · out: prêmio +10,9%</title></circle>
+<circle cx="583.4" cy="126.8" r="11" class="hit"><title>Same store ’25 · out: prêmio +10,9%</title></circle>
+<circle cx="642.0" cy="68.8" r="4" class="dot y25"><title>Same store ’25 · nov 1–17: prêmio +20,9%</title></circle>
+<circle cx="642.0" cy="68.8" r="11" class="hit"><title>Same store ’25 · nov 1–17: prêmio +20,9%</title></circle>
+<polyline points="56.0,74.5 114.6,94.2 173.2,138.4 231.8,125.4 290.4,93.0 349.0,91.1 407.6,146.2 466.2,71.3 524.8,96.0 583.4,135.7 642.0,167.7" class="ln y26"/>
+<circle cx="56.0" cy="74.5" r="4" class="dot y26"><title>Same store ’26 · jan: prêmio +19,9%</title></circle>
+<circle cx="56.0" cy="74.5" r="11" class="hit"><title>Same store ’26 · jan: prêmio +19,9%</title></circle>
+<circle cx="114.6" cy="94.2" r="4" class="dot y26"><title>Same store ’26 · fev: prêmio +16,5%</title></circle>
+<circle cx="114.6" cy="94.2" r="11" class="hit"><title>Same store ’26 · fev: prêmio +16,5%</title></circle>
+<circle cx="173.2" cy="138.4" r="4" class="dot y26"><title>Same store ’26 · mar: prêmio +8,9%</title></circle>
+<circle cx="173.2" cy="138.4" r="11" class="hit"><title>Same store ’26 · mar: prêmio +8,9%</title></circle>
+<circle cx="231.8" cy="125.4" r="4" class="dot y26"><title>Same store ’26 · abr: prêmio +11,1%</title></circle>
+<circle cx="231.8" cy="125.4" r="11" class="hit"><title>Same store ’26 · abr: prêmio +11,1%</title></circle>
+<circle cx="290.4" cy="93.0" r="4" class="dot y26"><title>Same store ’26 · mai: prêmio +16,7%</title></circle>
+<circle cx="290.4" cy="93.0" r="11" class="hit"><title>Same store ’26 · mai: prêmio +16,7%</title></circle>
+<circle cx="349.0" cy="91.1" r="4" class="dot y26"><title>Same store ’26 · jun: prêmio +17,1%</title></circle>
+<circle cx="349.0" cy="91.1" r="11" class="hit"><title>Same store ’26 · jun: prêmio +17,1%</title></circle>
+<circle cx="407.6" cy="146.2" r="4" class="dot y26"><title>Same store ’26 · jul: prêmio +7,6%</title></circle>
+<circle cx="407.6" cy="146.2" r="11" class="hit"><title>Same store ’26 · jul: prêmio +7,6%</title></circle>
+<circle cx="466.2" cy="71.3" r="4" class="dot y26"><title>Same store ’26 · ago: prêmio +20,5%</title></circle>
+<circle cx="466.2" cy="71.3" r="11" class="hit"><title>Same store ’26 · ago: prêmio +20,5%</title></circle>
+<circle cx="524.8" cy="96.0" r="4" class="dot y26"><title>Same store ’26 · set: prêmio +16,2%</title></circle>
+<circle cx="524.8" cy="96.0" r="11" class="hit"><title>Same store ’26 · set: prêmio +16,2%</title></circle>
+<circle cx="583.4" cy="135.7" r="4" class="dot y26"><title>Same store ’26 · out: prêmio +9,4%</title></circle>
+<circle cx="583.4" cy="135.7" r="11" class="hit"><title>Same store ’26 · out: prêmio +9,4%</title></circle>
+<circle cx="642.0" cy="167.7" r="4" class="dot y26"><title>Same store ’26 · nov 1–17: prêmio +3,8%</title></circle>
+<circle cx="642.0" cy="167.7" r="11" class="hit"><title>Same store ’26 · nov 1–17: prêmio +3,8%</title></circle>
+<polyline points="56.0,188.0 114.6,126.3 173.2,165.1 231.8,131.5 290.4,98.1 349.0,81.9 407.6,89.7 466.2,36.8 524.8,88.1 583.4,89.0 642.0,50.0" class="ln new"/>
+<circle cx="56.0" cy="188.0" r="4" class="dot new"><title>Novos ’26 · jan: prêmio +0,4%</title></circle>
+<circle cx="56.0" cy="188.0" r="11" class="hit"><title>Novos ’26 · jan: prêmio +0,4%</title></circle>
+<circle cx="114.6" cy="126.3" r="4" class="dot new"><title>Novos ’26 · fev: prêmio +11,0%</title></circle>
+<circle cx="114.6" cy="126.3" r="11" class="hit"><title>Novos ’26 · fev: prêmio +11,0%</title></circle>
+<circle cx="173.2" cy="165.1" r="4" class="dot new"><title>Novos ’26 · mar: prêmio +4,3%</title></circle>
+<circle cx="173.2" cy="165.1" r="11" class="hit"><title>Novos ’26 · mar: prêmio +4,3%</title></circle>
+<circle cx="231.8" cy="131.5" r="4" class="dot new"><title>Novos ’26 · abr: prêmio +10,1%</title></circle>
+<circle cx="231.8" cy="131.5" r="11" class="hit"><title>Novos ’26 · abr: prêmio +10,1%</title></circle>
+<circle cx="290.4" cy="98.1" r="4" class="dot new"><title>Novos ’26 · mai: prêmio +15,9%</title></circle>
+<circle cx="290.4" cy="98.1" r="11" class="hit"><title>Novos ’26 · mai: prêmio +15,9%</title></circle>
+<circle cx="349.0" cy="81.9" r="4" class="dot new"><title>Novos ’26 · jun: prêmio +18,6%</title></circle>
+<circle cx="349.0" cy="81.9" r="11" class="hit"><title>Novos ’26 · jun: prêmio +18,6%</title></circle>
+<circle cx="407.6" cy="89.7" r="4" class="dot new"><title>Novos ’26 · jul: prêmio +17,3%</title></circle>
+<circle cx="407.6" cy="89.7" r="11" class="hit"><title>Novos ’26 · jul: prêmio +17,3%</title></circle>
+<circle cx="466.2" cy="36.8" r="4" class="dot new"><title>Novos ’26 · ago: prêmio +26,4%</title></circle>
+<circle cx="466.2" cy="36.8" r="11" class="hit"><title>Novos ’26 · ago: prêmio +26,4%</title></circle>
+<circle cx="524.8" cy="88.1" r="4" class="dot new"><title>Novos ’26 · set: prêmio +17,6%</title></circle>
+<circle cx="524.8" cy="88.1" r="11" class="hit"><title>Novos ’26 · set: prêmio +17,6%</title></circle>
+<circle cx="583.4" cy="89.0" r="4" class="dot new"><title>Novos ’26 · out: prêmio +17,4%</title></circle>
+<circle cx="583.4" cy="89.0" r="11" class="hit"><title>Novos ’26 · out: prêmio +17,4%</title></circle>
+<circle cx="642.0" cy="50.0" r="4" class="dot new"><title>Novos ’26 · nov 1–17: prêmio +24,1%</title></circle>
+<circle cx="642.0" cy="50.0" r="11" class="hit"><title>Novos ’26 · nov 1–17: prêmio +24,1%</title></circle>
+<text x="652" y="54.0" class="dlab">Novos ’26</text>
+<text x="652" y="72.8" class="dlab">Same store ’25</text>
+<text x="652" y="171.7" class="dlab">Same store ’26</text>
+</svg></div>
+  <h3>Mercado</h3>
+  <ul class="bul"><li>RevPAR do mercado de SP em jan–out: −1,1%. A ocupação subiu +1,2 p.p. e a diária fechada caiu 3,4%, enquanto o preço anunciado subiu +3,1%. A oferta de anúncios no comp set cresceu +47% e as noites vendidas +50%: a demanda cresceu no mesmo ritmo da oferta, por isso a ocupação não caiu; a pressão apareceu no preço fechado.</li><li>Depois de setembro o mercado melhorou: RevPAR +1,7% em ago–out e +3,2% em nov 1–17, com diária fechada +6,7% em novembro. O preço anunciado em nov 1–17 está +12,0% acima do ano passado.</li><li>Submercados: Itaim / Vila Nova / Vila Olímpia é o mais fraco (−6,5%, ocupação −1,7 p.p., diária −3,9%). Centro / Higienópolis é o mais forte (+7,5%, com diária +2,0%). Jardins / Paulista ficou em −0,8% no ano mas virou para +3,3% em ago–out e +11,4% em nov 1–17. Em Vila Mariana / Paraíso / Moema a oferta quase dobrou (+92%) e a diária fechada caiu 13,0%: parte disso é mudança do próprio comp set.</li><li>Semana e fim de semana andaram juntos em SP (RevPAR jan–out −1,3% dom–qui e −0,9% sex–sáb).</li><li>Pace: hoje o mercado de SP tem 22% vs 20% de ocupação vendida para dez/26 contra o mesmo dia do ano passado, e 9% vs 6% para jan/27. Está no mesmo ritmo ou um pouco à frente, com muito mais oferta.</li></ul>
+  <div class="tbl"><table class="t-city"><thead><tr><th>Métrica</th><th class="r">jan</th><th class="r">fev</th><th class="r">mar</th><th class="r">abr</th><th class="r">mai</th><th class="r">jun</th><th class="r">jul</th><th class="r">ago</th><th class="r">set</th><th class="r">out</th><th class="r">nov 1–17</th><th class="r">Jan–out</th><th class="r">Nível jan–out 26</th></tr></thead>
+<tbody><tr><td class="mlab">Ocupação</td><td class="num r hm" style="--a:5%" data-t="neg">−0,9</td><td class="num r hm" style="--a:28%" data-t="pos">+5,4</td><td class="num r hm" style="--a:16%" data-t="pos">+3,0</td><td class="num r hm" style="--a:20%" data-t="neg">−3,7</td><td class="num r hm" style="--a:22%" data-t="pos">+4,2</td><td class="num r hm" style="--a:26%" data-t="neg">−5,0</td><td class="num r hm" style="--a:14%" data-t="pos">+2,6</td><td class="num r hm" style="--a:1%" data-t="pos">+0,2</td><td class="num r hm" style="--a:3%" data-t="neg">−0,6</td><td class="num r hm" style="--a:34%" data-t="pos">+6,5</td><td class="num r hm" style="--a:12%" data-t="neg">−2,2</td><td class="num r hm ytd" style="--a:6%" data-t="pos">+1,2</td><td class="num r muted">61%</td></tr><tr><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:21%" data-t="neg">−10%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:2%" data-t="neg">−1%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:7%" data-t="neg">−3%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:13%" data-t="neg">−6%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:14%" data-t="pos">+7%</td><td class="num r hm ytd" style="--a:7%" data-t="neg">−3%</td><td class="num r muted">R$ 270</td></tr><tr><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:9%" data-t="neg">−4%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:13%" data-t="pos">+6%</td><td class="num r hm" style="--a:0%" data-t="neg">0%</td><td class="num r hm" style="--a:6%" data-t="pos">+3%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:6%" data-t="pos">+3%</td><td class="num r hm" style="--a:1%" data-t="pos">+1%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:27%" data-t="pos">+13%</td><td class="num r hm" style="--a:25%" data-t="pos">+12%</td><td class="num r hm ytd" style="--a:6%" data-t="pos">+3%</td><td class="num r muted">R$ 285</td></tr><tr><td class="mlab">RevPAR</td><td class="num r hm" style="--a:23%" data-t="neg">−11%</td><td class="num r hm" style="--a:15%" data-t="pos">+7%</td><td class="num r hm" style="--a:9%" data-t="pos">+4%</td><td class="num r hm" style="--a:25%" data-t="neg">−12%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:20%" data-t="neg">−9%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:16%" data-t="neg">−8%</td><td class="num r hm" style="--a:41%" data-t="pos">+19%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm ytd" style="--a:2%" data-t="neg">−1%</td><td class="num r muted">R$ 166</td></tr><tr><td class="mlab">Oferta (anúncios)</td><td class="num r hm neu">+27%</td><td class="num r hm neu">+39%</td><td class="num r hm neu">+52%</td><td class="num r hm neu">+47%</td><td class="num r hm neu">+39%</td><td class="num r hm neu">+50%</td><td class="num r hm neu">+49%</td><td class="num r hm neu">+55%</td><td class="num r hm neu">+62%</td><td class="num r hm neu">+51%</td><td class="num r hm neu">+58%</td><td class="num r hm ytd neu">+47%</td><td class="num r muted"></td></tr><tr><td class="mlab">Noites vendidas</td><td class="num r hm neu">+25%</td><td class="num r hm neu">+51%</td><td class="num r hm neu">+57%</td><td class="num r hm neu">+37%</td><td class="num r hm neu">+49%</td><td class="num r hm neu">+36%</td><td class="num r hm neu">+55%</td><td class="num r hm neu">+54%</td><td class="num r hm neu">+59%</td><td class="num r hm neu">+68%</td><td class="num r hm neu">+51%</td><td class="num r hm ytd neu">+50%</td><td class="num r muted"></td></tr></tbody></table></div>
+  <h3>Submercados</h3>
+<p class="small">Variação jan–out 2026 vs 2025, salvo indicado. Ocupação em pontos percentuais; demais em %.</p>
+<div class="tbl"><table class="t-sub"><thead><tr><th>Submercado</th><th class="r">Ocupação jan–out<br>25 → 26 (p.p.)</th><th class="r">Diária<br>fechada</th><th class="r">Preço anunciado<br>p25 · p50 · p75</th><th class="r">RevPAR<br>jan–out</th><th class="r">Oferta</th><th class="r">Noites<br>vendidas</th><th class="r">RevPAR<br>dom–qui</th><th class="r">RevPAR<br>sex–sáb</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th></tr></thead>
+<tbody><tr class="em"><td><span class="bname">Cidade inteira</span><span class="bsub">29 prédios</span></td>
+<td class="num r">60% → 61% <span class="zero">(+1,2)</span></td>
+<td class="num r neg">−3%</td>
+<td class="num r">+2% · +3% · +5%</td>
+<td class="num r b zero">−1%</td>
+<td class="num r muted">+47%</td><td class="num r muted">+50%</td>
+<td class="num r zero">−1%</td><td class="num r zero">−1%</td><td class="num r zero">+2%</td><td class="num r pos">+3%</td></tr><tr class=""><td><span class="bname">Jardins / Paulista</span><span class="bsub">NXF, NXH, NXP, PVF, PVJ, PVP, NXB, HEG, MEL</span></td>
+<td class="num r">62% → 63% <span class="zero">(+0,8)</span></td>
+<td class="num r neg">−3%</td>
+<td class="num r">+4% · +6% · +9%</td>
+<td class="num r b zero">−1%</td>
+<td class="num r muted">+46%</td><td class="num r muted">+48%</td>
+<td class="num r zero">0%</td><td class="num r neg">−2%</td><td class="num r pos">+3%</td><td class="num r pos">+11%</td></tr><tr class=""><td><span class="bname">Pinheiros / Vila Madalena / Perdizes</span><span class="bsub">AYR, HLK, MOU, OMG, ONZ, PED, PQJ, TOF, SPZ, CNZ</span></td>
+<td class="num r">59% → 59% <span class="zero">(+0,4)</span></td>
+<td class="num r zero">−1%</td>
+<td class="num r">+3% · +4% · +5%</td>
+<td class="num r b zero">+1%</td>
+<td class="num r muted">+47%</td><td class="num r muted">+47%</td>
+<td class="num r zero">0%</td><td class="num r pos">+3%</td><td class="num r zero">+2%</td><td class="num r zero">−1%</td></tr><tr class=""><td><span class="bname">Itaim / Vila Nova / Vila Olímpia</span><span class="bsub">NUN, NXD, NXV, PVN, UPR, KAS</span></td>
+<td class="num r">60% → 58% <span class="neg">(−1,7)</span></td>
+<td class="num r neg">−4%</td>
+<td class="num r">+1% · 0% · +1%</td>
+<td class="num r b neg">−6%</td>
+<td class="num r muted">+30%</td><td class="num r muted">+26%</td>
+<td class="num r neg">−7%</td><td class="num r neg">−6%</td><td class="num r neg">−2%</td><td class="num r zero">0%</td></tr><tr class=""><td><span class="bname">Vila Mariana / Paraíso / Moema / Santo Amaro</span><span class="bsub">FYP, URB, EQL, AYM, HBV</span></td>
+<td class="num r">53% → 60% <span class="pos">(+6,9)</span></td>
+<td class="num r neg">−13%</td>
+<td class="num r">−5% · −5% · −5%</td>
+<td class="num r b zero">−1%</td>
+<td class="num r muted">+92%</td><td class="num r muted">+120%</td>
+<td class="num r zero">−1%</td><td class="num r neg">−3%</td><td class="num r pos">+6%</td><td class="num r zero">−1%</td></tr><tr class=""><td><span class="bname">Centro / Higienópolis / Consolação / Bela Vista</span><span class="bsub">AGR, AYH, SCN, DGE, NXM</span></td>
+<td class="num r">62% → 64% <span class="pos">(+1,9)</span></td>
+<td class="num r zero">+2%</td>
+<td class="num r">+5% · +7% · +9%</td>
+<td class="num r b pos">+7%</td>
+<td class="num r muted">+38%</td><td class="num r muted">+40%</td>
+<td class="num r pos">+8%</td><td class="num r pos">+7%</td><td class="num r zero">+2%</td><td class="num r zero">0%</td></tr></tbody></table></div>
+  <div class="two">
+    <div class="col"><h3>Semana × fim de semana</h3><div class="tbl"><table class="t-wk"><thead><tr><th>Noites</th><th class="r">Ocupação</th><th class="r">Diária fechada</th><th class="r">RevPAR</th></tr></thead>
+<tbody><tr><td>Jan–out · dom–qui</td><td class="num r">58% → 59% <span class="zero">(+1,1)</span></td>
+<td class="num r">R$ 278 → R$ 268 <span class="neg">(−4%)</span></td>
+<td class="num r b zero">−1,3%</td></tr><tr><td>Jan–out · sex–sáb</td><td class="num r">65% → 66% <span class="zero">(+1,1)</span></td>
+<td class="num r">R$ 282 → R$ 274 <span class="neg">(−3%)</span></td>
+<td class="num r b zero">−0,9%</td></tr><tr><td>Ago–out · dom–qui</td><td class="num r">58% → 60% <span class="pos">(+2,5)</span></td>
+<td class="num r">R$ 283 → R$ 274 <span class="neg">(−3%)</span></td>
+<td class="num r b zero">+1,9%</td></tr><tr><td>Ago–out · sex–sáb</td><td class="num r">65% → 66% <span class="zero">(+0,8)</span></td>
+<td class="num r">R$ 287 → R$ 283 <span class="zero">(−1%)</span></td>
+<td class="num r b zero">+0,7%</td></tr></tbody></table></div></div>
+    <div class="col"><h3>Pace dos próximos meses</h3><div class="tbl"><table class="t-pace"><thead><tr><th>Ocupação do mercado já vendida<br>hoje vs mesmo dia do ano passado</th><th class="r">dez/26</th><th class="r">jan/27</th><th class="r">fev/27</th><th class="r">mar/27</th><th class="r">Oferta dez<br>vs LY</th></tr></thead>
+<tbody><tr class="em"><td class="bname">Cidade inteira</td><td class="num r">22% <span class="muted">vs 20%</span> <span class="pos">(+1,6)</span></td><td class="num r">9% <span class="muted">vs 6%</span> <span class="pos">(+2,4)</span></td><td class="num r">4% <span class="muted">vs 3%</span> <span class="zero">(+0,6)</span></td><td class="num r">4% <span class="muted">vs 2%</span> <span class="pos">(+2,0)</span></td><td class="num r muted">+83%</td></tr><tr class=""><td class="bname">Jardins / Paulista</td><td class="num r">25% <span class="muted">vs 24%</span> <span class="zero">(+0,4)</span></td><td class="num r">10% <span class="muted">vs 7%</span> <span class="pos">(+2,4)</span></td><td class="num r">5% <span class="muted">vs 4%</span> <span class="pos">(+1,4)</span></td><td class="num r">4% <span class="muted">vs 2%</span> <span class="pos">(+2,7)</span></td><td class="num r muted">+65%</td></tr><tr class=""><td class="bname">Pinheiros / Vila Madalena / Perdizes</td><td class="num r">20% <span class="muted">vs 20%</span> <span class="zero">(−0,1)</span></td><td class="num r">8% <span class="muted">vs 7%</span> <span class="pos">(+1,3)</span></td><td class="num r">5% <span class="muted">vs 5%</span> <span class="zero">(−0,1)</span></td><td class="num r">4% <span class="muted">vs 2%</span> <span class="pos">(+2,5)</span></td><td class="num r muted">+95%</td></tr><tr class=""><td class="bname">Itaim / Vila Nova / Vila Olímpia</td><td class="num r">16% <span class="muted">vs 17%</span> <span class="neg">(−1,2)</span></td><td class="num r">6% <span class="muted">vs 4%</span> <span class="pos">(+1,7)</span></td><td class="num r">2% <span class="muted">vs 1%</span> <span class="zero">(+0,3)</span></td><td class="num r">2% <span class="muted">vs 1%</span> <span class="pos">(+1,6)</span></td><td class="num r muted">+93%</td></tr><tr class=""><td class="bname">Vila Mariana / Paraíso / Moema / Santo Amaro</td><td class="num r">26% <span class="muted">vs 15%</span> <span class="pos">(+10,5)</span></td><td class="num r">9% <span class="muted">vs 5%</span> <span class="pos">(+4,7)</span></td><td class="num r">3% <span class="muted">vs 3%</span> <span class="zero">(+0,7)</span></td><td class="num r">3% <span class="muted">vs 2%</span> <span class="zero">(+0,9)</span></td><td class="num r muted">+92%</td></tr><tr class=""><td class="bname">Centro / Higienópolis / Consolação / Bela Vista</td><td class="num r">22% <span class="muted">vs 22%</span> <span class="zero">(+0,3)</span></td><td class="num r">11% <span class="muted">vs 8%</span> <span class="pos">(+2,5)</span></td><td class="num r">6% <span class="muted">vs 5%</span> <span class="pos">(+1,1)</span></td><td class="num r">4% <span class="muted">vs 2%</span> <span class="pos">(+1,2)</span></td><td class="num r muted">+79%</td></tr></tbody></table></div></div>
   </div>
-  <div class="panel">
-    <div class="legend"><span><i class="c25"></i>Same store 2025</span><span><i class="c26"></i>Same store 2026</span><span><i class="cnew"></i>Prédios novos 2026 (tracejado)</span><span>* nov = dias 1 a 17</span></div>
-    <svg viewBox="0 0 760 300" role="img" aria-label="Prêmio de RevPAR mensal: same store 2025, same store 2026 e prédios novos 2026">
-<line x1="52" x2="648" y1="238.4" y2="238.4" class="axis0"/>
-<text x="44" y="242.4" class="tick" text-anchor="end">0%</text>
-<line x1="52" x2="648" y1="183.3" y2="183.3" class="grid"/>
-<text x="44" y="187.3" class="tick" text-anchor="end">+10%</text>
-<line x1="52" x2="648" y1="128.2" y2="128.2" class="grid"/>
-<text x="44" y="132.2" class="tick" text-anchor="end">+20%</text>
-<line x1="52" x2="648" y1="73.1" y2="73.1" class="grid"/>
-<text x="44" y="77.1" class="tick" text-anchor="end">+30%</text>
-<line x1="52" x2="648" y1="18.0" y2="18.0" class="grid"/>
-<text x="44" y="22.0" class="tick" text-anchor="end">+40%</text>
-<text x="52.0" y="288" class="tick" text-anchor="middle">jan</text>
-<text x="111.6" y="288" class="tick" text-anchor="middle">fev</text>
-<text x="171.2" y="288" class="tick" text-anchor="middle">mar</text>
-<text x="230.8" y="288" class="tick" text-anchor="middle">abr</text>
-<text x="290.4" y="288" class="tick" text-anchor="middle">mai</text>
-<text x="350.0" y="288" class="tick" text-anchor="middle">jun</text>
-<text x="409.6" y="288" class="tick" text-anchor="middle">jul</text>
-<text x="469.2" y="288" class="tick" text-anchor="middle">ago</text>
-<text x="528.8" y="288" class="tick" text-anchor="middle">set</text>
-<text x="588.4" y="288" class="tick" text-anchor="middle">out</text>
-<text x="648.0" y="288" class="tick" text-anchor="middle">nov*</text>
-<polyline points="52.0,233.2 111.6,207.1 171.2,149.9 230.8,149.9 290.4,98.2 350.0,121.3 409.6,168.9 469.2,141.4 528.8,111.7 588.4,150.4 648.0,100.3" class="ln y25"/>
-<circle cx="52.0" cy="233.2" r="4" class="dot y25"><title>Same store 2025 · jan: prêmio +1,0%</title></circle>
-<circle cx="52.0" cy="233.2" r="11" class="hit"><title>Same store 2025 · jan: prêmio +1,0%</title></circle>
-<circle cx="111.6" cy="207.1" r="4" class="dot y25"><title>Same store 2025 · fev: prêmio +5,7%</title></circle>
-<circle cx="111.6" cy="207.1" r="11" class="hit"><title>Same store 2025 · fev: prêmio +5,7%</title></circle>
-<circle cx="171.2" cy="149.9" r="4" class="dot y25"><title>Same store 2025 · mar: prêmio +16,1%</title></circle>
-<circle cx="171.2" cy="149.9" r="11" class="hit"><title>Same store 2025 · mar: prêmio +16,1%</title></circle>
-<circle cx="230.8" cy="149.9" r="4" class="dot y25"><title>Same store 2025 · abr: prêmio +16,1%</title></circle>
-<circle cx="230.8" cy="149.9" r="11" class="hit"><title>Same store 2025 · abr: prêmio +16,1%</title></circle>
-<circle cx="290.4" cy="98.2" r="4" class="dot y25"><title>Same store 2025 · mai: prêmio +25,4%</title></circle>
-<circle cx="290.4" cy="98.2" r="11" class="hit"><title>Same store 2025 · mai: prêmio +25,4%</title></circle>
-<circle cx="350.0" cy="121.3" r="4" class="dot y25"><title>Same store 2025 · jun: prêmio +21,3%</title></circle>
-<circle cx="350.0" cy="121.3" r="11" class="hit"><title>Same store 2025 · jun: prêmio +21,3%</title></circle>
-<circle cx="409.6" cy="168.9" r="4" class="dot y25"><title>Same store 2025 · jul: prêmio +12,6%</title></circle>
-<circle cx="409.6" cy="168.9" r="11" class="hit"><title>Same store 2025 · jul: prêmio +12,6%</title></circle>
-<circle cx="469.2" cy="141.4" r="4" class="dot y25"><title>Same store 2025 · ago: prêmio +17,6%</title></circle>
-<circle cx="469.2" cy="141.4" r="11" class="hit"><title>Same store 2025 · ago: prêmio +17,6%</title></circle>
-<circle cx="528.8" cy="111.7" r="4" class="dot y25"><title>Same store 2025 · set: prêmio +23,0%</title></circle>
-<circle cx="528.8" cy="111.7" r="11" class="hit"><title>Same store 2025 · set: prêmio +23,0%</title></circle>
-<circle cx="588.4" cy="150.4" r="4" class="dot y25"><title>Same store 2025 · out: prêmio +16,0%</title></circle>
-<circle cx="588.4" cy="150.4" r="11" class="hit"><title>Same store 2025 · out: prêmio +16,0%</title></circle>
-<circle cx="648.0" cy="100.3" r="4" class="dot y25"><title>Same store 2025 · nov 1–17: prêmio +25,1%</title></circle>
-<circle cx="648.0" cy="100.3" r="11" class="hit"><title>Same store 2025 · nov 1–17: prêmio +25,1%</title></circle>
-<polyline points="52.0,197.4 111.6,184.7 171.2,177.5 230.8,141.5 290.4,125.4 350.0,124.3 409.6,179.4 469.2,112.7 528.8,136.9 588.4,185.2 648.0,211.8" class="ln y26"/>
-<circle cx="52.0" cy="197.4" r="4" class="dot y26"><title>Same store 2026 · jan: prêmio +7,4%</title></circle>
-<circle cx="52.0" cy="197.4" r="11" class="hit"><title>Same store 2026 · jan: prêmio +7,4%</title></circle>
-<circle cx="111.6" cy="184.7" r="4" class="dot y26"><title>Same store 2026 · fev: prêmio +9,8%</title></circle>
-<circle cx="111.6" cy="184.7" r="11" class="hit"><title>Same store 2026 · fev: prêmio +9,8%</title></circle>
-<circle cx="171.2" cy="177.5" r="4" class="dot y26"><title>Same store 2026 · mar: prêmio +11,1%</title></circle>
-<circle cx="171.2" cy="177.5" r="11" class="hit"><title>Same store 2026 · mar: prêmio +11,1%</title></circle>
-<circle cx="230.8" cy="141.5" r="4" class="dot y26"><title>Same store 2026 · abr: prêmio +17,6%</title></circle>
-<circle cx="230.8" cy="141.5" r="11" class="hit"><title>Same store 2026 · abr: prêmio +17,6%</title></circle>
-<circle cx="290.4" cy="125.4" r="4" class="dot y26"><title>Same store 2026 · mai: prêmio +20,5%</title></circle>
-<circle cx="290.4" cy="125.4" r="11" class="hit"><title>Same store 2026 · mai: prêmio +20,5%</title></circle>
-<circle cx="350.0" cy="124.3" r="4" class="dot y26"><title>Same store 2026 · jun: prêmio +20,7%</title></circle>
-<circle cx="350.0" cy="124.3" r="11" class="hit"><title>Same store 2026 · jun: prêmio +20,7%</title></circle>
-<circle cx="409.6" cy="179.4" r="4" class="dot y26"><title>Same store 2026 · jul: prêmio +10,7%</title></circle>
-<circle cx="409.6" cy="179.4" r="11" class="hit"><title>Same store 2026 · jul: prêmio +10,7%</title></circle>
-<circle cx="469.2" cy="112.7" r="4" class="dot y26"><title>Same store 2026 · ago: prêmio +22,8%</title></circle>
-<circle cx="469.2" cy="112.7" r="11" class="hit"><title>Same store 2026 · ago: prêmio +22,8%</title></circle>
-<circle cx="528.8" cy="136.9" r="4" class="dot y26"><title>Same store 2026 · set: prêmio +18,4%</title></circle>
-<circle cx="528.8" cy="136.9" r="11" class="hit"><title>Same store 2026 · set: prêmio +18,4%</title></circle>
-<circle cx="588.4" cy="185.2" r="4" class="dot y26"><title>Same store 2026 · out: prêmio +9,7%</title></circle>
-<circle cx="588.4" cy="185.2" r="11" class="hit"><title>Same store 2026 · out: prêmio +9,7%</title></circle>
-<circle cx="648.0" cy="211.8" r="4" class="dot y26"><title>Same store 2026 · nov 1–17: prêmio +4,8%</title></circle>
-<circle cx="648.0" cy="211.8" r="11" class="hit"><title>Same store 2026 · nov 1–17: prêmio +4,8%</title></circle>
-<polyline points="52.0,69.8 111.6,106.0 171.2,155.9 230.8,112.4 290.4,93.6 350.0,65.4 409.6,97.9 469.2,37.6 528.8,74.3 588.4,92.6 648.0,102.3" class="ln new"/>
-<circle cx="52.0" cy="69.8" r="4" class="dot new"><title>Prédios novos 2026 · jan: prêmio +30,6%</title></circle>
-<circle cx="52.0" cy="69.8" r="11" class="hit"><title>Prédios novos 2026 · jan: prêmio +30,6%</title></circle>
-<circle cx="111.6" cy="106.0" r="4" class="dot new"><title>Prédios novos 2026 · fev: prêmio +24,0%</title></circle>
-<circle cx="111.6" cy="106.0" r="11" class="hit"><title>Prédios novos 2026 · fev: prêmio +24,0%</title></circle>
-<circle cx="171.2" cy="155.9" r="4" class="dot new"><title>Prédios novos 2026 · mar: prêmio +15,0%</title></circle>
-<circle cx="171.2" cy="155.9" r="11" class="hit"><title>Prédios novos 2026 · mar: prêmio +15,0%</title></circle>
-<circle cx="230.8" cy="112.4" r="4" class="dot new"><title>Prédios novos 2026 · abr: prêmio +22,9%</title></circle>
-<circle cx="230.8" cy="112.4" r="11" class="hit"><title>Prédios novos 2026 · abr: prêmio +22,9%</title></circle>
-<circle cx="290.4" cy="93.6" r="4" class="dot new"><title>Prédios novos 2026 · mai: prêmio +26,3%</title></circle>
-<circle cx="290.4" cy="93.6" r="11" class="hit"><title>Prédios novos 2026 · mai: prêmio +26,3%</title></circle>
-<circle cx="350.0" cy="65.4" r="4" class="dot new"><title>Prédios novos 2026 · jun: prêmio +31,4%</title></circle>
-<circle cx="350.0" cy="65.4" r="11" class="hit"><title>Prédios novos 2026 · jun: prêmio +31,4%</title></circle>
-<circle cx="409.6" cy="97.9" r="4" class="dot new"><title>Prédios novos 2026 · jul: prêmio +25,5%</title></circle>
-<circle cx="409.6" cy="97.9" r="11" class="hit"><title>Prédios novos 2026 · jul: prêmio +25,5%</title></circle>
-<circle cx="469.2" cy="37.6" r="4" class="dot new"><title>Prédios novos 2026 · ago: prêmio +36,5%</title></circle>
-<circle cx="469.2" cy="37.6" r="11" class="hit"><title>Prédios novos 2026 · ago: prêmio +36,5%</title></circle>
-<circle cx="528.8" cy="74.3" r="4" class="dot new"><title>Prédios novos 2026 · set: prêmio +29,8%</title></circle>
-<circle cx="528.8" cy="74.3" r="11" class="hit"><title>Prédios novos 2026 · set: prêmio +29,8%</title></circle>
-<circle cx="588.4" cy="92.6" r="4" class="dot new"><title>Prédios novos 2026 · out: prêmio +26,5%</title></circle>
-<circle cx="588.4" cy="92.6" r="11" class="hit"><title>Prédios novos 2026 · out: prêmio +26,5%</title></circle>
-<circle cx="648.0" cy="102.3" r="4" class="dot new"><title>Prédios novos 2026 · nov 1–17: prêmio +24,7%</title></circle>
-<circle cx="648.0" cy="102.3" r="11" class="hit"><title>Prédios novos 2026 · nov 1–17: prêmio +24,7%</title></circle>
-<text x="658" y="104.3" class="dlab">Same store ’25</text>
-<text x="658" y="120.3" class="dlab">Prédios novos ’26</text>
-<text x="658" y="215.8" class="dlab">Same store ’26</text>
-</svg>
-  </div>
-  <div class="tbl"><table class="t-per">
-    <thead><tr><th>Período</th><th class="r">Prêmio 25</th><th class="r">Prêmio 26</th><th class="r">Δ prêmio</th><th class="r">Nosso RevPAR</th><th class="r">RevPAR mercado</th><th class="r">Nossa ocupação</th><th class="r">Ocup. mercado</th><th class="r">Nossa diária</th><th class="r">Diária mercado</th></tr></thead>
-    <tbody><tr class="em"><td>Jan–out</td>
-<td class="num r">+14,6%</td><td class="num r b">+14,3%</td>
-<td class="num r zero">−0,4 p.p.</td>
-<td class="num r">−1,6%</td><td class="num r">−1,3%</td>
-<td class="num r">81% → 80%</td><td class="num r">57% → 57%</td>
-<td class="num r">−0,5%</td><td class="num r">−2,1%</td></tr>
-<tr class=""><td>1º tri</td>
-<td class="num r">+7,1%</td><td class="num r b">+9,4%</td>
-<td class="num r pos">+2,3 p.p.</td>
-<td class="num r">−3,6%</td><td class="num r">−5,6%</td>
-<td class="num r">83% → 83%</td><td class="num r">62% → 61%</td>
-<td class="num r">−3,2%</td><td class="num r">−5,0%</td></tr>
-<tr class=""><td>2º tri</td>
-<td class="num r">+20,7%</td><td class="num r b">+19,6%</td>
-<td class="num r neg">−1,2 p.p.</td>
-<td class="num r">−5,6%</td><td class="num r">−4,7%</td>
-<td class="num r">81% → 79%</td><td class="num r">56% → 54%</td>
-<td class="num r">−3,3%</td><td class="num r">−2,7%</td></tr>
-<tr class=""><td>3º tri</td>
-<td class="num r">+17,9%</td><td class="num r b">+17,3%</td>
-<td class="num r neg">−0,6 p.p.</td>
-<td class="num r">−0,4%</td><td class="num r">+0,1%</td>
-<td class="num r">79% → 78%</td><td class="num r">54% → 55%</td>
-<td class="num r">+0,2%</td><td class="num r">−2,2%</td></tr>
-<tr class=""><td>Outubro</td>
-<td class="num r">+16,0%</td><td class="num r b">+9,7%</td>
-<td class="num r neg">−6,3 p.p.</td>
-<td class="num r">+12,3%</td><td class="num r">+18,7%</td>
-<td class="num r">78% → 77%</td><td class="num r">54% → 59%</td>
-<td class="num r">+13,6%</td><td class="num r">+9,4%</td></tr>
-<tr class=""><td>Nov 1–17</td>
-<td class="num r">+25,1%</td><td class="num r b">+4,8%</td>
-<td class="num r neg">−20,2 p.p.</td>
-<td class="num r">−13,1%</td><td class="num r">+3,6%</td>
-<td class="num r">84% → 73%</td><td class="num r">63% → 60%</td>
-<td class="num r">−0,1%</td><td class="num r">+8,4%</td></tr></tbody>
-  </table></div>
-  <p class="small">Prêmio = ocupação relativa × diária relativa. No same store rodamos com ocupação bem acima do mercado e diária abaixo da mediana fechada; o prêmio vem da ocupação.</p>
-  <h3>Por prédio (ordenado pela variação do prêmio em jan–out)</h3>
-  <div class="tbl"><table class="t-ss">
-    <thead><tr><th>Prédio</th><th class="r">Unid.</th><th class="r">Prêmio<br>jan–out 25</th><th class="r">Prêmio<br>jan–out 26</th><th class="r">Δ</th><th class="r">Ago–out 26<br>(Δ vs 25)</th><th class="r">Nov 1–17 26<br>(Δ vs 25)</th><th class="r">Nosso RevPAR<br>YoY</th><th class="r">RevPAR mercado<br>YoY</th><th class="r">Ocupação 26<br>nós / mercado</th><th class="r">Diária 26 (R$)<br>nós / mercado</th></tr></thead>
-    <tbody><tr><td><span class="bname">PQJ 155</span> <span class="bsub">Parque Jockey · SP</span></td>
+  <h3>Same store por prédio</h3><div class="tbl"><table class="t-ss">
+<thead><tr><th>Prédio</th><th class="r">Unid.</th><th class="r">Prêmio jan–out<br>25 → 26</th><th class="r">Δ</th><th class="r">Ago–out<br>25 → 26</th><th class="r">Nov 1–17<br>25 → 26</th><th class="r">Nosso RevPAR<br>YoY</th><th class="r">RevPAR mercado<br>YoY</th><th class="r">Ocup. ago–out 26<br>nós / mercado</th><th class="r">Diária ago–out (R$)<br>nós 25 → 26 / mercado</th></tr></thead>
+<tbody><tr><td><span class="bname">PQJ 155</span><span class="bsub">Parque Jockey</span></td>
 <td class="num r">36</td>
-<td class="num r">+25%</td><td class="num r b">+47%</td>
-<td class="num r pos">+22 p.p.</td>
-<td class="num r">+45% <span class="pos">(+15 p.p.)</span></td>
-<td class="num r">+46% <span class="pos">(+4 p.p.)</span></td>
+<td class="num r">+25% → <b>+47%</b></td><td class="num r pos">+22 p.p.</td>
+<td class="num r">+30% → +45%</td>
+<td class="num r">+42% → +46%</td>
 <td class="num r">+5%</td><td class="num r">−10%</td>
-<td class="num r">92% / 61%</td><td class="num r">252 / 260</td></tr>
-<tr><td><span class="bname">AGM 85</span> <span class="bsub">Água Marinha · FLN</span></td>
-<td class="num r">8</td>
-<td class="num r">+29%</td><td class="num r b">+44%</td>
-<td class="num r pos">+15 p.p.</td>
-<td class="num r">+92% <span class="neg">(−18 p.p.)</span></td>
-<td class="num r">+80% <span class="neg">(−66 p.p.)</span></td>
-<td class="num r">−4%</td><td class="num r">−14%</td>
-<td class="num r">68% / 35%</td><td class="num r">332 / 441</td></tr>
-<tr><td><span class="bname">NUN 61</span> <span class="bsub">Helbor NUN · SP</span></td>
+<td class="num r">91% / 60%</td><td class="num r">254 → 256 / 268</td></tr><tr><td><span class="bname">NUN 61</span><span class="bsub">Helbor NUN</span></td>
 <td class="num r">29</td>
-<td class="num r">+2%</td><td class="num r b">+15%</td>
-<td class="num r pos">+13 p.p.</td>
-<td class="num r">+14% <span class="zero">(−2 p.p.)</span></td>
-<td class="num r">+7% <span class="neg">(−15 p.p.)</span></td>
+<td class="num r">+2% → <b>+15%</b></td><td class="num r pos">+13 p.p.</td>
+<td class="num r">+16% → +14%</td>
+<td class="num r">+22% → +7%</td>
 <td class="num r">+3%</td><td class="num r">−8%</td>
-<td class="num r">86% / 60%</td><td class="num r">310 / 386</td></tr>
-<tr><td><span class="bname">NXV 601</span> <span class="bsub">Next Vila Nova · SP</span></td>
+<td class="num r">85% / 62%</td><td class="num r">323 → 333 / 398</td></tr><tr><td><span class="bname">NXV 601</span><span class="bsub">Next Vila Nova</span></td>
 <td class="num r">9</td>
-<td class="num r">+7%</td><td class="num r b">+19%</td>
-<td class="num r pos">+12 p.p.</td>
-<td class="num r">+13% <span class="zero">(+1 p.p.)</span></td>
-<td class="num r">−3% <span class="neg">(−36 p.p.)</span></td>
+<td class="num r">+7% → <b>+19%</b></td><td class="num r pos">+12 p.p.</td>
+<td class="num r">+12% → +13%</td>
+<td class="num r">+33% → −3%</td>
 <td class="num r">+2%</td><td class="num r">−8%</td>
-<td class="num r">84% / 63%</td><td class="num r">241 / 272</td></tr>
-<tr><td><span class="bname">TPV 869</span> <span class="bsub">Top Vision · FLN</span></td>
-<td class="num r">17</td>
-<td class="num r">+47%</td><td class="num r b">+58%</td>
-<td class="num r pos">+10 p.p.</td>
-<td class="num r">+43% <span class="pos">(+4 p.p.)</span></td>
-<td class="num r">+36% <span class="neg">(−17 p.p.)</span></td>
-<td class="num r">−1%</td><td class="num r">−7%</td>
-<td class="num r">77% / 56%</td><td class="num r">320 / 282</td></tr>
-<tr><td><span class="bname">NXB 1333</span> <span class="bsub">Next Bela Cintra · SP</span></td>
+<td class="num r">84% / 65%</td><td class="num r">250 → 241 / 277</td></tr><tr><td><span class="bname">NXB 1333</span><span class="bsub">Next Bela Cintra</span></td>
 <td class="num r">34</td>
-<td class="num r">−2%</td><td class="num r b">0%</td>
-<td class="num r pos">+2 p.p.</td>
-<td class="num r">+2% <span class="zero">(−2 p.p.)</span></td>
-<td class="num r">−5% <span class="neg">(−14 p.p.)</span></td>
+<td class="num r">−2% → <b>0%</b></td><td class="num r pos">+2 p.p.</td>
+<td class="num r">+4% → +2%</td>
+<td class="num r">+9% → −5%</td>
 <td class="num r">+2%</td><td class="num r">0%</td>
-<td class="num r">79% / 62%</td><td class="num r">218 / 279</td></tr>
-<tr><td><span class="bname">AYR 423</span> <span class="bsub">Ayra Pinheiros · SP</span></td>
+<td class="num r">81% / 65%</td><td class="num r">219 → 228 / 280</td></tr><tr><td><span class="bname">AYR 423</span><span class="bsub">Ayra Pinheiros</span></td>
 <td class="num r">25</td>
-<td class="num r">+24%</td><td class="num r b">+26%</td>
-<td class="num r pos">+2 p.p.</td>
-<td class="num r">+34% <span class="pos">(+8 p.p.)</span></td>
-<td class="num r">+21% <span class="neg">(−16 p.p.)</span></td>
+<td class="num r">+24% → <b>+26%</b></td><td class="num r pos">+2 p.p.</td>
+<td class="num r">+26% → +34%</td>
+<td class="num r">+37% → +21%</td>
 <td class="num r">−6%</td><td class="num r">−8%</td>
-<td class="num r">78% / 68%</td><td class="num r">365 / 327</td></tr>
-<tr><td><span class="bname">UPR 1577</span> <span class="bsub">Upper Itaim · SP</span></td>
+<td class="num r">75% / 69%</td><td class="num r">384 → 404 / 330</td></tr><tr><td><span class="bname">UPR 1577</span><span class="bsub">Upper Itaim</span></td>
 <td class="num r">8</td>
-<td class="num r">+36%</td><td class="num r b">+38%</td>
-<td class="num r zero">+2 p.p.</td>
-<td class="num r">+37% <span class="neg">(−3 p.p.)</span></td>
-<td class="num r">+14% <span class="neg">(−49 p.p.)</span></td>
+<td class="num r">+36% → <b>+38%</b></td><td class="num r zero">+2 p.p.</td>
+<td class="num r">+39% → +37%</td>
+<td class="num r">+63% → +14%</td>
 <td class="num r">−7%</td><td class="num r">−8%</td>
-<td class="num r">82% / 61%</td><td class="num r">272 / 266</td></tr>
-<tr><td><span class="bname">NXP 950</span> <span class="bsub">Next Pamplona · SP</span></td>
+<td class="num r">77% / 63%</td><td class="num r">309 → 305 / 273</td></tr><tr><td><span class="bname">NXP 950</span><span class="bsub">Next Pamplona</span></td>
 <td class="num r">42</td>
-<td class="num r">0%</td><td class="num r b">+2%</td>
-<td class="num r zero">+2 p.p.</td>
-<td class="num r">+2% <span class="zero">(0 p.p.)</span></td>
-<td class="num r">−5% <span class="neg">(−22 p.p.)</span></td>
+<td class="num r">0% → <b>+2%</b></td><td class="num r zero">+2 p.p.</td>
+<td class="num r">+2% → +2%</td>
+<td class="num r">+17% → −5%</td>
 <td class="num r">−2%</td><td class="num r">−4%</td>
-<td class="num r">78% / 64%</td><td class="num r">239 / 285</td></tr>
-<tr><td><span class="bname">ZEE 135</span> <span class="bsub">ZEE Studios · FLN</span></td>
-<td class="num r">11</td>
-<td class="num r">+10%</td><td class="num r b">+11%</td>
-<td class="num r zero">+2 p.p.</td>
-<td class="num r">+10% <span class="neg">(−2 p.p.)</span></td>
-<td class="num r">−10% <span class="neg">(−35 p.p.)</span></td>
-<td class="num r">−8%</td><td class="num r">−9%</td>
-<td class="num r">75% / 60%</td><td class="num r">262 / 293</td></tr>
-<tr><td><span class="bname">SPZ 648</span> <span class="bsub">Share Perdizes · SP</span></td>
+<td class="num r">77% / 65%</td><td class="num r">239 → 255 / 294</td></tr><tr><td><span class="bname">SPZ 648</span><span class="bsub">Share Perdizes</span></td>
 <td class="num r">55</td>
-<td class="num r">+5%</td><td class="num r b">+5%</td>
-<td class="num r zero">0 p.p.</td>
-<td class="num r">+3% <span class="pos">(+2 p.p.)</span></td>
-<td class="num r">−17% <span class="neg">(−16 p.p.)</span></td>
+<td class="num r">+5% → <b>+5%</b></td><td class="num r zero">0 p.p.</td>
+<td class="num r">+1% → +3%</td>
+<td class="num r">−1% → −17%</td>
 <td class="num r">+24%</td><td class="num r">+23%</td>
-<td class="num r">86% / 51%</td><td class="num r">183 / 291</td></tr>
-<tr><td><span class="bname">ARB 301</span> <span class="bsub">Rio Branco · FLN</span></td>
-<td class="num r">31</td>
-<td class="num r">+17%</td><td class="num r b">+17%</td>
-<td class="num r zero">0 p.p.</td>
-<td class="num r">+14% <span class="neg">(−9 p.p.)</span></td>
-<td class="num r">+3% <span class="neg">(−35 p.p.)</span></td>
-<td class="num r">−6%</td><td class="num r">−6%</td>
-<td class="num r">76% / 56%</td><td class="num r">245 / 281</td></tr>
-<tr><td><span class="bname">NXD 382</span> <span class="bsub">Next Home Design · SP</span></td>
+<td class="num r">86% / 52%</td><td class="num r">170 → 196 / 313</td></tr><tr><td><span class="bname">NXD 382</span><span class="bsub">Next Home Design</span></td>
 <td class="num r">17</td>
-<td class="num r">−24%</td><td class="num r b">−25%</td>
-<td class="num r zero">0 p.p.</td>
-<td class="num r">−26% <span class="neg">(−5 p.p.)</span></td>
-<td class="num r">−31% <span class="neg">(−14 p.p.)</span></td>
+<td class="num r">−24% → <b>−25%</b></td><td class="num r zero">0 p.p.</td>
+<td class="num r">−21% → −26%</td>
+<td class="num r">−18% → −31%</td>
 <td class="num r">−8%</td><td class="num r">−8%</td>
-<td class="num r">82% / 59%</td><td class="num r">195 / 359</td></tr>
-<tr><td><span class="bname">FYP 441</span> <span class="bsub">For You Paraíso · SP</span></td>
+<td class="num r">79% / 61%</td><td class="num r">214 → 213 / 372</td></tr><tr><td><span class="bname">FYP 441</span><span class="bsub">For You Paraíso</span></td>
 <td class="num r">47</td>
-<td class="num r">+38%</td><td class="num r b">+37%</td>
-<td class="num r zero">−1 p.p.</td>
-<td class="num r">+39% <span class="pos">(+3 p.p.)</span></td>
-<td class="num r">+23% <span class="neg">(−6 p.p.)</span></td>
+<td class="num r">+38% → <b>+37%</b></td><td class="num r zero">−1 p.p.</td>
+<td class="num r">+35% → +39%</td>
+<td class="num r">+29% → +23%</td>
 <td class="num r">+5%</td><td class="num r">+5%</td>
-<td class="num r">81% / 60%</td><td class="num r">210 / 207</td></tr>
-<tr><td><span class="bname">NXF 444</span> <span class="bsub">Next Franca · SP</span></td>
+<td class="num r">84% / 63%</td><td class="num r">197 → 225 / 218</td></tr><tr><td><span class="bname">NXF 444</span><span class="bsub">Next Franca</span></td>
 <td class="num r">20</td>
-<td class="num r">+3%</td><td class="num r b">+2%</td>
-<td class="num r zero">−1 p.p.</td>
-<td class="num r">+2% <span class="neg">(−2 p.p.)</span></td>
-<td class="num r">−9% <span class="neg">(−13 p.p.)</span></td>
+<td class="num r">+3% → <b>+2%</b></td><td class="num r zero">−1 p.p.</td>
+<td class="num r">+4% → +2%</td>
+<td class="num r">+5% → −9%</td>
 <td class="num r">−2%</td><td class="num r">−1%</td>
-<td class="num r">82% / 61%</td><td class="num r">200 / 264</td></tr>
-<tr><td><span class="bname">AQL 1420</span> <span class="bsub">Aquarelle · FLN</span></td>
-<td class="num r">6</td>
-<td class="num r">+39%</td><td class="num r b">+34%</td>
-<td class="num r neg">−5 p.p.</td>
-<td class="num r">+24% <span class="neg">(−55 p.p.)</span></td>
-<td class="num r">+19% <span class="neg">(−101 p.p.)</span></td>
-<td class="num r">−17%</td><td class="num r">−14%</td>
-<td class="num r">59% / 36%</td><td class="num r">568 / 698</td></tr>
-<tr><td><span class="bname">SCN 59</span> <span class="bsub">Share Consolação · SP</span></td>
+<td class="num r">83% / 63%</td><td class="num r">213 → 210 / 272</td></tr><tr><td><span class="bname">SCN 59</span><span class="bsub">Share Consolação</span></td>
 <td class="num r">7</td>
-<td class="num r">−24%</td><td class="num r b">−29%</td>
-<td class="num r neg">−5 p.p.</td>
-<td class="num r">−15% <span class="pos">(+6 p.p.)</span></td>
-<td class="num r">−32% <span class="zero">(−1 p.p.)</span></td>
+<td class="num r">−24% → <b>−29%</b></td><td class="num r neg">−5 p.p.</td>
+<td class="num r">−21% → −15%</td>
+<td class="num r">−31% → −32%</td>
 <td class="num r">−10%</td><td class="num r">−4%</td>
-<td class="num r">80% / 60%</td><td class="num r">270 / 508</td></tr>
-<tr><td><span class="bname">NXH 720</span> <span class="bsub">Next Haddock Lobo · SP</span></td>
+<td class="num r">85% / 57%</td><td class="num r">295 → 260 / 458</td></tr><tr><td><span class="bname">NXH 720</span><span class="bsub">Next Haddock Lobo</span></td>
 <td class="num r">21</td>
-<td class="num r">+14%</td><td class="num r b">+7%</td>
-<td class="num r neg">−8 p.p.</td>
-<td class="num r">+8% <span class="neg">(−8 p.p.)</span></td>
-<td class="num r">−1% <span class="neg">(−36 p.p.)</span></td>
+<td class="num r">+14% → <b>+7%</b></td><td class="num r neg">−8 p.p.</td>
+<td class="num r">+16% → +8%</td>
+<td class="num r">+36% → −1%</td>
 <td class="num r">−5%</td><td class="num r">+2%</td>
-<td class="num r">78% / 62%</td><td class="num r">251 / 295</td></tr>
-<tr><td><span class="bname">HLK 407</span> <span class="bsub">Homelike · SP</span></td>
+<td class="num r">81% / 65%</td><td class="num r">257 → 256 / 297</td></tr><tr><td><span class="bname">HLK 407</span><span class="bsub">Homelike</span></td>
 <td class="num r">17</td>
-<td class="num r">+72%</td><td class="num r b">+63%</td>
-<td class="num r neg">−9 p.p.</td>
-<td class="num r">+58% <span class="neg">(−11 p.p.)</span></td>
-<td class="num r">+40% <span class="neg">(−5 p.p.)</span></td>
+<td class="num r">+72% → <b>+63%</b></td><td class="num r neg">−9 p.p.</td>
+<td class="num r">+69% → +58%</td>
+<td class="num r">+45% → +40%</td>
 <td class="num r">−8%</td><td class="num r">−3%</td>
-<td class="num r">92% / 69%</td><td class="num r">290 / 238</td></tr>
-<tr><td><span class="bname">TOF 1485</span> <span class="bsub">Terraço Oscar Freire · SP</span></td>
+<td class="num r">90% / 66%</td><td class="num r">312 → 286 / 247</td></tr><tr><td><span class="bname">TOF 1485</span><span class="bsub">Terraço Oscar Freire</span></td>
 <td class="num r">25</td>
-<td class="num r">+10%</td><td class="num r b">+1%</td>
-<td class="num r neg">−10 p.p.</td>
-<td class="num r">+7% <span class="zero">(−1 p.p.)</span></td>
-<td class="num r">+1% <span class="neg">(−24 p.p.)</span></td>
+<td class="num r">+10% → <b>+1%</b></td><td class="num r neg">−10 p.p.</td>
+<td class="num r">+8% → +7%</td>
+<td class="num r">+26% → +1%</td>
 <td class="num r">+2%</td><td class="num r">+12%</td>
-<td class="num r">83% / 62%</td><td class="num r">319 / 423</td></tr>
-<tr><td><span class="bname">CAN 203</span> <span class="bsub">Cannes · FLN</span></td>
-<td class="num r">61</td>
-<td class="num r">+6%</td><td class="num r b">−4%</td>
-<td class="num r neg">−10 p.p.</td>
-<td class="num r">+36% <span class="neg">(−28 p.p.)</span></td>
-<td class="num r">+6% <span class="neg">(−39 p.p.)</span></td>
-<td class="num r">−18%</td><td class="num r">−10%</td>
-<td class="num r">67% / 41%</td><td class="num r">228 / 388</td></tr>
-<tr><td><span class="bname">DGE 197</span> <span class="bsub">Setin Downtown Genebra · SP</span></td>
+<td class="num r">84% / 60%</td><td class="num r">320 → 337 / 437</td></tr><tr><td><span class="bname">DGE 197</span><span class="bsub">Setin Downtown Genebra</span></td>
 <td class="num r">9</td>
-<td class="num r">+25%</td><td class="num r b">+15%</td>
-<td class="num r neg">−11 p.p.</td>
-<td class="num r">+14% <span class="neg">(−13 p.p.)</span></td>
-<td class="num r">+20% <span class="neg">(−11 p.p.)</span></td>
+<td class="num r">+25% → <b>+15%</b></td><td class="num r neg">−11 p.p.</td>
+<td class="num r">+26% → +14%</td>
+<td class="num r">+31% → +20%</td>
 <td class="num r">−7%</td><td class="num r">+2%</td>
-<td class="num r">84% / 65%</td><td class="num r">128 / 143</td></tr>
-<tr><td><span class="bname">KAS 99</span> <span class="bsub">Kasa · SP</span></td>
+<td class="num r">79% / 65%</td><td class="num r">136 → 141 / 150</td></tr><tr><td><span class="bname">KAS 99</span><span class="bsub">Kasa</span></td>
 <td class="num r">52</td>
-<td class="num r">+33%</td><td class="num r b">+20%</td>
-<td class="num r neg">−12 p.p.</td>
-<td class="num r">+19% <span class="neg">(−6 p.p.)</span></td>
-<td class="num r">−1% <span class="neg">(−29 p.p.)</span></td>
+<td class="num r">+33% → <b>+20%</b></td><td class="num r neg">−12 p.p.</td>
+<td class="num r">+25% → +19%</td>
+<td class="num r">+28% → −1%</td>
 <td class="num r">−11%</td><td class="num r">−2%</td>
-<td class="num r">82% / 56%</td><td class="num r">197 / 241</td></tr>
-<tr><td><span class="bname">CNZ 366</span> <span class="bsub">Caza Noz · SP</span></td>
+<td class="num r">84% / 58%</td><td class="num r">214 → 212 / 256</td></tr><tr><td><span class="bname">CNZ 366</span><span class="bsub">Caza Noz</span></td>
 <td class="num r">19</td>
-<td class="num r">+30%</td><td class="num r b">+17%</td>
-<td class="num r neg">−12 p.p.</td>
-<td class="num r">+16% <span class="neg">(−17 p.p.)</span></td>
-<td class="num r">−2% <span class="neg">(−39 p.p.)</span></td>
+<td class="num r">+30% → <b>+17%</b></td><td class="num r neg">−12 p.p.</td>
+<td class="num r">+33% → +16%</td>
+<td class="num r">+37% → −2%</td>
 <td class="num r">+3%</td><td class="num r">+14%</td>
-<td class="num r">77% / 56%</td><td class="num r">166 / 194</td></tr></tbody>
-  </table></div>
-</section>
-
-<section>
-  <div class="sec-head">
-    <span class="eyebrow">2 · Prédios novos</span>
-    <h2>Como o prêmio cresce depois da entrada</h2>
-    <p class="small">Prêmio médio dos 3 primeiros meses cheios de operação contra ago–out/2026. Fora do gráfico: EQL 130, MEL 184, MOU 1508, NXM 118, PED 832 (entraram há menos de 3 meses ou não tiveram reserva).</p>
-  </div>
-  <div class="panel">
-    <div class="legend"><span><i class="dt c25"></i>3 primeiros meses</span><span><i class="dt cnew"></i>Ago–out 2026</span><span>Linha tracejada laranja = same store em ago–out/26</span></div>
-    <svg viewBox="0 0 760 510" role="img" aria-label="Prêmio dos prédios novos nos 3 primeiros meses e em ago–out 2026">
-<line x1="190.0" x2="190.0" y1="22" y2="484" class="grid"/>
-<text x="190.0" y="502" class="tick" text-anchor="middle">−40%</text>
-<line x1="288.2" x2="288.2" y1="22" y2="484" class="axis0"/>
-<text x="288.2" y="502" class="tick" text-anchor="middle">0%</text>
-<line x1="386.4" x2="386.4" y1="22" y2="484" class="grid"/>
-<text x="386.4" y="502" class="tick" text-anchor="middle">+40%</text>
-<line x1="484.5" x2="484.5" y1="22" y2="484" class="grid"/>
-<text x="484.5" y="502" class="tick" text-anchor="middle">+80%</text>
-<line x1="582.7" x2="582.7" y1="22" y2="484" class="grid"/>
-<text x="582.7" y="502" class="tick" text-anchor="middle">+120%</text>
-<line x1="680.9" x2="680.9" y1="22" y2="484" class="grid"/>
-<text x="680.9" y="502" class="tick" text-anchor="middle">+160%</text>
-<line x1="328.6" x2="328.6" y1="22" y2="484" class="ref"/>
-<text x="332.6" y="16" class="tick">same store ago–out/26: +16%</text>
-<text x="284.2" y="16" class="tick" text-anchor="end">= mercado</text>
-<text x="178" y="49.0" class="rlab" text-anchor="end">TSO 001 <tspan class="rsub">BC · 06/25</tspan></text>
-<line x1="664.1" x2="693.6" y1="45.0" y2="45.0" class="bar up"/>
-<circle cx="664.1" cy="45.0" r="5" class="dot y25"><title>TSO 001: 3 primeiros meses +153,1% → ago–out/26 +165,2%</title></circle>
-<circle cx="693.6" cy="45.0" r="6" class="dot new"><title>TSO 001: 3 primeiros meses +153,1% → ago–out/26 +165,2%</title></circle>
-<text x="703.6" y="49.0" class="vlab">+165%</text>
-<text x="178" y="79.0" class="rlab" text-anchor="end">HEG 1200 <tspan class="rsub">SP · 10/25</tspan></text>
-<line x1="583.3" x2="613.0" y1="75.0" y2="75.0" class="bar up"/>
-<circle cx="583.3" cy="75.0" r="5" class="dot y25"><title>HEG 1200: 3 primeiros meses +120,2% → ago–out/26 +132,3%</title></circle>
-<circle cx="613.0" cy="75.0" r="6" class="dot new"><title>HEG 1200: 3 primeiros meses +120,2% → ago–out/26 +132,3%</title></circle>
-<text x="623.0" y="79.0" class="vlab">+132%</text>
-<text x="178" y="109.0" class="rlab" text-anchor="end">AYH 634 <tspan class="rsub">SP · 08/25</tspan></text>
-<line x1="488.3" x2="595.2" y1="105.0" y2="105.0" class="bar up"/>
-<circle cx="488.3" cy="105.0" r="5" class="dot y25"><title>AYH 634: 3 primeiros meses +81,5% → ago–out/26 +125,1%</title></circle>
-<circle cx="595.2" cy="105.0" r="6" class="dot new"><title>AYH 634: 3 primeiros meses +81,5% → ago–out/26 +125,1%</title></circle>
-<text x="605.2" y="109.0" class="vlab">+125%</text>
-<text x="178" y="139.0" class="rlab" text-anchor="end">PVF 1304 <tspan class="rsub">SP · 12/25</tspan></text>
-<line x1="357.9" x2="473.5" y1="135.0" y2="135.0" class="bar up"/>
-<circle cx="357.9" cy="135.0" r="5" class="dot y25"><title>PVF 1304: 3 primeiros meses +28,4% → ago–out/26 +75,5%</title></circle>
-<circle cx="473.5" cy="135.0" r="6" class="dot new"><title>PVF 1304: 3 primeiros meses +28,4% → ago–out/26 +75,5%</title></circle>
-<text x="483.5" y="139.0" class="vlab">+76%</text>
-<text x="178" y="169.0" class="rlab" text-anchor="end">FST 3950 <tspan class="rsub">FLN · 08/25</tspan></text>
-<line x1="502.8" x2="469.7" y1="165.0" y2="165.0" class="bar dn"/>
-<circle cx="502.8" cy="165.0" r="5" class="dot y25"><title>FST 3950: 3 primeiros meses +87,4% → ago–out/26 +73,9%</title></circle>
-<circle cx="469.7" cy="165.0" r="6" class="dot new"><title>FST 3950: 3 primeiros meses +87,4% → ago–out/26 +73,9%</title></circle>
-<text x="512.8" y="169.0" class="vlab">+74%</text>
-<text x="178" y="199.0" class="rlab" text-anchor="end">AYM 181 <tspan class="rsub">SP · 11/25</tspan></text>
-<line x1="398.5" x2="425.2" y1="195.0" y2="195.0" class="bar up"/>
-<circle cx="398.5" cy="195.0" r="5" class="dot y25"><title>AYM 181: 3 primeiros meses +44,9% → ago–out/26 +55,8%</title></circle>
-<circle cx="425.2" cy="195.0" r="6" class="dot new"><title>AYM 181: 3 primeiros meses +44,9% → ago–out/26 +55,8%</title></circle>
-<text x="435.2" y="199.0" class="vlab">+56%</text>
-<text x="178" y="229.0" class="rlab" text-anchor="end">HBV 189 <tspan class="rsub">SP · 04/25</tspan></text>
-<line x1="356.0" x2="385.8" y1="225.0" y2="225.0" class="bar up"/>
-<circle cx="356.0" cy="225.0" r="5" class="dot y25"><title>HBV 189: 3 primeiros meses +27,6% → ago–out/26 +39,8%</title></circle>
-<circle cx="385.8" cy="225.0" r="6" class="dot new"><title>HBV 189: 3 primeiros meses +27,6% → ago–out/26 +39,8%</title></circle>
-<text x="395.8" y="229.0" class="vlab">+40%</text>
-<text x="178" y="259.0" class="rlab" text-anchor="end">TBG 1320 <tspan class="rsub">FLN · 03/26</tspan></text>
-<line x1="372.3" x2="382.9" y1="255.0" y2="255.0" class="bar up"/>
-<circle cx="372.3" cy="255.0" r="5" class="dot y25"><title>TBG 1320: 3 primeiros meses +34,3% → ago–out/26 +38,6%</title></circle>
-<circle cx="382.9" cy="255.0" r="6" class="dot new"><title>TBG 1320: 3 primeiros meses +34,3% → ago–out/26 +38,6%</title></circle>
-<text x="392.9" y="259.0" class="vlab">+39%</text>
-<text x="178" y="289.0" class="rlab" text-anchor="end">PVP 936 <tspan class="rsub">SP · 02/25</tspan></text>
-<line x1="287.6" x2="350.2" y1="285.0" y2="285.0" class="bar up"/>
-<circle cx="287.6" cy="285.0" r="5" class="dot y25"><title>PVP 936: 3 primeiros meses −0,2% → ago–out/26 +25,3%</title></circle>
-<circle cx="350.2" cy="285.0" r="6" class="dot new"><title>PVP 936: 3 primeiros meses −0,2% → ago–out/26 +25,3%</title></circle>
-<text x="360.2" y="289.0" class="vlab">+25%</text>
-<text x="178" y="319.0" class="rlab" text-anchor="end">AGR 965 <tspan class="rsub">SP · 11/25</tspan></text>
-<line x1="235.8" x2="329.6" y1="315.0" y2="315.0" class="bar up"/>
-<circle cx="235.8" cy="315.0" r="5" class="dot y25"><title>AGR 965: 3 primeiros meses −21,3% → ago–out/26 +16,9%</title></circle>
-<circle cx="329.6" cy="315.0" r="6" class="dot new"><title>AGR 965: 3 primeiros meses −21,3% → ago–out/26 +16,9%</title></circle>
-<text x="339.6" y="319.0" class="vlab">+17%</text>
-<text x="178" y="349.0" class="rlab" text-anchor="end">URB 172 <tspan class="rsub">SP · 12/25</tspan></text>
-<line x1="237.0" x2="311.9" y1="345.0" y2="345.0" class="bar up"/>
-<circle cx="237.0" cy="345.0" r="5" class="dot y25"><title>URB 172: 3 primeiros meses −20,9% → ago–out/26 +9,7%</title></circle>
-<circle cx="311.9" cy="345.0" r="6" class="dot new"><title>URB 172: 3 primeiros meses −20,9% → ago–out/26 +9,7%</title></circle>
-<text x="321.9" y="349.0" class="vlab">+10%</text>
-<text x="178" y="379.0" class="rlab" text-anchor="end">PVJ 44 <tspan class="rsub">SP · 01/26</tspan></text>
-<line x1="269.7" x2="310.0" y1="375.0" y2="375.0" class="bar up"/>
-<circle cx="269.7" cy="375.0" r="5" class="dot y25"><title>PVJ 44: 3 primeiros meses −7,5% → ago–out/26 +8,9%</title></circle>
-<circle cx="310.0" cy="375.0" r="6" class="dot new"><title>PVJ 44: 3 primeiros meses −7,5% → ago–out/26 +8,9%</title></circle>
-<text x="320.0" y="379.0" class="vlab">+9%</text>
-<text x="178" y="409.0" class="rlab" text-anchor="end">ONZ 247 <tspan class="rsub">SP · 06/25</tspan></text>
-<line x1="333.8" x2="307.3" y1="405.0" y2="405.0" class="bar dn"/>
-<circle cx="333.8" cy="405.0" r="5" class="dot y25"><title>ONZ 247: 3 primeiros meses +18,6% → ago–out/26 +7,8%</title></circle>
-<circle cx="307.3" cy="405.0" r="6" class="dot new"><title>ONZ 247: 3 primeiros meses +18,6% → ago–out/26 +7,8%</title></circle>
-<text x="343.8" y="409.0" class="vlab">+8%</text>
-<text x="178" y="439.0" class="rlab" text-anchor="end">OMG 45 <tspan class="rsub">SP · 07/26</tspan></text>
-<line x1="264.3" x2="270.6" y1="435.0" y2="435.0" class="bar up"/>
-<circle cx="264.3" cy="435.0" r="5" class="dot y25"><title>OMG 45: 3 primeiros meses −9,7% → ago–out/26 −7,2%</title></circle>
-<circle cx="270.6" cy="435.0" r="6" class="dot new"><title>OMG 45: 3 primeiros meses −9,7% → ago–out/26 −7,2%</title></circle>
-<text x="280.6" y="439.0" class="vlab">−7%</text>
-<text x="178" y="469.0" class="rlab" text-anchor="end">PVN 39 <tspan class="rsub">SP · 01/26</tspan></text>
-<line x1="217.9" x2="240.4" y1="465.0" y2="465.0" class="bar up"/>
-<circle cx="217.9" cy="465.0" r="5" class="dot y25"><title>PVN 39: 3 primeiros meses −28,6% → ago–out/26 −19,5%</title></circle>
-<circle cx="240.4" cy="465.0" r="6" class="dot new"><title>PVN 39: 3 primeiros meses −28,6% → ago–out/26 −19,5%</title></circle>
-<text x="250.4" y="469.0" class="vlab">−19%</text>
-</svg>
-  </div>
-  <div class="tbl"><table class="t-new">
-    <thead><tr><th>Prédio</th><th>Entrada</th><th class="r">Unid. 26</th><th class="r">Meses 1–3</th><th class="r">Meses 4–6</th><th class="r">Meses 7–12</th><th class="r">Ago–out 26</th><th class="r">Ocupação ago–out<br>nós / mercado</th><th class="r">Diária ago–out<br>nós / mercado</th></tr></thead>
-    <tbody><tr><td><span class="bname">PVP 936</span> <span class="bsub">Pivô Pamplona · SP</span></td>
+<td class="num r">73% / 56%</td><td class="num r">159 → 180 / 201</td></tr></tbody></table></div>
+  <h3>Prédios novos</h3><div class="panel"><div class="legend"><span><i class="dt c25"></i>3 primeiros meses</span><span><i class="dt cnew"></i>Ago–out 2026</span><span>Linha tracejada laranja = same store da cidade em ago–out/26</span></div><svg viewBox="0 0 760 420" role="img" aria-label="Prêmio dos prédios novos nos 3 primeiros meses e em ago–out 2026">
+<line x1="190.0" x2="190.0" y1="22" y2="394" class="grid"/>
+<text x="190.0" y="412" class="tick" text-anchor="middle">−40%</text>
+<line x1="307.6" x2="307.6" y1="22" y2="394" class="axis0"/>
+<text x="307.6" y="412" class="tick" text-anchor="middle">0%</text>
+<line x1="425.2" x2="425.2" y1="22" y2="394" class="grid"/>
+<text x="425.2" y="412" class="tick" text-anchor="middle">+40%</text>
+<line x1="542.8" x2="542.8" y1="22" y2="394" class="grid"/>
+<text x="542.8" y="412" class="tick" text-anchor="middle">+80%</text>
+<line x1="660.4" x2="660.4" y1="22" y2="394" class="grid"/>
+<text x="660.4" y="412" class="tick" text-anchor="middle">+120%</text>
+<line x1="351.5" x2="351.5" y1="22" y2="394" class="ref"/>
+<text x="355.5" y="16" class="tick">same store ago–out/26: +15%</text>
+<text x="303.6" y="16" class="tick" text-anchor="end">= mercado</text>
+<text x="178" y="49.0" class="rlab" text-anchor="end">HEG 1200 <tspan class="rsub">10/25</tspan></text>
+<line x1="661.1" x2="696.6" y1="45.0" y2="45.0" class="bar up"/>
+<circle cx="661.1" cy="45.0" r="5" class="dot y25"><title>HEG 1200: 3 primeiros meses +120,2% → ago–out/26 +132,3%</title></circle>
+<circle cx="696.6" cy="45.0" r="6" class="dot new"><title>HEG 1200: 3 primeiros meses +120,2% → ago–out/26 +132,3%</title></circle>
+<text x="706.6" y="49.0" class="vlab">+132%</text>
+<text x="178" y="79.0" class="rlab" text-anchor="end">AYH 634 <tspan class="rsub">08/25</tspan></text>
+<line x1="547.3" x2="675.3" y1="75.0" y2="75.0" class="bar up"/>
+<circle cx="547.3" cy="75.0" r="5" class="dot y25"><title>AYH 634: 3 primeiros meses +81,5% → ago–out/26 +125,1%</title></circle>
+<circle cx="675.3" cy="75.0" r="6" class="dot new"><title>AYH 634: 3 primeiros meses +81,5% → ago–out/26 +125,1%</title></circle>
+<text x="685.3" y="79.0" class="vlab">+125%</text>
+<text x="178" y="109.0" class="rlab" text-anchor="end">PVF 1304 <tspan class="rsub">12/25</tspan></text>
+<line x1="391.1" x2="529.6" y1="105.0" y2="105.0" class="bar up"/>
+<circle cx="391.1" cy="105.0" r="5" class="dot y25"><title>PVF 1304: 3 primeiros meses +28,4% → ago–out/26 +75,5%</title></circle>
+<circle cx="529.6" cy="105.0" r="6" class="dot new"><title>PVF 1304: 3 primeiros meses +28,4% → ago–out/26 +75,5%</title></circle>
+<text x="539.6" y="109.0" class="vlab">+76%</text>
+<text x="178" y="139.0" class="rlab" text-anchor="end">AYM 181 <tspan class="rsub">11/25</tspan></text>
+<line x1="439.7" x2="471.8" y1="135.0" y2="135.0" class="bar up"/>
+<circle cx="439.7" cy="135.0" r="5" class="dot y25"><title>AYM 181: 3 primeiros meses +44,9% → ago–out/26 +55,8%</title></circle>
+<circle cx="471.8" cy="135.0" r="6" class="dot new"><title>AYM 181: 3 primeiros meses +44,9% → ago–out/26 +55,8%</title></circle>
+<text x="481.8" y="139.0" class="vlab">+56%</text>
+<text x="178" y="169.0" class="rlab" text-anchor="end">HBV 189 <tspan class="rsub">04/25</tspan></text>
+<line x1="388.8" x2="424.5" y1="165.0" y2="165.0" class="bar up"/>
+<circle cx="388.8" cy="165.0" r="5" class="dot y25"><title>HBV 189: 3 primeiros meses +27,6% → ago–out/26 +39,8%</title></circle>
+<circle cx="424.5" cy="165.0" r="6" class="dot new"><title>HBV 189: 3 primeiros meses +27,6% → ago–out/26 +39,8%</title></circle>
+<text x="434.5" y="169.0" class="vlab">+40%</text>
+<text x="178" y="199.0" class="rlab" text-anchor="end">PVP 936 <tspan class="rsub">02/25</tspan></text>
+<line x1="306.9" x2="381.9" y1="195.0" y2="195.0" class="bar up"/>
+<circle cx="306.9" cy="195.0" r="5" class="dot y25"><title>PVP 936: 3 primeiros meses −0,2% → ago–out/26 +25,3%</title></circle>
+<circle cx="381.9" cy="195.0" r="6" class="dot new"><title>PVP 936: 3 primeiros meses −0,2% → ago–out/26 +25,3%</title></circle>
+<text x="391.9" y="199.0" class="vlab">+25%</text>
+<text x="178" y="229.0" class="rlab" text-anchor="end">AGR 965 <tspan class="rsub">11/25</tspan></text>
+<line x1="244.9" x2="357.2" y1="225.0" y2="225.0" class="bar up"/>
+<circle cx="244.9" cy="225.0" r="5" class="dot y25"><title>AGR 965: 3 primeiros meses −21,3% → ago–out/26 +16,9%</title></circle>
+<circle cx="357.2" cy="225.0" r="6" class="dot new"><title>AGR 965: 3 primeiros meses −21,3% → ago–out/26 +16,9%</title></circle>
+<text x="367.2" y="229.0" class="vlab">+17%</text>
+<text x="178" y="259.0" class="rlab" text-anchor="end">URB 172 <tspan class="rsub">12/25</tspan></text>
+<line x1="246.3" x2="336.0" y1="255.0" y2="255.0" class="bar up"/>
+<circle cx="246.3" cy="255.0" r="5" class="dot y25"><title>URB 172: 3 primeiros meses −20,9% → ago–out/26 +9,7%</title></circle>
+<circle cx="336.0" cy="255.0" r="6" class="dot new"><title>URB 172: 3 primeiros meses −20,9% → ago–out/26 +9,7%</title></circle>
+<text x="346.0" y="259.0" class="vlab">+10%</text>
+<text x="178" y="289.0" class="rlab" text-anchor="end">PVJ 44 <tspan class="rsub">01/26</tspan></text>
+<line x1="285.4" x2="333.7" y1="285.0" y2="285.0" class="bar up"/>
+<circle cx="285.4" cy="285.0" r="5" class="dot y25"><title>PVJ 44: 3 primeiros meses −7,5% → ago–out/26 +8,9%</title></circle>
+<circle cx="333.7" cy="285.0" r="6" class="dot new"><title>PVJ 44: 3 primeiros meses −7,5% → ago–out/26 +8,9%</title></circle>
+<text x="343.7" y="289.0" class="vlab">+9%</text>
+<text x="178" y="319.0" class="rlab" text-anchor="end">ONZ 247 <tspan class="rsub">06/25</tspan></text>
+<line x1="362.2" x2="330.4" y1="315.0" y2="315.0" class="bar dn"/>
+<circle cx="362.2" cy="315.0" r="5" class="dot y25"><title>ONZ 247: 3 primeiros meses +18,6% → ago–out/26 +7,8%</title></circle>
+<circle cx="330.4" cy="315.0" r="6" class="dot new"><title>ONZ 247: 3 primeiros meses +18,6% → ago–out/26 +7,8%</title></circle>
+<text x="372.2" y="319.0" class="vlab">+8%</text>
+<text x="178" y="349.0" class="rlab" text-anchor="end">OMG 45 <tspan class="rsub">07/26</tspan></text>
+<line x1="279.0" x2="286.6" y1="345.0" y2="345.0" class="bar up"/>
+<circle cx="279.0" cy="345.0" r="5" class="dot y25"><title>OMG 45: 3 primeiros meses −9,7% → ago–out/26 −7,2%</title></circle>
+<circle cx="286.6" cy="345.0" r="6" class="dot new"><title>OMG 45: 3 primeiros meses −9,7% → ago–out/26 −7,2%</title></circle>
+<text x="296.6" y="349.0" class="vlab">−7%</text>
+<text x="178" y="379.0" class="rlab" text-anchor="end">PVN 39 <tspan class="rsub">01/26</tspan></text>
+<line x1="223.5" x2="250.4" y1="375.0" y2="375.0" class="bar up"/>
+<circle cx="223.5" cy="375.0" r="5" class="dot y25"><title>PVN 39: 3 primeiros meses −28,6% → ago–out/26 −19,5%</title></circle>
+<circle cx="250.4" cy="375.0" r="6" class="dot new"><title>PVN 39: 3 primeiros meses −28,6% → ago–out/26 −19,5%</title></circle>
+<text x="260.4" y="379.0" class="vlab">−19%</text>
+</svg></div><div class="tbl"><table class="t-new"><thead><tr><th>Prédio</th><th>Entrada</th><th class="r">Unid. 26</th><th class="r">Meses 1–3</th><th class="r">Meses 4–6</th><th class="r">Meses 7–12</th><th class="r">Ago–out 26</th><th class="r">Ocup. ago–out<br>nós / mercado</th><th class="r">Diária ago–out (R$)<br>nós / mercado</th></tr></thead>
+<tbody><tr><td><span class="bname">PVP 936</span><span class="bsub">Pivô Pamplona</span></td>
 <td class="num">21/02/25</td><td class="num r">57</td>
-<td class="num r">0%</td><td class="num r">+32%</td><td class="num r">+21%</td>
-<td class="num r b">+25%</td>
-<td class="num r">80% / 66%</td><td class="num r">R$ 336 / R$ 323</td></tr>
-<tr><td><span class="bname">HBV 189</span> <span class="bsub">Hub Boa Vista · SP</span></td>
+<td class="num r">0%</td><td class="num r">+32%</td><td class="num r">+21%</td><td class="num r b">+25%</td>
+<td class="num r">80% / 66%</td><td class="num r">336 / 323</td></tr><tr><td><span class="bname">HBV 189</span><span class="bsub">Hub Boa Vista</span></td>
 <td class="num">08/04/25</td><td class="num r">14</td>
-<td class="num r">+28%</td><td class="num r">+24%</td><td class="num r">+38%</td>
-<td class="num r b">+40%</td>
-<td class="num r">86% / 58%</td><td class="num r">R$ 205 / R$ 218</td></tr>
-<tr><td><span class="bname">TSO 001</span> <span class="bsub">The Spot One · BC</span></td>
-<td class="num">05/06/25</td><td class="num r">52</td>
-<td class="num r">+153%</td><td class="num r">+94%</td><td class="num r">+120%</td>
-<td class="num r b">+165%</td>
-<td class="num r">71% / 28%</td><td class="num r">R$ 289 / R$ 274</td></tr>
-<tr><td><span class="bname">ONZ 247</span> <span class="bsub">Onze22 · SP</span></td>
+<td class="num r">+28%</td><td class="num r">+24%</td><td class="num r">+38%</td><td class="num r b">+40%</td>
+<td class="num r">86% / 58%</td><td class="num r">205 / 218</td></tr><tr><td><span class="bname">ONZ 247</span><span class="bsub">Onze22</span></td>
 <td class="num">27/06/25</td><td class="num r">23</td>
-<td class="num r">+19%</td><td class="num r">+18%</td><td class="num r">+13%</td>
-<td class="num r b">+8%</td>
-<td class="num r">79% / 58%</td><td class="num r">R$ 176 / R$ 221</td></tr>
-<tr><td><span class="bname">AYH 634</span> <span class="bsub">Ayra Higienópolis · SP</span></td>
+<td class="num r">+19%</td><td class="num r">+18%</td><td class="num r">+13%</td><td class="num r b">+8%</td>
+<td class="num r">79% / 58%</td><td class="num r">176 / 221</td></tr><tr><td><span class="bname">AYH 634</span><span class="bsub">Ayra Higienópolis</span></td>
 <td class="num">25/08/25</td><td class="num r">12</td>
-<td class="num r">+82%</td><td class="num r">+110%</td><td class="num r">+123%</td>
-<td class="num r b">+125%</td>
-<td class="num r">76% / 55%</td><td class="num r">R$ 318 / R$ 196</td></tr>
-<tr><td><span class="bname">FST 3950</span> <span class="bsub">First · FLN</span></td>
-<td class="num">25/08/25</td><td class="num r">17</td>
-<td class="num r">+87%</td><td class="num r">+13%</td><td class="num r">+66%</td>
-<td class="num r b">+74%</td>
-<td class="num r">71% / 45%</td><td class="num r">R$ 250 / R$ 227</td></tr>
-<tr><td><span class="bname">HEG 1200</span> <span class="bsub">Hege Jardins · SP</span></td>
+<td class="num r">+82%</td><td class="num r">+110%</td><td class="num r">+123%</td><td class="num r b">+125%</td>
+<td class="num r">76% / 55%</td><td class="num r">318 / 196</td></tr><tr><td><span class="bname">HEG 1200</span><span class="bsub">Hege Jardins</span></td>
 <td class="num">13/10/25</td><td class="num r">3</td>
-<td class="num r">+120%</td><td class="num r">+133%</td><td class="num r">+129%</td>
-<td class="num r b">+132%</td>
-<td class="num r">60% / 59%</td><td class="num r">R$ 674 / R$ 294</td></tr>
-<tr><td><span class="bname">AYM 181</span> <span class="bsub">Ayra Moema · SP</span></td>
+<td class="num r">+120%</td><td class="num r">+133%</td><td class="num r">+129%</td><td class="num r b">+132%</td>
+<td class="num r">60% / 59%</td><td class="num r">674 / 294</td></tr><tr><td><span class="bname">AYM 181</span><span class="bsub">Ayra Moema</span></td>
 <td class="num">05/11/25</td><td class="num r">31</td>
-<td class="num r">+45%</td><td class="num r">+60%</td><td class="num r">+53%</td>
-<td class="num r b">+56%</td>
-<td class="num r">78% / 71%</td><td class="num r">R$ 255 / R$ 180</td></tr>
-<tr><td><span class="bname">AGR 965</span> <span class="bsub">Aurora Greystar · SP</span></td>
+<td class="num r">+45%</td><td class="num r">+60%</td><td class="num r">+53%</td><td class="num r b">+56%</td>
+<td class="num r">78% / 71%</td><td class="num r">255 / 180</td></tr><tr><td><span class="bname">AGR 965</span><span class="bsub">Aurora Greystar</span></td>
 <td class="num">17/11/25</td><td class="num r">40</td>
-<td class="num r">−21%</td><td class="num r">0%</td><td class="num r">+12%</td>
-<td class="num r b">+17%</td>
-<td class="num r">84% / 66%</td><td class="num r">R$ 185 / R$ 200</td></tr>
-<tr><td><span class="bname">PVF 1304</span> <span class="bsub">Pivô Alameda Franca · SP</span></td>
+<td class="num r">−21%</td><td class="num r">0%</td><td class="num r">+12%</td><td class="num r b">+17%</td>
+<td class="num r">84% / 66%</td><td class="num r">185 / 200</td></tr><tr><td><span class="bname">PVF 1304</span><span class="bsub">Pivô Alameda Franca</span></td>
 <td class="num">30/12/25</td><td class="num r">28</td>
-<td class="num r">+28%</td><td class="num r">+55%</td><td class="num r">+75%</td>
-<td class="num r b">+76%</td>
-<td class="num r">82% / 64%</td><td class="num r">R$ 432 / R$ 315</td></tr>
-<tr><td><span class="bname">URB 172</span> <span class="bsub">Urbic Vila Mariana · SP</span></td>
+<td class="num r">+28%</td><td class="num r">+55%</td><td class="num r">+75%</td><td class="num r b">+76%</td>
+<td class="num r">82% / 64%</td><td class="num r">432 / 315</td></tr><tr><td><span class="bname">URB 172</span><span class="bsub">Urbic Vila Mariana</span></td>
 <td class="num">30/12/25</td><td class="num r">39</td>
-<td class="num r">−21%</td><td class="num r">+5%</td><td class="num r">+7%</td>
-<td class="num r b">+10%</td>
-<td class="num r">86% / 62%</td><td class="num r">R$ 157 / R$ 199</td></tr>
-<tr><td><span class="bname">PVJ 44</span> <span class="bsub">Pivô Jardins · SP</span></td>
+<td class="num r">−21%</td><td class="num r">+5%</td><td class="num r">+7%</td><td class="num r b">+10%</td>
+<td class="num r">86% / 62%</td><td class="num r">157 / 199</td></tr><tr><td><span class="bname">PVJ 44</span><span class="bsub">Pivô Jardins</span></td>
 <td class="num">13/01/26</td><td class="num r">42</td>
-<td class="num r">−8%</td><td class="num r">+8%</td><td class="num r">+9%</td>
-<td class="num r b">+9%</td>
-<td class="num r">77% / 62%</td><td class="num r">R$ 243 / R$ 275</td></tr>
-<tr><td><span class="bname">PVN 39</span> <span class="bsub">Pivô Vila Nova · SP</span></td>
+<td class="num r">−8%</td><td class="num r">+8%</td><td class="num r">+9%</td><td class="num r b">+9%</td>
+<td class="num r">77% / 62%</td><td class="num r">243 / 275</td></tr><tr><td><span class="bname">PVN 39</span><span class="bsub">Pivô Vila Nova</span></td>
 <td class="num">29/01/26</td><td class="num r">40</td>
-<td class="num r">−29%</td><td class="num r">−24%</td><td class="num r">−20%</td>
-<td class="num r b">−19%</td>
-<td class="num r">82% / 62%</td><td class="num r">R$ 244 / R$ 399</td></tr>
-<tr><td><span class="bname">TBG 1320</span> <span class="bsub">The Bridge · FLN</span></td>
-<td class="num">01/03/26</td><td class="num r">50</td>
-<td class="num r">+34%</td><td class="num r">+30%</td><td class="num r">+34%</td>
-<td class="num r b">+39%</td>
-<td class="num r">76% / 52%</td><td class="num r">R$ 250 / R$ 264</td></tr>
-<tr><td><span class="bname">OMG 45</span> <span class="bsub">Casa Omaguás · SP</span></td>
+<td class="num r">−29%</td><td class="num r">−24%</td><td class="num r">−20%</td><td class="num r b">−19%</td>
+<td class="num r">82% / 62%</td><td class="num r">244 / 399</td></tr><tr><td><span class="bname">OMG 45</span><span class="bsub">Casa Omaguás</span></td>
 <td class="num">08/07/26</td><td class="num r">4</td>
-<td class="num r">−10%</td><td class="num r muted">–</td><td class="num r muted">–</td>
-<td class="num r b">−7%</td>
-<td class="num r">75% / 64%</td><td class="num r">R$ 210 / R$ 264</td></tr></tbody>
-  </table></div>
-  <p class="small">Prêmios acima de +100% (TSO, HEG, AYH, FST) vêm de diária muito acima da mediana do comp set: o produto é diferente do mercado de referência, então o número mede mais o encaixe do comp set do que a performance de pricing. No sentido oposto, PVN tem diária 39% abaixo da mediana fechada de um comp set caro (Vila Nova Conceição): vale revisar se o comp set é o certo antes de concluir que o prédio está barato.</p>
-</section>
-
-<section>
-  <div class="sec-head">
-    <span class="eyebrow">3 · Mercados</span>
-    <h2>Mercado de cada praça, 2026 vs 2025</h2>
-    <p class="small">Variação ano contra ano, mês a mês. Ocupação em pontos percentuais; demais em %. Cada cidade é a média dos mercados dos nossos prédios, ponderada pelas nossas unidades, só com prédios que têm dado nos dois anos.</p>
-  </div>
-  <div class="tbl"><table class="t-city">
-    <thead><tr><th></th><th>Métrica</th><th class="r">jan</th><th class="r">fev</th><th class="r">mar</th><th class="r">abr</th><th class="r">mai</th><th class="r">jun</th><th class="r">jul</th><th class="r">ago</th><th class="r">set</th><th class="r">out</th><th class="r">nov 1–17</th><th class="r">Jan–out</th><th class="r">Nível 26</th></tr></thead>
-    <tbody><tr class="grp"><th rowspan="5" class="cityh">São Paulo</th><td class="mlab">Ocupação</td><td class="num r hm" style="--a:5%" data-t="neg">−0,9</td><td class="num r hm" style="--a:28%" data-t="pos">+5,4</td><td class="num r hm" style="--a:16%" data-t="pos">+3,0</td><td class="num r hm" style="--a:20%" data-t="neg">−3,7</td><td class="num r hm" style="--a:22%" data-t="pos">+4,2</td><td class="num r hm" style="--a:26%" data-t="neg">−5,0</td><td class="num r hm" style="--a:14%" data-t="pos">+2,6</td><td class="num r hm" style="--a:1%" data-t="pos">+0,2</td><td class="num r hm" style="--a:3%" data-t="neg">−0,6</td><td class="num r hm" style="--a:34%" data-t="pos">+6,5</td><td class="num r hm" style="--a:12%" data-t="neg">−2,2</td><td class="num r hm ytd" style="--a:6%" data-t="pos">+1,2</td><td class="num r muted">61%</td></tr>
-<tr class=""><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:21%" data-t="neg">−10%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:2%" data-t="neg">−1%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:7%" data-t="neg">−3%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:13%" data-t="neg">−6%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:14%" data-t="pos">+7%</td><td class="num r hm ytd" style="--a:7%" data-t="neg">−3%</td><td class="num r muted">R$ 270</td></tr>
-<tr class=""><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:9%" data-t="neg">−4%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:13%" data-t="pos">+6%</td><td class="num r hm" style="--a:0%" data-t="neg">0%</td><td class="num r hm" style="--a:6%" data-t="pos">+3%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:6%" data-t="pos">+3%</td><td class="num r hm" style="--a:1%" data-t="pos">+1%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:27%" data-t="pos">+13%</td><td class="num r hm" style="--a:25%" data-t="pos">+12%</td><td class="num r hm ytd" style="--a:6%" data-t="pos">+3%</td><td class="num r muted">R$ 285</td></tr>
-<tr class=""><td class="mlab">RevPAR</td><td class="num r hm" style="--a:23%" data-t="neg">−11%</td><td class="num r hm" style="--a:15%" data-t="pos">+7%</td><td class="num r hm" style="--a:9%" data-t="pos">+4%</td><td class="num r hm" style="--a:25%" data-t="neg">−12%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:20%" data-t="neg">−9%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:16%" data-t="neg">−8%</td><td class="num r hm" style="--a:41%" data-t="pos">+19%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm ytd" style="--a:2%" data-t="neg">−1%</td><td class="num r muted">R$ 166</td></tr>
-<tr class=""><td class="mlab">Oferta no comp set</td><td class="num r hm neu">+27%</td><td class="num r hm neu">+39%</td><td class="num r hm neu">+52%</td><td class="num r hm neu">+47%</td><td class="num r hm neu">+39%</td><td class="num r hm neu">+50%</td><td class="num r hm neu">+49%</td><td class="num r hm neu">+55%</td><td class="num r hm neu">+62%</td><td class="num r hm neu">+51%</td><td class="num r hm neu">+58%</td><td class="num r hm ytd neu">+47%</td><td class="num r muted"></td></tr>
-<tr class="grp"><th rowspan="5" class="cityh">Florianópolis</th><td class="mlab">Ocupação</td><td class="num r hm" style="--a:42%" data-t="neg">−13,1</td><td class="num r hm" style="--a:35%" data-t="neg">−6,7</td><td class="num r hm" style="--a:41%" data-t="neg">−7,8</td><td class="num r hm" style="--a:28%" data-t="neg">−5,3</td><td class="num r hm" style="--a:7%" data-t="neg">−1,3</td><td class="num r hm" style="--a:8%" data-t="neg">−1,6</td><td class="num r hm" style="--a:8%" data-t="pos">+1,6</td><td class="num r hm" style="--a:16%" data-t="neg">−3,0</td><td class="num r hm" style="--a:10%" data-t="pos">+1,8</td><td class="num r hm" style="--a:18%" data-t="neg">−3,4</td><td class="num r hm" style="--a:9%" data-t="neg">−1,7</td><td class="num r hm ytd" style="--a:20%" data-t="neg">−3,9</td><td class="num r muted">48%</td></tr>
-<tr class=""><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:1%" data-t="pos">0%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:3%" data-t="neg">−2%</td><td class="num r hm" style="--a:14%" data-t="neg">−6%</td><td class="num r hm" style="--a:5%" data-t="neg">−3%</td><td class="num r hm" style="--a:0%" data-t="pos">0%</td><td class="num r hm" style="--a:10%" data-t="neg">−5%</td><td class="num r hm" style="--a:16%" data-t="neg">−7%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:18%" data-t="pos">+8%</td><td class="num r hm ytd" style="--a:3%" data-t="neg">−1%</td><td class="num r muted">R$ 300</td></tr>
-<tr class=""><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:2%" data-t="pos">+1%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:7%" data-t="neg">−3%</td><td class="num r hm" style="--a:3%" data-t="pos">+2%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:16%" data-t="pos">+8%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm ytd" style="--a:4%" data-t="pos">+2%</td><td class="num r muted">R$ 328</td></tr>
-<tr class=""><td class="mlab">RevPAR</td><td class="num r hm" style="--a:29%" data-t="neg">−14%</td><td class="num r hm" style="--a:17%" data-t="neg">−8%</td><td class="num r hm" style="--a:31%" data-t="neg">−15%</td><td class="num r hm" style="--a:35%" data-t="neg">−17%</td><td class="num r hm" style="--a:14%" data-t="neg">−7%</td><td class="num r hm" style="--a:14%" data-t="neg">−6%</td><td class="num r hm" style="--a:5%" data-t="neg">−2%</td><td class="num r hm" style="--a:39%" data-t="neg">−18%</td><td class="num r hm" style="--a:11%" data-t="pos">+5%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:11%" data-t="pos">+5%</td><td class="num r hm ytd" style="--a:22%" data-t="neg">−11%</td><td class="num r muted">R$ 163</td></tr>
-<tr class=""><td class="mlab">Oferta no comp set</td><td class="num r hm neu">+71%</td><td class="num r hm neu">+65%</td><td class="num r hm neu">+61%</td><td class="num r hm neu">+62%</td><td class="num r hm neu">+57%</td><td class="num r hm neu">+69%</td><td class="num r hm neu">+80%</td><td class="num r hm neu">+77%</td><td class="num r hm neu">+87%</td><td class="num r hm neu">+37%</td><td class="num r hm neu">+37%</td><td class="num r hm ytd neu">+65%</td><td class="num r muted"></td></tr>
-<tr class="grp"><th rowspan="5" class="cityh">Balneário Camboriú</th><td class="mlab">Ocupação</td><td class="num r hm" style="--a:13%" data-t="neg">−2,4</td><td class="num r hm" style="--a:20%" data-t="pos">+3,9</td><td class="num r hm" style="--a:3%" data-t="neg">−0,6</td><td class="num r hm" style="--a:18%" data-t="pos">+3,5</td><td class="num r hm" style="--a:12%" data-t="neg">−2,3</td><td class="num r hm" style="--a:13%" data-t="neg">−2,6</td><td class="num r hm" style="--a:0%" data-t="neg">−0,1</td><td class="num r hm" style="--a:31%" data-t="pos">+5,9</td><td class="num r hm" style="--a:10%" data-t="neg">−1,8</td><td class="num r hm" style="--a:12%" data-t="neg">−2,2</td><td class="num r hm" style="--a:30%" data-t="neg">−5,6</td><td class="num r hm ytd" style="--a:1%" data-t="pos">+0,1</td><td class="num r muted">34%</td></tr>
-<tr class=""><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:23%" data-t="neg">−11%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:42%" data-t="pos">+20%</td><td class="num r hm" style="--a:18%" data-t="pos">+8%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:32%" data-t="pos">+15%</td><td class="num r hm ytd" style="--a:3%" data-t="pos">+1%</td><td class="num r muted">R$ 344</td></tr>
-<tr class=""><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:5%" data-t="pos">+2%</td><td class="num r hm" style="--a:20%" data-t="pos">+9%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:3%" data-t="pos">+2%</td><td class="num r hm" style="--a:22%" data-t="pos">+11%</td><td class="num r hm" style="--a:22%" data-t="pos">+10%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:18%" data-t="pos">+9%</td><td class="num r hm" style="--a:9%" data-t="pos">+4%</td><td class="num r hm" style="--a:13%" data-t="pos">+6%</td><td class="num r hm ytd" style="--a:11%" data-t="pos">+5%</td><td class="num r muted">R$ 420</td></tr>
-<tr class=""><td class="mlab">RevPAR</td><td class="num r hm" style="--a:15%" data-t="neg">−7%</td><td class="num r hm" style="--a:37%" data-t="pos">+17%</td><td class="num r hm" style="--a:30%" data-t="neg">−14%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:3%" data-t="neg">−1%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm" style="--a:18%" data-t="pos">+9%</td><td class="num r hm" style="--a:42%" data-t="pos">+37%</td><td class="num r hm" style="--a:8%" data-t="neg">−4%</td><td class="num r hm" style="--a:5%" data-t="neg">−2%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm ytd" style="--a:2%" data-t="pos">+1%</td><td class="num r muted">R$ 131</td></tr>
-<tr class=""><td class="mlab">Oferta no comp set</td><td class="num r hm neu">+88%</td><td class="num r hm neu">+93%</td><td class="num r hm neu">+84%</td><td class="num r hm neu">+71%</td><td class="num r hm neu">+83%</td><td class="num r hm neu">+139%</td><td class="num r hm neu">+202%</td><td class="num r hm neu">+207%</td><td class="num r hm neu">+184%</td><td class="num r hm neu">+35%</td><td class="num r hm neu">+45%</td><td class="num r hm ytd neu">+104%</td><td class="num r muted"></td></tr>
-<tr class="grp"><th rowspan="5" class="cityh">Portfólio</th><td class="mlab">Ocupação</td><td class="num r hm" style="--a:17%" data-t="neg">−3,2</td><td class="num r hm" style="--a:15%" data-t="pos">+2,9</td><td class="num r hm" style="--a:4%" data-t="pos">+0,7</td><td class="num r hm" style="--a:19%" data-t="neg">−3,6</td><td class="num r hm" style="--a:15%" data-t="pos">+2,8</td><td class="num r hm" style="--a:22%" data-t="neg">−4,3</td><td class="num r hm" style="--a:12%" data-t="pos">+2,3</td><td class="num r hm" style="--a:1%" data-t="neg">−0,1</td><td class="num r hm" style="--a:1%" data-t="neg">−0,2</td><td class="num r hm" style="--a:22%" data-t="pos">+4,2</td><td class="num r hm" style="--a:12%" data-t="neg">−2,3</td><td class="num r hm ytd" style="--a:1%" data-t="pos">+0,2</td><td class="num r muted">57%</td></tr>
-<tr class=""><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:13%" data-t="neg">−6%</td><td class="num r hm" style="--a:2%" data-t="neg">−1%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:0%" data-t="neg">0%</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:9%" data-t="neg">−4%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:16%" data-t="pos">+7%</td><td class="num r hm ytd" style="--a:6%" data-t="neg">−3%</td><td class="num r muted">R$ 281</td></tr>
-<tr class=""><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:4%" data-t="neg">−2%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:6%" data-t="pos">+3%</td><td class="num r hm" style="--a:1%" data-t="pos">0%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:9%" data-t="pos">+4%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:0%" data-t="pos">0%</td><td class="num r hm" style="--a:5%" data-t="pos">+2%</td><td class="num r hm" style="--a:24%" data-t="pos">+11%</td><td class="num r hm" style="--a:24%" data-t="pos">+11%</td><td class="num r hm ytd" style="--a:6%" data-t="pos">+3%</td><td class="num r muted">R$ 301</td></tr>
-<tr class=""><td class="mlab">RevPAR</td><td class="num r hm" style="--a:24%" data-t="neg">−11%</td><td class="num r hm" style="--a:5%" data-t="pos">+2%</td><td class="num r hm" style="--a:2%" data-t="neg">−1%</td><td class="num r hm" style="--a:25%" data-t="neg">−12%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:18%" data-t="neg">−9%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:15%" data-t="neg">−7%</td><td class="num r hm" style="--a:13%" data-t="neg">−6%</td><td class="num r hm" style="--a:32%" data-t="pos">+15%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm ytd" style="--a:6%" data-t="neg">−3%</td><td class="num r muted">R$ 164</td></tr>
-<tr class=""><td class="mlab">Oferta no comp set</td><td class="num r hm neu">+36%</td><td class="num r hm neu">+45%</td><td class="num r hm neu">+55%</td><td class="num r hm neu">+50%</td><td class="num r hm neu">+43%</td><td class="num r hm neu">+55%</td><td class="num r hm neu">+56%</td><td class="num r hm neu">+61%</td><td class="num r hm neu">+68%</td><td class="num r hm neu">+48%</td><td class="num r hm neu">+54%</td><td class="num r hm ytd neu">+51%</td><td class="num r muted"></td></tr></tbody>
-  </table></div>
-  <p class="small">Calendário: Carnaval caiu em março em 2025 e em fevereiro em 2026, e a Páscoa em 20/abr/2025 e 5/abr/2026, o que mexe em fev, mar e abr. F1 de SP está em nov 1–17 nos dois anos (7–9/nov/25 e 6–8/nov/26).</p>
-  <h3>Por prédio</h3>
-  <div class="tbl"><table class="t-mkt">
-    <thead><tr><th>Mercado do prédio</th><th>Base</th><th class="r">Ocupação 25 → 26</th><th class="r">Diária fechada</th><th class="r">Preço anunciado</th><th class="r">RevPAR</th><th class="r">Oferta</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th><th class="r">RevPAR 26</th></tr></thead>
-    <tbody><tr class="sub"><td colspan="10">São Paulo</td></tr>
-<tr><td><span class="bname">SPZ 648</span> <span class="bsub">Share Perdizes</span></td>
+<td class="num r">−10%</td><td class="num r muted">–</td><td class="num r muted">–</td><td class="num r b">−7%</td>
+<td class="num r">75% / 64%</td><td class="num r">210 / 264</td></tr></tbody></table></div>
+  <h3>Mercado por prédio</h3>
+  <div class="tbl"><table class="t-mkt"><thead><tr><th>Mercado do prédio</th><th>Base</th><th class="r">Ocupação 25 → 26</th><th class="r">Diária fechada</th><th class="r">Preço anunciado</th><th class="r">RevPAR</th><th class="r">Oferta</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th><th class="r">RevPAR 26</th></tr></thead>
+<tbody><tr><td><span class="bname">SPZ 648</span><span class="bsub">Share Perdizes</span></td>
 <td class="num">jan–out</td>
 <td class="num r">45% → 52% <span class="pos">(+6,8)</span></td>
-<td class="num r pos">+3%</td>
-<td class="num r">+8%</td>
-<td class="num r b pos">+16%</td>
-<td class="num r muted">+65%</td>
-<td class="num r pos">+14%</td><td class="num r zero">+1%</td><td class="num r">R$ 145</td></tr>
-<tr><td><span class="bname">SCN 59</span> <span class="bsub">Share Consolação</span></td>
+<td class="num r pos">+3%</td><td class="num r">+8%</td>
+<td class="num r b pos">+16%</td><td class="num r muted">+65%</td>
+<td class="num r pos">+14%</td><td class="num r zero">+1%</td><td class="num r">R$ 145</td></tr><tr><td><span class="bname">SCN 59</span><span class="bsub">Share Consolação</span></td>
 <td class="num">jan–out</td>
 <td class="num r">56% → 60% <span class="pos">(+3,7)</span></td>
-<td class="num r pos">+6%</td>
-<td class="num r">+7%</td>
-<td class="num r b pos">+14%</td>
-<td class="num r muted">+48%</td>
-<td class="num r pos">+9%</td><td class="num r pos">+3%</td><td class="num r">R$ 361</td></tr>
-<tr><td><span class="bname">CNZ 366</span> <span class="bsub">Caza Noz</span></td>
+<td class="num r pos">+6%</td><td class="num r">+7%</td>
+<td class="num r b pos">+14%</td><td class="num r muted">+48%</td>
+<td class="num r pos">+9%</td><td class="num r pos">+3%</td><td class="num r">R$ 361</td></tr><tr><td><span class="bname">CNZ 366</span><span class="bsub">Caza Noz</span></td>
 <td class="num">jan–out</td>
 <td class="num r">63% → 56% <span class="neg">(−7,1)</span></td>
-<td class="num r pos">+27%</td>
-<td class="num r">+35%</td>
-<td class="num r b pos">+14%</td>
-<td class="num r muted">+27%</td>
-<td class="num r pos">+13%</td><td class="num r pos">+5%</td><td class="num r">R$ 109</td></tr>
-<tr><td><span class="bname">TOF 1485</span> <span class="bsub">Terraço Oscar Freire</span></td>
+<td class="num r pos">+27%</td><td class="num r">+35%</td>
+<td class="num r b pos">+14%</td><td class="num r muted">+27%</td>
+<td class="num r pos">+13%</td><td class="num r pos">+5%</td><td class="num r">R$ 109</td></tr><tr><td><span class="bname">TOF 1485</span><span class="bsub">Terraço Oscar Freire</span></td>
 <td class="num">jan–out</td>
 <td class="num r">59% → 62% <span class="pos">(+2,8)</span></td>
-<td class="num r zero">+1%</td>
-<td class="num r">+5%</td>
-<td class="num r b pos">+11%</td>
-<td class="num r muted">+32%</td>
-<td class="num r pos">+10%</td><td class="num r pos">+8%</td><td class="num r">R$ 262</td></tr>
-<tr><td><span class="bname">FYP 441</span> <span class="bsub">For You Paraíso</span></td>
+<td class="num r zero">+1%</td><td class="num r">+5%</td>
+<td class="num r b pos">+11%</td><td class="num r muted">+32%</td>
+<td class="num r pos">+10%</td><td class="num r pos">+8%</td><td class="num r">R$ 262</td></tr><tr><td><span class="bname">FYP 441</span><span class="bsub">For You Paraíso</span></td>
 <td class="num">jan–out</td>
 <td class="num r">50% → 60% <span class="pos">(+9,5)</span></td>
-<td class="num r neg">−12%</td>
-<td class="num r">−4%</td>
-<td class="num r b pos">+5%</td>
-<td class="num r muted">+87%</td>
-<td class="num r pos">+14%</td><td class="num r neg">−5%</td><td class="num r">R$ 123</td></tr>
-<tr><td><span class="bname">PVF 1304</span> <span class="bsub">Pivô Alameda Franca · novo</span></td>
+<td class="num r neg">−12%</td><td class="num r">−4%</td>
+<td class="num r b pos">+5%</td><td class="num r muted">+87%</td>
+<td class="num r pos">+14%</td><td class="num r neg">−5%</td><td class="num r">R$ 123</td></tr><tr><td><span class="bname">PVF 1304</span><span class="bsub">Pivô Alameda Franca · novo</span></td>
 <td class="num">jul–out</td>
 <td class="num r">61% → 63% <span class="pos">(+2,2)</span></td>
-<td class="num r zero">0%</td>
-<td class="num r">+7%</td>
-<td class="num r b pos">+5%</td>
-<td class="num r muted">+43%</td>
-<td class="num r pos">+7%</td><td class="num r pos">+13%</td><td class="num r">R$ 199</td></tr>
-<tr><td><span class="bname">AGR 965</span> <span class="bsub">Aurora Greystar · novo</span></td>
+<td class="num r zero">0%</td><td class="num r">+7%</td>
+<td class="num r b pos">+5%</td><td class="num r muted">+43%</td>
+<td class="num r pos">+7%</td><td class="num r pos">+13%</td><td class="num r">R$ 199</td></tr><tr><td><span class="bname">AGR 965</span><span class="bsub">Aurora Greystar · novo</span></td>
 <td class="num">abr–out</td>
 <td class="num r">67% → 67% <span class="zero">(+0,4)</span></td>
-<td class="num r zero">0%</td>
-<td class="num r">+7%</td>
-<td class="num r b pos">+2%</td>
-<td class="num r muted">+50%</td>
-<td class="num r zero">−1%</td><td class="num r zero">+1%</td><td class="num r">R$ 130</td></tr>
-<tr><td><span class="bname">URB 172</span> <span class="bsub">Urbic Vila Mariana · novo</span></td>
+<td class="num r zero">0%</td><td class="num r">+7%</td>
+<td class="num r b pos">+2%</td><td class="num r muted">+50%</td>
+<td class="num r zero">−1%</td><td class="num r zero">+1%</td><td class="num r">R$ 130</td></tr><tr><td><span class="bname">URB 172</span><span class="bsub">Urbic Vila Mariana · novo</span></td>
 <td class="num">jul–out</td>
 <td class="num r">55% → 61% <span class="pos">(+6,3)</span></td>
-<td class="num r neg">−10%</td>
-<td class="num r">+1%</td>
-<td class="num r b pos">+2%</td>
-<td class="num r muted">+124%</td>
-<td class="num r pos">+5%</td><td class="num r neg">−16%</td><td class="num r">R$ 118</td></tr>
-<tr><td><span class="bname">NXH 720</span> <span class="bsub">Next Haddock Lobo</span></td>
+<td class="num r neg">−10%</td><td class="num r">+1%</td>
+<td class="num r b pos">+2%</td><td class="num r muted">+124%</td>
+<td class="num r pos">+5%</td><td class="num r neg">−16%</td><td class="num r">R$ 118</td></tr><tr><td><span class="bname">NXH 720</span><span class="bsub">Next Haddock Lobo</span></td>
 <td class="num">jan–out</td>
 <td class="num r">60% → 62% <span class="pos">(+2,0)</span></td>
-<td class="num r zero">−2%</td>
-<td class="num r">+4%</td>
-<td class="num r b zero">+2%</td>
-<td class="num r muted">+44%</td>
-<td class="num r pos">+7%</td><td class="num r pos">+6%</td><td class="num r">R$ 182</td></tr>
-<tr><td><span class="bname">AYH 634</span> <span class="bsub">Ayra Higienópolis · novo</span></td>
+<td class="num r zero">−2%</td><td class="num r">+4%</td>
+<td class="num r b zero">+2%</td><td class="num r muted">+44%</td>
+<td class="num r pos">+7%</td><td class="num r pos">+6%</td><td class="num r">R$ 182</td></tr><tr><td><span class="bname">AYH 634</span><span class="bsub">Ayra Higienópolis · novo</span></td>
 <td class="num">fev–out</td>
 <td class="num r">57% → 58% <span class="zero">(+0,3)</span></td>
-<td class="num r zero">0%</td>
-<td class="num r">+6%</td>
-<td class="num r b zero">+2%</td>
-<td class="num r muted">+33%</td>
-<td class="num r zero">+1%</td><td class="num r neg">−6%</td><td class="num r">R$ 112</td></tr>
-<tr><td><span class="bname">DGE 197</span> <span class="bsub">Setin Downtown Genebra</span></td>
+<td class="num r zero">0%</td><td class="num r">+6%</td>
+<td class="num r b zero">+2%</td><td class="num r muted">+33%</td>
+<td class="num r zero">+1%</td><td class="num r neg">−6%</td><td class="num r">R$ 112</td></tr><tr><td><span class="bname">DGE 197</span><span class="bsub">Setin Downtown Genebra</span></td>
 <td class="num">jan–out</td>
-<td class="num r">64% → 66% <span class="zero">(+1,5)</span></td>
-<td class="num r neg">−2%</td>
-<td class="num r">+7%</td>
-<td class="num r b zero">+1%</td>
-<td class="num r muted">+23%</td>
-<td class="num r pos">+3%</td><td class="num r neg">−7%</td><td class="num r">R$ 93</td></tr>
-<tr><td><span class="bname">PVP 936</span> <span class="bsub">Pivô Pamplona · novo</span></td>
+<td class="num r">64% → 66% <span class="pos">(+1,5)</span></td>
+<td class="num r neg">−2%</td><td class="num r">+7%</td>
+<td class="num r b zero">+1%</td><td class="num r muted">+23%</td>
+<td class="num r pos">+3%</td><td class="num r neg">−7%</td><td class="num r">R$ 93</td></tr><tr><td><span class="bname">PVP 936</span><span class="bsub">Pivô Pamplona · novo</span></td>
 <td class="num">jan–out</td>
 <td class="num r">65% → 65% <span class="zero">(+0,2)</span></td>
-<td class="num r zero">−1%</td>
-<td class="num r">+8%</td>
-<td class="num r b zero">+1%</td>
-<td class="num r muted">+52%</td>
-<td class="num r pos">+5%</td><td class="num r pos">+37%</td><td class="num r">R$ 208</td></tr>
-<tr><td><span class="bname">HEG 1200</span> <span class="bsub">Hege Jardins · novo</span></td>
+<td class="num r zero">−1%</td><td class="num r">+8%</td>
+<td class="num r b zero">+1%</td><td class="num r muted">+52%</td>
+<td class="num r pos">+5%</td><td class="num r pos">+37%</td><td class="num r">R$ 208</td></tr><tr><td><span class="bname">HEG 1200</span><span class="bsub">Hege Jardins · novo</span></td>
 <td class="num">abr–out</td>
 <td class="num r">60% → 60% <span class="zero">(+0,1)</span></td>
-<td class="num r zero">−1%</td>
-<td class="num r">+6%</td>
-<td class="num r b zero">0%</td>
-<td class="num r muted">+37%</td>
-<td class="num r zero">0%</td><td class="num r zero">0%</td><td class="num r">R$ 170</td></tr>
-<tr><td><span class="bname">NXB 1333</span> <span class="bsub">Next Bela Cintra</span></td>
+<td class="num r zero">−1%</td><td class="num r">+6%</td>
+<td class="num r b zero">0%</td><td class="num r muted">+37%</td>
+<td class="num r zero">0%</td><td class="num r zero">0%</td><td class="num r">R$ 170</td></tr><tr><td><span class="bname">NXB 1333</span><span class="bsub">Next Bela Cintra</span></td>
 <td class="num">jan–out</td>
-<td class="num r">60% → 61% <span class="zero">(+1,7)</span></td>
-<td class="num r neg">−3%</td>
-<td class="num r">+2%</td>
-<td class="num r b zero">0%</td>
-<td class="num r muted">+48%</td>
-<td class="num r pos">+6%</td><td class="num r pos">+8%</td><td class="num r">R$ 171</td></tr>
-<tr><td><span class="bname">NXF 444</span> <span class="bsub">Next Franca</span></td>
+<td class="num r">60% → 61% <span class="pos">(+1,7)</span></td>
+<td class="num r neg">−3%</td><td class="num r">+2%</td>
+<td class="num r b zero">0%</td><td class="num r muted">+48%</td>
+<td class="num r pos">+6%</td><td class="num r pos">+8%</td><td class="num r">R$ 171</td></tr><tr><td><span class="bname">NXF 444</span><span class="bsub">Next Franca</span></td>
 <td class="num">jan–out</td>
 <td class="num r">58% → 61% <span class="pos">(+3,1)</span></td>
-<td class="num r neg">−7%</td>
-<td class="num r">+6%</td>
-<td class="num r b zero">−1%</td>
-<td class="num r muted">+42%</td>
-<td class="num r zero">+2%</td><td class="num r pos">+2%</td><td class="num r">R$ 160</td></tr>
-<tr><td><span class="bname">KAS 99</span> <span class="bsub">Kasa</span></td>
+<td class="num r neg">−7%</td><td class="num r">+6%</td>
+<td class="num r b zero">−1%</td><td class="num r muted">+42%</td>
+<td class="num r zero">+2%</td><td class="num r pos">+2%</td><td class="num r">R$ 160</td></tr><tr><td><span class="bname">KAS 99</span><span class="bsub">Kasa</span></td>
 <td class="num">jan–out</td>
 <td class="num r">56% → 56% <span class="zero">(−0,7)</span></td>
-<td class="num r zero">−2%</td>
-<td class="num r">+1%</td>
-<td class="num r b neg">−2%</td>
-<td class="num r muted">+45%</td>
-<td class="num r pos">+6%</td><td class="num r pos">+14%</td><td class="num r">R$ 133</td></tr>
-<tr><td><span class="bname">PVJ 44</span> <span class="bsub">Pivô Jardins · novo</span></td>
+<td class="num r zero">−2%</td><td class="num r">+1%</td>
+<td class="num r b neg">−2%</td><td class="num r muted">+45%</td>
+<td class="num r pos">+6%</td><td class="num r pos">+14%</td><td class="num r">R$ 133</td></tr><tr><td><span class="bname">PVJ 44</span><span class="bsub">Pivô Jardins · novo</span></td>
 <td class="num">jul–out</td>
 <td class="num r">62% → 62% <span class="zero">(+0,8)</span></td>
-<td class="num r neg">−5%</td>
-<td class="num r">+4%</td>
-<td class="num r b neg">−2%</td>
-<td class="num r muted">+32%</td>
-<td class="num r zero">−2%</td><td class="num r neg">−3%</td><td class="num r">R$ 169</td></tr>
-<tr><td><span class="bname">HLK 407</span> <span class="bsub">Homelike</span></td>
+<td class="num r neg">−5%</td><td class="num r">+4%</td>
+<td class="num r b neg">−2%</td><td class="num r muted">+32%</td>
+<td class="num r zero">−2%</td><td class="num r neg">−3%</td><td class="num r">R$ 169</td></tr><tr><td><span class="bname">HLK 407</span><span class="bsub">Homelike</span></td>
 <td class="num">jan–out</td>
 <td class="num r">65% → 68% <span class="pos">(+3,1)</span></td>
-<td class="num r neg">−8%</td>
-<td class="num r">−4%</td>
-<td class="num r b neg">−3%</td>
-<td class="num r muted">+37%</td>
-<td class="num r neg">−7%</td><td class="num r neg">−2%</td><td class="num r">R$ 162</td></tr>
-<tr><td><span class="bname">NXP 950</span> <span class="bsub">Next Pamplona</span></td>
+<td class="num r neg">−8%</td><td class="num r">−4%</td>
+<td class="num r b neg">−3%</td><td class="num r muted">+37%</td>
+<td class="num r neg">−7%</td><td class="num r neg">−2%</td><td class="num r">R$ 162</td></tr><tr><td><span class="bname">NXP 950</span><span class="bsub">Next Pamplona</span></td>
 <td class="num">jan–out</td>
 <td class="num r">64% → 64% <span class="zero">(−0,5)</span></td>
-<td class="num r neg">−4%</td>
-<td class="num r">+7%</td>
-<td class="num r b neg">−4%</td>
-<td class="num r muted">+50%</td>
-<td class="num r zero">0%</td><td class="num r pos">+5%</td><td class="num r">R$ 182</td></tr>
-<tr><td><span class="bname">PVN 39</span> <span class="bsub">Pivô Vila Nova · novo</span></td>
+<td class="num r neg">−4%</td><td class="num r">+7%</td>
+<td class="num r b neg">−4%</td><td class="num r muted">+50%</td>
+<td class="num r zero">0%</td><td class="num r pos">+5%</td><td class="num r">R$ 182</td></tr><tr><td><span class="bname">PVN 39</span><span class="bsub">Pivô Vila Nova · novo</span></td>
 <td class="num">ago–out</td>
 <td class="num r">63% → 62% <span class="zero">(−1,3)</span></td>
-<td class="num r neg">−3%</td>
-<td class="num r">+2%</td>
-<td class="num r b neg">−5%</td>
-<td class="num r muted">+35%</td>
-<td class="num r neg">−5%</td><td class="num r neg">−2%</td><td class="num r">R$ 246</td></tr>
-<tr><td><span class="bname">AYM 181</span> <span class="bsub">Ayra Moema · novo</span></td>
+<td class="num r neg">−3%</td><td class="num r">+2%</td>
+<td class="num r b neg">−5%</td><td class="num r muted">+35%</td>
+<td class="num r neg">−5%</td><td class="num r neg">−2%</td><td class="num r">R$ 246</td></tr><tr><td><span class="bname">AYM 181</span><span class="bsub">Ayra Moema · novo</span></td>
 <td class="num">mai–out</td>
 <td class="num r">58% → 69% <span class="pos">(+10,3)</span></td>
-<td class="num r neg">−20%</td>
-<td class="num r">−5%</td>
-<td class="num r b neg">−5%</td>
-<td class="num r muted">+121%</td>
-<td class="num r pos">+4%</td><td class="num r pos">+11%</td><td class="num r">R$ 118</td></tr>
-<tr><td><span class="bname">NUN 61</span> <span class="bsub">Helbor NUN</span></td>
+<td class="num r neg">−20%</td><td class="num r">−5%</td>
+<td class="num r b neg">−5%</td><td class="num r muted">+121%</td>
+<td class="num r pos">+4%</td><td class="num r pos">+11%</td><td class="num r">R$ 118</td></tr><tr><td><span class="bname">NUN 61</span><span class="bsub">Helbor NUN</span></td>
 <td class="num">jan–out</td>
 <td class="num r">63% → 60% <span class="neg">(−3,8)</span></td>
-<td class="num r neg">−3%</td>
-<td class="num r">+1%</td>
-<td class="num r b neg">−8%</td>
-<td class="num r muted">+21%</td>
-<td class="num r neg">−3%</td><td class="num r neg">−4%</td><td class="num r">R$ 230</td></tr>
-<tr><td><span class="bname">NXD 382</span> <span class="bsub">Next Home Design</span></td>
+<td class="num r neg">−3%</td><td class="num r">+1%</td>
+<td class="num r b neg">−8%</td><td class="num r muted">+21%</td>
+<td class="num r neg">−3%</td><td class="num r neg">−4%</td><td class="num r">R$ 230</td></tr><tr><td><span class="bname">NXD 382</span><span class="bsub">Next Home Design</span></td>
 <td class="num">jan–out</td>
 <td class="num r">61% → 59% <span class="neg">(−2,1)</span></td>
-<td class="num r neg">−6%</td>
-<td class="num r">0%</td>
-<td class="num r b neg">−8%</td>
-<td class="num r muted">+20%</td>
-<td class="num r neg">−5%</td><td class="num r neg">−5%</td><td class="num r">R$ 213</td></tr>
-<tr><td><span class="bname">NXV 601</span> <span class="bsub">Next Vila Nova</span></td>
+<td class="num r neg">−6%</td><td class="num r">0%</td>
+<td class="num r b neg">−8%</td><td class="num r muted">+20%</td>
+<td class="num r neg">−5%</td><td class="num r neg">−5%</td><td class="num r">R$ 213</td></tr><tr><td><span class="bname">NXV 601</span><span class="bsub">Next Vila Nova</span></td>
 <td class="num">jan–out</td>
 <td class="num r">63% → 63% <span class="zero">(−0,1)</span></td>
-<td class="num r neg">−9%</td>
-<td class="num r">−3%</td>
-<td class="num r b neg">−9%</td>
-<td class="num r muted">+28%</td>
-<td class="num r neg">−9%</td><td class="num r neg">−6%</td><td class="num r">R$ 170</td></tr>
-<tr><td><span class="bname">UPR 1577</span> <span class="bsub">Upper Itaim</span></td>
+<td class="num r neg">−9%</td><td class="num r">−3%</td>
+<td class="num r b neg">−9%</td><td class="num r muted">+28%</td>
+<td class="num r neg">−9%</td><td class="num r neg">−6%</td><td class="num r">R$ 170</td></tr><tr><td><span class="bname">UPR 1577</span><span class="bsub">Upper Itaim</span></td>
 <td class="num">jan–out</td>
 <td class="num r">62% → 61% <span class="zero">(−0,9)</span></td>
-<td class="num r neg">−8%</td>
-<td class="num r">−3%</td>
-<td class="num r b neg">−9%</td>
-<td class="num r muted">+22%</td>
-<td class="num r neg">−9%</td><td class="num r neg">−4%</td><td class="num r">R$ 161</td></tr>
-<tr><td><span class="bname">AYR 423</span> <span class="bsub">Ayra Pinheiros</span></td>
+<td class="num r neg">−8%</td><td class="num r">−3%</td>
+<td class="num r b neg">−9%</td><td class="num r muted">+22%</td>
+<td class="num r neg">−9%</td><td class="num r neg">−4%</td><td class="num r">R$ 161</td></tr><tr><td><span class="bname">AYR 423</span><span class="bsub">Ayra Pinheiros</span></td>
 <td class="num">jan–out</td>
-<td class="num r">70% → 68% <span class="zero">(−1,7)</span></td>
-<td class="num r neg">−8%</td>
-<td class="num r">−6%</td>
-<td class="num r b neg">−9%</td>
-<td class="num r muted">+56%</td>
-<td class="num r neg">−4%</td><td class="num r neg">−6%</td><td class="num r">R$ 222</td></tr>
-<tr><td><span class="bname">PQJ 155</span> <span class="bsub">Parque Jockey</span></td>
+<td class="num r">70% → 68% <span class="neg">(−1,7)</span></td>
+<td class="num r neg">−8%</td><td class="num r">−6%</td>
+<td class="num r b neg">−9%</td><td class="num r muted">+56%</td>
+<td class="num r neg">−4%</td><td class="num r neg">−6%</td><td class="num r">R$ 222</td></tr><tr><td><span class="bname">PQJ 155</span><span class="bsub">Parque Jockey</span></td>
 <td class="num">jan–out</td>
 <td class="num r">66% → 61% <span class="neg">(−5,3)</span></td>
-<td class="num r neg">−3%</td>
-<td class="num r">+2%</td>
-<td class="num r b neg">−10%</td>
-<td class="num r muted">+34%</td>
-<td class="num r neg">−9%</td><td class="num r neg">−3%</td><td class="num r">R$ 157</td></tr>
-<tr><td><span class="bname">HBV 189</span> <span class="bsub">Hub Boa Vista · novo</span></td>
+<td class="num r neg">−3%</td><td class="num r">+2%</td>
+<td class="num r b neg">−10%</td><td class="num r muted">+34%</td>
+<td class="num r neg">−9%</td><td class="num r neg">−3%</td><td class="num r">R$ 157</td></tr><tr><td><span class="bname">HBV 189</span><span class="bsub">Hub Boa Vista · novo</span></td>
 <td class="num">jan–out</td>
 <td class="num r">56% → 53% <span class="neg">(−2,5)</span></td>
-<td class="num r neg">−7%</td>
-<td class="num r">−2%</td>
-<td class="num r b neg">−11%</td>
-<td class="num r muted">+26%</td>
-<td class="num r neg">−11%</td><td class="num r pos">+38%</td><td class="num r">R$ 113</td></tr>
-<tr><td><span class="bname">ONZ 247</span> <span class="bsub">Onze22 · novo</span></td>
+<td class="num r neg">−7%</td><td class="num r">−2%</td>
+<td class="num r b neg">−11%</td><td class="num r muted">+26%</td>
+<td class="num r neg">−11%</td><td class="num r pos">+38%</td><td class="num r">R$ 113</td></tr><tr><td><span class="bname">ONZ 247</span><span class="bsub">Onze22 · novo</span></td>
 <td class="num">jan–out</td>
-<td class="num r">61% → 59% <span class="zero">(−1,8)</span></td>
-<td class="num r neg">−9%</td>
-<td class="num r">−2%</td>
-<td class="num r b neg">−11%</td>
-<td class="num r muted">+57%</td>
-<td class="num r neg">−7%</td><td class="num r neg">−15%</td><td class="num r">R$ 125</td></tr>
-<tr class="sub"><td colspan="10">Florianópolis</td></tr>
-<tr><td><span class="bname">FST 3950</span> <span class="bsub">First · novo</span></td>
-<td class="num">fev–out</td>
-<td class="num r">48% → 49% <span class="zero">(+0,8)</span></td>
-<td class="num r pos">+3%</td>
-<td class="num r">+7%</td>
-<td class="num r b pos">+7%</td>
-<td class="num r muted">+60%</td>
-<td class="num r zero">−1%</td><td class="num r pos">+13%</td><td class="num r">R$ 121</td></tr>
-<tr><td><span class="bname">ARB 301</span> <span class="bsub">Rio Branco</span></td>
-<td class="num">jan–out</td>
-<td class="num r">57% → 56% <span class="zero">(−0,5)</span></td>
-<td class="num r neg">−5%</td>
-<td class="num r">0%</td>
-<td class="num r b neg">−8%</td>
-<td class="num r muted">+63%</td>
-<td class="num r pos">+6%</td><td class="num r pos">+9%</td><td class="num r">R$ 157</td></tr>
-<tr><td><span class="bname">TPV 869</span> <span class="bsub">Top Vision</span></td>
-<td class="num">jan–out</td>
-<td class="num r">55% → 55% <span class="zero">(−0,5)</span></td>
-<td class="num r neg">−6%</td>
-<td class="num r">−1%</td>
-<td class="num r b neg">−9%</td>
-<td class="num r muted">+33%</td>
-<td class="num r pos">+4%</td><td class="num r pos">+5%</td><td class="num r">R$ 152</td></tr>
-<tr><td><span class="bname">ZEE 135</span> <span class="bsub">ZEE Studios</span></td>
-<td class="num">jan–out</td>
-<td class="num r">64% → 60% <span class="neg">(−4,2)</span></td>
-<td class="num r neg">−3%</td>
-<td class="num r">+2%</td>
-<td class="num r b neg">−10%</td>
-<td class="num r muted">+38%</td>
-<td class="num r neg">−4%</td><td class="num r pos">+14%</td><td class="num r">R$ 176</td></tr>
-<tr><td><span class="bname">CAN 203</span> <span class="bsub">Cannes</span></td>
-<td class="num">jan–out</td>
-<td class="num r">47% → 40% <span class="neg">(−6,3)</span></td>
-<td class="num r pos">+4%</td>
-<td class="num r">+4%</td>
-<td class="num r b neg">−11%</td>
-<td class="num r muted">+87%</td>
-<td class="num r zero">+1%</td><td class="num r neg">−11%</td><td class="num r">R$ 155</td></tr>
-<tr><td><span class="bname">AGM 85</span> <span class="bsub">Água Marinha</span></td>
-<td class="num">jan–out</td>
-<td class="num r">42% → 35% <span class="neg">(−6,5)</span></td>
-<td class="num r pos">+2%</td>
-<td class="num r">+6%</td>
-<td class="num r b neg">−15%</td>
-<td class="num r muted">+79%</td>
-<td class="num r neg">−13%</td><td class="num r neg">−17%</td><td class="num r">R$ 153</td></tr>
-<tr><td><span class="bname">AQL 1420</span> <span class="bsub">Aquarelle</span></td>
-<td class="num">jan–out</td>
-<td class="num r">41% → 35% <span class="neg">(−5,9)</span></td>
-<td class="num r zero">0%</td>
-<td class="num r">+5%</td>
-<td class="num r b neg">−16%</td>
-<td class="num r muted">+119%</td>
-<td class="num r neg">−11%</td><td class="num r pos">+4%</td><td class="num r">R$ 233</td></tr>
-<tr><td><span class="bname">TBG 1320</span> <span class="bsub">The Bridge · novo</span></td>
-<td class="num">ago–out</td>
-<td class="num r">56% → 52% <span class="neg">(−3,8)</span></td>
-<td class="num r neg">−13%</td>
-<td class="num r">−8%</td>
-<td class="num r b neg">−21%</td>
-<td class="num r muted">+51%</td>
-<td class="num r neg">−21%</td><td class="num r pos">+11%</td><td class="num r">R$ 137</td></tr>
-<tr class="sub"><td colspan="10">Balneário Camboriú</td></tr>
-<tr><td><span class="bname">TSO 001</span> <span class="bsub">The Spot One · novo</span></td>
-<td class="num">jan–out</td>
-<td class="num r">34% → 34% <span class="zero">(+0,1)</span></td>
-<td class="num r zero">+1%</td>
-<td class="num r">+5%</td>
-<td class="num r b zero">+1%</td>
-<td class="num r muted">+104%</td>
-<td class="num r pos">+5%</td><td class="num r neg">−3%</td><td class="num r">R$ 131</td></tr></tbody>
-  </table></div>
+<td class="num r">61% → 59% <span class="neg">(−1,8)</span></td>
+<td class="num r neg">−9%</td><td class="num r">−2%</td>
+<td class="num r b neg">−11%</td><td class="num r muted">+57%</td>
+<td class="num r neg">−7%</td><td class="num r neg">−15%</td><td class="num r">R$ 125</td></tr></tbody></table></div>
 </section>
 
-<section class="method">
+<section id="fln" class="city">
+  <div class="sec-head"><span class="eyebrow">Florianópolis</span><h2>Prêmio same store caindo desde agosto (+41,2% → +27,3% em ago–out) e mercado mais fraco</h2></div>
+  <h3>Nosso prêmio</h3>
+  <ul class="bul"><li>Nos 6 prédios same store de Florianópolis o prêmio de jan–out caiu de +18,4% para +15,1%, e a queda acelerou: ago–out +41,2% → +27,3%, outubro +42,1% → +11,9%, nov 1–17 +49,4% → +11,0%. Em outubro nossa ocupação same store aqui caiu de 74% para 59% e a diária de R$ 216 para R$ 198, com o mercado perdendo bem menos ocupação.</li><li>O movimento é concentrado em Ingleses: em ago–out a diária de AQL caiu de R$ 293 para R$ 215, a de AGM de R$ 189 para R$ 145 e a de CAN de R$ 152 para R$ 140, enquanto a diária fechada do mercado de Ingleses subiu +10,7%; mesmo baixando preço, AQL e CAN perderam ocupação. CAN também aumentou o peso de mid-term (de 20% para 28% das noites em jan–out), o que puxa a diária para baixo.</li><li>Os prédios novos (FST e TBG) rodam com +34,1% em jan–out.</li></ul>
+  <div class="tbl"><table class="t-prem"><thead><tr><th>Grupo</th><th class="r">Jan–out 25 → 26</th><th class="r">Δ</th><th class="r">Ago–out</th><th class="r">Δ</th><th class="r">Outubro</th><th class="r">Δ</th><th class="r">Nov 1–17</th><th class="r">Δ</th></tr></thead>
+<tbody><tr class="em"><td>Same store (6 prédios)</td><td class="num r">+18,4% → <b>+15,1%</b></td><td class="num r neg">−3,3 p.p.</td><td class="num r">+41,2% → <b>+27,3%</b></td><td class="num r neg">−13,9 p.p.</td><td class="num r">+42,1% → <b>+11,9%</b></td><td class="num r neg">−30,1 p.p.</td><td class="num r">+49,4% → <b>+11,0%</b></td><td class="num r neg">−38,4 p.p.</td></tr><tr class=""><td>Prédios novos (2 prédios)</td><td class="num r">– → <b>+34,1%</b></td><td class="num r muted"></td><td class="num r">– → <b>+44,5%</b></td><td class="num r muted"></td><td class="num r">– → <b>+36,3%</b></td><td class="num r muted"></td><td class="num r">– → <b>+9,9%</b></td><td class="num r muted"></td></tr><tr class=""><td>Total da cidade</td><td class="num r">+18,6% → <b>+20,5%</b></td><td class="num r pos">+1,9 p.p.</td><td class="num r">+42,1% → <b>+35,4%</b></td><td class="num r neg">−6,7 p.p.</td><td class="num r">+43,2% → <b>+22,7%</b></td><td class="num r neg">−20,5 p.p.</td><td class="num r">+50,9% → <b>+10,5%</b></td><td class="num r neg">−40,4 p.p.</td></tr></tbody></table></div>
+  <div class="panel"><div class="legend"><span><i class="c25"></i>Same store ’25</span><span><i class="c26"></i>Same store ’26</span><span><i class="cnew"></i>Novos ’26 (tracejado)</span><span>* nov = dias 1 a 17</span></div><svg viewBox="0 0 760 280" role="img" aria-label="Prêmio mensal em Florianópolis">
+<line x1="56" x2="642" y1="248.0" y2="248.0" class="grid"/>
+<text x="48" y="252.0" class="tick" text-anchor="end">−10%</text>
+<line x1="56" x2="642" y1="181.7" y2="181.7" class="grid"/>
+<text x="48" y="185.7" class="tick" text-anchor="end">+10%</text>
+<line x1="56" x2="642" y1="115.4" y2="115.4" class="grid"/>
+<text x="48" y="119.4" class="tick" text-anchor="end">+30%</text>
+<line x1="56" x2="642" y1="49.1" y2="49.1" class="grid"/>
+<text x="48" y="53.1" class="tick" text-anchor="end">+50%</text>
+<text x="56.0" y="270" class="tick" text-anchor="middle">jan</text>
+<text x="114.6" y="270" class="tick" text-anchor="middle">fev</text>
+<text x="173.2" y="270" class="tick" text-anchor="middle">mar</text>
+<text x="231.8" y="270" class="tick" text-anchor="middle">abr</text>
+<text x="290.4" y="270" class="tick" text-anchor="middle">mai</text>
+<text x="349.0" y="270" class="tick" text-anchor="middle">jun</text>
+<text x="407.6" y="270" class="tick" text-anchor="middle">jul</text>
+<text x="466.2" y="270" class="tick" text-anchor="middle">ago</text>
+<text x="524.8" y="270" class="tick" text-anchor="middle">set</text>
+<text x="583.4" y="270" class="tick" text-anchor="middle">out</text>
+<text x="642.0" y="270" class="tick" text-anchor="middle">nov*</text>
+<polyline points="56.0,229.8 114.6,202.1 173.2,126.8 231.8,94.0 290.4,42.3 349.0,67.1 407.6,114.1 466.2,122.1 524.8,34.6 583.4,75.4 642.0,51.3" class="ln y25"/>
+<circle cx="56.0" cy="229.8" r="4" class="dot y25"><title>Same store ’25 · jan: prêmio −4,5%</title></circle>
+<circle cx="56.0" cy="229.8" r="11" class="hit"><title>Same store ’25 · jan: prêmio −4,5%</title></circle>
+<circle cx="114.6" cy="202.1" r="4" class="dot y25"><title>Same store ’25 · fev: prêmio +3,8%</title></circle>
+<circle cx="114.6" cy="202.1" r="11" class="hit"><title>Same store ’25 · fev: prêmio +3,8%</title></circle>
+<circle cx="173.2" cy="126.8" r="4" class="dot y25"><title>Same store ’25 · mar: prêmio +26,6%</title></circle>
+<circle cx="173.2" cy="126.8" r="11" class="hit"><title>Same store ’25 · mar: prêmio +26,6%</title></circle>
+<circle cx="231.8" cy="94.0" r="4" class="dot y25"><title>Same store ’25 · abr: prêmio +36,5%</title></circle>
+<circle cx="231.8" cy="94.0" r="11" class="hit"><title>Same store ’25 · abr: prêmio +36,5%</title></circle>
+<circle cx="290.4" cy="42.3" r="4" class="dot y25"><title>Same store ’25 · mai: prêmio +52,1%</title></circle>
+<circle cx="290.4" cy="42.3" r="11" class="hit"><title>Same store ’25 · mai: prêmio +52,1%</title></circle>
+<circle cx="349.0" cy="67.1" r="4" class="dot y25"><title>Same store ’25 · jun: prêmio +44,6%</title></circle>
+<circle cx="349.0" cy="67.1" r="11" class="hit"><title>Same store ’25 · jun: prêmio +44,6%</title></circle>
+<circle cx="407.6" cy="114.1" r="4" class="dot y25"><title>Same store ’25 · jul: prêmio +30,4%</title></circle>
+<circle cx="407.6" cy="114.1" r="11" class="hit"><title>Same store ’25 · jul: prêmio +30,4%</title></circle>
+<circle cx="466.2" cy="122.1" r="4" class="dot y25"><title>Same store ’25 · ago: prêmio +28,0%</title></circle>
+<circle cx="466.2" cy="122.1" r="11" class="hit"><title>Same store ’25 · ago: prêmio +28,0%</title></circle>
+<circle cx="524.8" cy="34.6" r="4" class="dot y25"><title>Same store ’25 · set: prêmio +54,4%</title></circle>
+<circle cx="524.8" cy="34.6" r="11" class="hit"><title>Same store ’25 · set: prêmio +54,4%</title></circle>
+<circle cx="583.4" cy="75.4" r="4" class="dot y25"><title>Same store ’25 · out: prêmio +42,1%</title></circle>
+<circle cx="583.4" cy="75.4" r="11" class="hit"><title>Same store ’25 · out: prêmio +42,1%</title></circle>
+<circle cx="642.0" cy="51.3" r="4" class="dot y25"><title>Same store ’25 · nov 1–17: prêmio +49,4%</title></circle>
+<circle cx="642.0" cy="51.3" r="11" class="hit"><title>Same store ’25 · nov 1–17: prêmio +49,4%</title></circle>
+<polyline points="56.0,230.4 114.6,219.6 173.2,154.8 231.8,51.5 290.4,52.9 349.0,55.6 407.6,90.7 466.2,85.5 524.8,103.2 583.4,175.3 642.0,178.5" class="ln y26"/>
+<circle cx="56.0" cy="230.4" r="4" class="dot y26"><title>Same store ’26 · jan: prêmio −4,7%</title></circle>
+<circle cx="56.0" cy="230.4" r="11" class="hit"><title>Same store ’26 · jan: prêmio −4,7%</title></circle>
+<circle cx="114.6" cy="219.6" r="4" class="dot y26"><title>Same store ’26 · fev: prêmio −1,4%</title></circle>
+<circle cx="114.6" cy="219.6" r="11" class="hit"><title>Same store ’26 · fev: prêmio −1,4%</title></circle>
+<circle cx="173.2" cy="154.8" r="4" class="dot y26"><title>Same store ’26 · mar: prêmio +18,1%</title></circle>
+<circle cx="173.2" cy="154.8" r="11" class="hit"><title>Same store ’26 · mar: prêmio +18,1%</title></circle>
+<circle cx="231.8" cy="51.5" r="4" class="dot y26"><title>Same store ’26 · abr: prêmio +49,3%</title></circle>
+<circle cx="231.8" cy="51.5" r="11" class="hit"><title>Same store ’26 · abr: prêmio +49,3%</title></circle>
+<circle cx="290.4" cy="52.9" r="4" class="dot y26"><title>Same store ’26 · mai: prêmio +48,9%</title></circle>
+<circle cx="290.4" cy="52.9" r="11" class="hit"><title>Same store ’26 · mai: prêmio +48,9%</title></circle>
+<circle cx="349.0" cy="55.6" r="4" class="dot y26"><title>Same store ’26 · jun: prêmio +48,0%</title></circle>
+<circle cx="349.0" cy="55.6" r="11" class="hit"><title>Same store ’26 · jun: prêmio +48,0%</title></circle>
+<circle cx="407.6" cy="90.7" r="4" class="dot y26"><title>Same store ’26 · jul: prêmio +37,5%</title></circle>
+<circle cx="407.6" cy="90.7" r="11" class="hit"><title>Same store ’26 · jul: prêmio +37,5%</title></circle>
+<circle cx="466.2" cy="85.5" r="4" class="dot y26"><title>Same store ’26 · ago: prêmio +39,0%</title></circle>
+<circle cx="466.2" cy="85.5" r="11" class="hit"><title>Same store ’26 · ago: prêmio +39,0%</title></circle>
+<circle cx="524.8" cy="103.2" r="4" class="dot y26"><title>Same store ’26 · set: prêmio +33,7%</title></circle>
+<circle cx="524.8" cy="103.2" r="11" class="hit"><title>Same store ’26 · set: prêmio +33,7%</title></circle>
+<circle cx="583.4" cy="175.3" r="4" class="dot y26"><title>Same store ’26 · out: prêmio +11,9%</title></circle>
+<circle cx="583.4" cy="175.3" r="11" class="hit"><title>Same store ’26 · out: prêmio +11,9%</title></circle>
+<circle cx="642.0" cy="178.5" r="4" class="dot y26"><title>Same store ’26 · nov 1–17: prêmio +11,0%</title></circle>
+<circle cx="642.0" cy="178.5" r="11" class="hit"><title>Same store ’26 · nov 1–17: prêmio +11,0%</title></circle>
+<polyline points="56.0,123.8 114.6,133.0 173.2,197.0 231.8,99.5 290.4,78.9 349.0,30.3 407.6,169.8 466.2,67.8 524.8,37.0 583.4,94.6 642.0,181.9" class="ln new"/>
+<circle cx="56.0" cy="123.8" r="4" class="dot new"><title>Novos ’26 · jan: prêmio +27,5%</title></circle>
+<circle cx="56.0" cy="123.8" r="11" class="hit"><title>Novos ’26 · jan: prêmio +27,5%</title></circle>
+<circle cx="114.6" cy="133.0" r="4" class="dot new"><title>Novos ’26 · fev: prêmio +24,7%</title></circle>
+<circle cx="114.6" cy="133.0" r="11" class="hit"><title>Novos ’26 · fev: prêmio +24,7%</title></circle>
+<circle cx="173.2" cy="197.0" r="4" class="dot new"><title>Novos ’26 · mar: prêmio +5,4%</title></circle>
+<circle cx="173.2" cy="197.0" r="11" class="hit"><title>Novos ’26 · mar: prêmio +5,4%</title></circle>
+<circle cx="231.8" cy="99.5" r="4" class="dot new"><title>Novos ’26 · abr: prêmio +34,8%</title></circle>
+<circle cx="231.8" cy="99.5" r="11" class="hit"><title>Novos ’26 · abr: prêmio +34,8%</title></circle>
+<circle cx="290.4" cy="78.9" r="4" class="dot new"><title>Novos ’26 · mai: prêmio +41,0%</title></circle>
+<circle cx="290.4" cy="78.9" r="11" class="hit"><title>Novos ’26 · mai: prêmio +41,0%</title></circle>
+<circle cx="349.0" cy="30.3" r="4" class="dot new"><title>Novos ’26 · jun: prêmio +55,7%</title></circle>
+<circle cx="349.0" cy="30.3" r="11" class="hit"><title>Novos ’26 · jun: prêmio +55,7%</title></circle>
+<circle cx="407.6" cy="169.8" r="4" class="dot new"><title>Novos ’26 · jul: prêmio +13,6%</title></circle>
+<circle cx="407.6" cy="169.8" r="11" class="hit"><title>Novos ’26 · jul: prêmio +13,6%</title></circle>
+<circle cx="466.2" cy="67.8" r="4" class="dot new"><title>Novos ’26 · ago: prêmio +44,4%</title></circle>
+<circle cx="466.2" cy="67.8" r="11" class="hit"><title>Novos ’26 · ago: prêmio +44,4%</title></circle>
+<circle cx="524.8" cy="37.0" r="4" class="dot new"><title>Novos ’26 · set: prêmio +53,7%</title></circle>
+<circle cx="524.8" cy="37.0" r="11" class="hit"><title>Novos ’26 · set: prêmio +53,7%</title></circle>
+<circle cx="583.4" cy="94.6" r="4" class="dot new"><title>Novos ’26 · out: prêmio +36,3%</title></circle>
+<circle cx="583.4" cy="94.6" r="11" class="hit"><title>Novos ’26 · out: prêmio +36,3%</title></circle>
+<circle cx="642.0" cy="181.9" r="4" class="dot new"><title>Novos ’26 · nov 1–17: prêmio +9,9%</title></circle>
+<circle cx="642.0" cy="181.9" r="11" class="hit"><title>Novos ’26 · nov 1–17: prêmio +9,9%</title></circle>
+<text x="652" y="55.3" class="dlab">Same store ’25</text>
+<text x="652" y="182.5" class="dlab">Same store ’26</text>
+<text x="652" y="198.5" class="dlab">Novos ’26</text>
+</svg></div>
+  <h3>Mercado</h3>
+  <ul class="bul"><li>RevPAR do mercado de Florianópolis em jan–out: −10,7%. A queda veio da ocupação (−3,9 p.p.), com diária fechada praticamente estável (−1,2%). A oferta cresceu +65% e as noites vendidas +52%: aqui a demanda cresceu menos que a oferta.</li><li>Ingleses (praia) perdeu 6,3 p.p. de ocupação no ano (−11,8% de RevPAR) com oferta +88%. Em nov 1–17 o mercado de Ingleses subiu a diária +16,9% e perdeu 10,2 p.p. de ocupação.</li><li>Centro / Agronômica / Saco Grande caiu 9,8% no ano, mais por diária (−5,1%) do que por ocupação (−1,7 p.p.). O fim de semana pesou mais: RevPAR sex–sáb −19,7% em ago–out contra −3,8% dom–qui. Em nov 1–17 virou: +10,3%.</li><li>Pace do verão: para dez/26 o mercado de Florianópolis tem 23% vs 28% de ocupação vendida contra o mesmo dia do ano passado, ou seja, atrás. Em Ingleses, dez/26 está em 26% vs 32% e jan/27 em 37% vs 41%, também atrás. O Centro está à frente em jan/27 (20% vs 11%).</li></ul>
+  <div class="tbl"><table class="t-city"><thead><tr><th>Métrica</th><th class="r">jan</th><th class="r">fev</th><th class="r">mar</th><th class="r">abr</th><th class="r">mai</th><th class="r">jun</th><th class="r">jul</th><th class="r">ago</th><th class="r">set</th><th class="r">out</th><th class="r">nov 1–17</th><th class="r">Jan–out</th><th class="r">Nível jan–out 26</th></tr></thead>
+<tbody><tr><td class="mlab">Ocupação</td><td class="num r hm" style="--a:42%" data-t="neg">−13,1</td><td class="num r hm" style="--a:35%" data-t="neg">−6,7</td><td class="num r hm" style="--a:41%" data-t="neg">−7,8</td><td class="num r hm" style="--a:28%" data-t="neg">−5,3</td><td class="num r hm" style="--a:7%" data-t="neg">−1,3</td><td class="num r hm" style="--a:8%" data-t="neg">−1,6</td><td class="num r hm" style="--a:8%" data-t="pos">+1,6</td><td class="num r hm" style="--a:16%" data-t="neg">−3,0</td><td class="num r hm" style="--a:10%" data-t="pos">+1,8</td><td class="num r hm" style="--a:18%" data-t="neg">−3,4</td><td class="num r hm" style="--a:9%" data-t="neg">−1,7</td><td class="num r hm ytd" style="--a:20%" data-t="neg">−3,9</td><td class="num r muted">48%</td></tr><tr><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:1%" data-t="pos">0%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:3%" data-t="neg">−2%</td><td class="num r hm" style="--a:14%" data-t="neg">−6%</td><td class="num r hm" style="--a:5%" data-t="neg">−3%</td><td class="num r hm" style="--a:0%" data-t="pos">0%</td><td class="num r hm" style="--a:10%" data-t="neg">−5%</td><td class="num r hm" style="--a:16%" data-t="neg">−7%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:18%" data-t="pos">+8%</td><td class="num r hm ytd" style="--a:3%" data-t="neg">−1%</td><td class="num r muted">R$ 300</td></tr><tr><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:2%" data-t="pos">+1%</td><td class="num r hm" style="--a:8%" data-t="pos">+4%</td><td class="num r hm" style="--a:7%" data-t="neg">−3%</td><td class="num r hm" style="--a:3%" data-t="pos">+2%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:16%" data-t="pos">+8%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm ytd" style="--a:4%" data-t="pos">+2%</td><td class="num r muted">R$ 328</td></tr><tr><td class="mlab">RevPAR</td><td class="num r hm" style="--a:29%" data-t="neg">−14%</td><td class="num r hm" style="--a:17%" data-t="neg">−8%</td><td class="num r hm" style="--a:31%" data-t="neg">−15%</td><td class="num r hm" style="--a:35%" data-t="neg">−17%</td><td class="num r hm" style="--a:14%" data-t="neg">−7%</td><td class="num r hm" style="--a:14%" data-t="neg">−6%</td><td class="num r hm" style="--a:5%" data-t="neg">−2%</td><td class="num r hm" style="--a:39%" data-t="neg">−18%</td><td class="num r hm" style="--a:11%" data-t="pos">+5%</td><td class="num r hm" style="--a:11%" data-t="neg">−5%</td><td class="num r hm" style="--a:11%" data-t="pos">+5%</td><td class="num r hm ytd" style="--a:22%" data-t="neg">−11%</td><td class="num r muted">R$ 163</td></tr><tr><td class="mlab">Oferta (anúncios)</td><td class="num r hm neu">+72%</td><td class="num r hm neu">+65%</td><td class="num r hm neu">+61%</td><td class="num r hm neu">+62%</td><td class="num r hm neu">+57%</td><td class="num r hm neu">+69%</td><td class="num r hm neu">+80%</td><td class="num r hm neu">+77%</td><td class="num r hm neu">+87%</td><td class="num r hm neu">+37%</td><td class="num r hm neu">+37%</td><td class="num r hm ytd neu">+65%</td><td class="num r muted"></td></tr><tr><td class="mlab">Noites vendidas</td><td class="num r hm neu">+47%</td><td class="num r hm neu">+53%</td><td class="num r hm neu">+42%</td><td class="num r hm neu">+45%</td><td class="num r hm neu">+49%</td><td class="num r hm neu">+56%</td><td class="num r hm neu">+81%</td><td class="num r hm neu">+60%</td><td class="num r hm neu">+90%</td><td class="num r hm neu">+28%</td><td class="num r hm neu">+34%</td><td class="num r hm ytd neu">+52%</td><td class="num r muted"></td></tr></tbody></table></div>
+  <h3>Submercados</h3>
+<p class="small">Variação jan–out 2026 vs 2025, salvo indicado. Ocupação em pontos percentuais; demais em %.</p>
+<div class="tbl"><table class="t-sub"><thead><tr><th>Submercado</th><th class="r">Ocupação jan–out<br>25 → 26 (p.p.)</th><th class="r">Diária<br>fechada</th><th class="r">Preço anunciado<br>p25 · p50 · p75</th><th class="r">RevPAR<br>jan–out</th><th class="r">Oferta</th><th class="r">Noites<br>vendidas</th><th class="r">RevPAR<br>dom–qui</th><th class="r">RevPAR<br>sex–sáb</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th></tr></thead>
+<tbody><tr class="em"><td><span class="bname">Cidade inteira</span><span class="bsub">8 prédios</span></td>
+<td class="num r">52% → 48% <span class="neg">(−3,9)</span></td>
+<td class="num r zero">−1%</td>
+<td class="num r">0% · +2% · +3%</td>
+<td class="num r b neg">−11%</td>
+<td class="num r muted">+65%</td><td class="num r muted">+52%</td>
+<td class="num r neg">−10%</td><td class="num r neg">−13%</td><td class="num r neg">−7%</td><td class="num r pos">+5%</td></tr><tr class=""><td><span class="bname">Ingleses (praia)</span><span class="bsub">AGM, AQL, CAN</span></td>
+<td class="num r">46% → 39% <span class="neg">(−6,3)</span></td>
+<td class="num r pos">+3%</td>
+<td class="num r">+3% · +5% · +8%</td>
+<td class="num r b neg">−12%</td>
+<td class="num r muted">+88%</td><td class="num r muted">+62%</td>
+<td class="num r neg">−11%</td><td class="num r neg">−12%</td><td class="num r zero">−2%</td><td class="num r neg">−10%</td></tr><tr class=""><td><span class="bname">Centro / Agronômica / Saco Grande</span><span class="bsub">ARB, TBG, TPV, ZEE, FST</span></td>
+<td class="num r">57% → 55% <span class="neg">(−1,7)</span></td>
+<td class="num r neg">−5%</td>
+<td class="num r">−3% · 0% · −1%</td>
+<td class="num r b neg">−10%</td>
+<td class="num r muted">+50%</td><td class="num r muted">+45%</td>
+<td class="num r neg">−9%</td><td class="num r neg">−12%</td><td class="num r neg">−9%</td><td class="num r pos">+10%</td></tr></tbody></table></div>
+  <div class="two">
+    <div class="col"><h3>Semana × fim de semana</h3><div class="tbl"><table class="t-wk"><thead><tr><th>Noites</th><th class="r">Ocupação</th><th class="r">Diária fechada</th><th class="r">RevPAR</th></tr></thead>
+<tbody><tr><td>Jan–out · dom–qui</td><td class="num r">50% → 47% <span class="neg">(−3,6)</span></td>
+<td class="num r">R$ 301 → R$ 299 <span class="zero">(−1%)</span></td>
+<td class="num r b neg">−10,1%</td></tr><tr><td>Jan–out · sex–sáb</td><td class="num r">57% → 52% <span class="neg">(−4,9)</span></td>
+<td class="num r">R$ 310 → R$ 302 <span class="neg">(−2%)</span></td>
+<td class="num r b neg">−12,6%</td></tr><tr><td>Ago–out · dom–qui</td><td class="num r">41% → 41% <span class="zero">(−0,4)</span></td>
+<td class="num r">R$ 236 → R$ 237 <span class="zero">(0%)</span></td>
+<td class="num r b neg">−3,1%</td></tr><tr><td>Ago–out · sex–sáb</td><td class="num r">52% → 47% <span class="neg">(−5,0)</span></td>
+<td class="num r">R$ 261 → R$ 249 <span class="neg">(−5%)</span></td>
+<td class="num r b neg">−17,1%</td></tr></tbody></table></div></div>
+    <div class="col"><h3>Pace dos próximos meses</h3><div class="tbl"><table class="t-pace"><thead><tr><th>Ocupação do mercado já vendida<br>hoje vs mesmo dia do ano passado</th><th class="r">dez/26</th><th class="r">jan/27</th><th class="r">fev/27</th><th class="r">mar/27</th><th class="r">Oferta dez<br>vs LY</th></tr></thead>
+<tbody><tr class="em"><td class="bname">Cidade inteira</td><td class="num r">23% <span class="muted">vs 28%</span> <span class="neg">(−4,7)</span></td><td class="num r">27% <span class="muted">vs 22%</span> <span class="pos">(+4,2)</span></td><td class="num r">12% <span class="muted">vs 11%</span> <span class="pos">(+1,6)</span></td><td class="num r">6% <span class="muted">vs 3%</span> <span class="pos">(+2,5)</span></td><td class="num r muted">+58%</td></tr><tr class=""><td class="bname">Ingleses (praia)</td><td class="num r">26% <span class="muted">vs 32%</span> <span class="neg">(−6,2)</span></td><td class="num r">37% <span class="muted">vs 41%</span> <span class="neg">(−4,0)</span></td><td class="num r">21% <span class="muted">vs 22%</span> <span class="zero">(−0,7)</span></td><td class="num r">10% <span class="muted">vs 8%</span> <span class="pos">(+2,3)</span></td><td class="num r muted">+53%</td></tr><tr class=""><td class="bname">Centro / Agronômica / Saco Grande</td><td class="num r">22% <span class="muted">vs 26%</span> <span class="neg">(−3,8)</span></td><td class="num r">20% <span class="muted">vs 11%</span> <span class="pos">(+9,0)</span></td><td class="num r">7% <span class="muted">vs 4%</span> <span class="pos">(+2,9)</span></td><td class="num r">3% <span class="muted">vs 0%</span> <span class="pos">(+2,6)</span></td><td class="num r muted">+62%</td></tr></tbody></table></div></div>
+  </div>
+  <h3>Same store por prédio</h3><div class="tbl"><table class="t-ss">
+<thead><tr><th>Prédio</th><th class="r">Unid.</th><th class="r">Prêmio jan–out<br>25 → 26</th><th class="r">Δ</th><th class="r">Ago–out<br>25 → 26</th><th class="r">Nov 1–17<br>25 → 26</th><th class="r">Nosso RevPAR<br>YoY</th><th class="r">RevPAR mercado<br>YoY</th><th class="r">Ocup. ago–out 26<br>nós / mercado</th><th class="r">Diária ago–out (R$)<br>nós 25 → 26 / mercado</th></tr></thead>
+<tbody><tr><td><span class="bname">AGM 85</span><span class="bsub">Água Marinha</span></td>
+<td class="num r">8</td>
+<td class="num r">+29% → <b>+44%</b></td><td class="num r pos">+15 p.p.</td>
+<td class="num r">+110% → +92%</td>
+<td class="num r">+145% → +80%</td>
+<td class="num r">−4%</td><td class="num r">−14%</td>
+<td class="num r">62% / 24%</td><td class="num r">189 → 145 / 195</td></tr><tr><td><span class="bname">TPV 869</span><span class="bsub">Top Vision</span></td>
+<td class="num r">17</td>
+<td class="num r">+47% → <b>+58%</b></td><td class="num r pos">+10 p.p.</td>
+<td class="num r">+39% → +43%</td>
+<td class="num r">+53% → +36%</td>
+<td class="num r">−1%</td><td class="num r">−7%</td>
+<td class="num r">70% / 52%</td><td class="num r">269 → 279 / 261</td></tr><tr><td><span class="bname">ZEE 135</span><span class="bsub">ZEE Studios</span></td>
+<td class="num r">11</td>
+<td class="num r">+10% → <b>+11%</b></td><td class="num r zero">+2 p.p.</td>
+<td class="num r">+13% → +10%</td>
+<td class="num r">+26% → −10%</td>
+<td class="num r">−8%</td><td class="num r">−9%</td>
+<td class="num r">66% / 56%</td><td class="num r">243 → 242 / 257</td></tr><tr><td><span class="bname">ARB 301</span><span class="bsub">Rio Branco</span></td>
+<td class="num r">31</td>
+<td class="num r">+17% → <b>+17%</b></td><td class="num r zero">0 p.p.</td>
+<td class="num r">+23% → +14%</td>
+<td class="num r">+38% → +3%</td>
+<td class="num r">−6%</td><td class="num r">−6%</td>
+<td class="num r">74% / 54%</td><td class="num r">225 → 219 / 263</td></tr><tr><td><span class="bname">AQL 1420</span><span class="bsub">Aquarelle</span></td>
+<td class="num r">6</td>
+<td class="num r">+39% → <b>+34%</b></td><td class="num r neg">−5 p.p.</td>
+<td class="num r">+79% → +24%</td>
+<td class="num r">+120% → +19%</td>
+<td class="num r">−17%</td><td class="num r">−14%</td>
+<td class="num r">49% / 24%</td><td class="num r">293 → 215 / 360</td></tr><tr><td><span class="bname">CAN 203</span><span class="bsub">Cannes</span></td>
+<td class="num r">61</td>
+<td class="num r">+6% → <b>−4%</b></td><td class="num r neg">−10 p.p.</td>
+<td class="num r">+64% → +36%</td>
+<td class="num r">+45% → +6%</td>
+<td class="num r">−18%</td><td class="num r">−10%</td>
+<td class="num r">58% / 27%</td><td class="num r">152 → 140 / 220</td></tr></tbody></table></div>
+  <h3>Prédios novos</h3><div class="tbl"><table class="t-new"><thead><tr><th>Prédio</th><th>Entrada</th><th class="r">Unid. 26</th><th class="r">Meses 1–3</th><th class="r">Meses 4–6</th><th class="r">Meses 7–12</th><th class="r">Ago–out 26</th><th class="r">Ocup. ago–out<br>nós / mercado</th><th class="r">Diária ago–out (R$)<br>nós / mercado</th></tr></thead>
+<tbody><tr><td><span class="bname">FST 3950</span><span class="bsub">First</span></td>
+<td class="num">25/08/25</td><td class="num r">17</td>
+<td class="num r">+87%</td><td class="num r">+13%</td><td class="num r">+66%</td><td class="num r b">+74%</td>
+<td class="num r">71% / 45%</td><td class="num r">250 / 227</td></tr><tr><td><span class="bname">TBG 1320</span><span class="bsub">The Bridge</span></td>
+<td class="num">01/03/26</td><td class="num r">50</td>
+<td class="num r">+34%</td><td class="num r">+30%</td><td class="num r">+34%</td><td class="num r b">+39%</td>
+<td class="num r">76% / 52%</td><td class="num r">250 / 264</td></tr></tbody></table></div>
+  <h3>Mercado por prédio</h3>
+  <div class="tbl"><table class="t-mkt"><thead><tr><th>Mercado do prédio</th><th>Base</th><th class="r">Ocupação 25 → 26</th><th class="r">Diária fechada</th><th class="r">Preço anunciado</th><th class="r">RevPAR</th><th class="r">Oferta</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th><th class="r">RevPAR 26</th></tr></thead>
+<tbody><tr><td><span class="bname">FST 3950</span><span class="bsub">First · novo</span></td>
+<td class="num">fev–out</td>
+<td class="num r">48% → 49% <span class="zero">(+0,8)</span></td>
+<td class="num r pos">+3%</td><td class="num r">+7%</td>
+<td class="num r b pos">+7%</td><td class="num r muted">+60%</td>
+<td class="num r zero">−1%</td><td class="num r pos">+13%</td><td class="num r">R$ 121</td></tr><tr><td><span class="bname">ARB 301</span><span class="bsub">Rio Branco</span></td>
+<td class="num">jan–out</td>
+<td class="num r">57% → 56% <span class="zero">(−0,5)</span></td>
+<td class="num r neg">−5%</td><td class="num r">0%</td>
+<td class="num r b neg">−8%</td><td class="num r muted">+63%</td>
+<td class="num r pos">+6%</td><td class="num r pos">+9%</td><td class="num r">R$ 157</td></tr><tr><td><span class="bname">TPV 869</span><span class="bsub">Top Vision</span></td>
+<td class="num">jan–out</td>
+<td class="num r">55% → 55% <span class="zero">(−0,5)</span></td>
+<td class="num r neg">−6%</td><td class="num r">−1%</td>
+<td class="num r b neg">−9%</td><td class="num r muted">+33%</td>
+<td class="num r pos">+4%</td><td class="num r pos">+5%</td><td class="num r">R$ 152</td></tr><tr><td><span class="bname">ZEE 135</span><span class="bsub">ZEE Studios</span></td>
+<td class="num">jan–out</td>
+<td class="num r">64% → 60% <span class="neg">(−4,2)</span></td>
+<td class="num r neg">−3%</td><td class="num r">+2%</td>
+<td class="num r b neg">−10%</td><td class="num r muted">+38%</td>
+<td class="num r neg">−4%</td><td class="num r pos">+14%</td><td class="num r">R$ 176</td></tr><tr><td><span class="bname">CAN 203</span><span class="bsub">Cannes</span></td>
+<td class="num">jan–out</td>
+<td class="num r">47% → 40% <span class="neg">(−6,3)</span></td>
+<td class="num r pos">+4%</td><td class="num r">+4%</td>
+<td class="num r b neg">−11%</td><td class="num r muted">+87%</td>
+<td class="num r zero">+1%</td><td class="num r neg">−11%</td><td class="num r">R$ 155</td></tr><tr><td><span class="bname">AGM 85</span><span class="bsub">Água Marinha</span></td>
+<td class="num">jan–out</td>
+<td class="num r">42% → 35% <span class="neg">(−6,5)</span></td>
+<td class="num r pos">+2%</td><td class="num r">+6%</td>
+<td class="num r b neg">−15%</td><td class="num r muted">+79%</td>
+<td class="num r neg">−13%</td><td class="num r neg">−17%</td><td class="num r">R$ 153</td></tr><tr><td><span class="bname">AQL 1420</span><span class="bsub">Aquarelle</span></td>
+<td class="num">jan–out</td>
+<td class="num r">41% → 35% <span class="neg">(−5,9)</span></td>
+<td class="num r zero">0%</td><td class="num r">+5%</td>
+<td class="num r b neg">−16%</td><td class="num r muted">+119%</td>
+<td class="num r neg">−11%</td><td class="num r pos">+4%</td><td class="num r">R$ 233</td></tr><tr><td><span class="bname">TBG 1320</span><span class="bsub">The Bridge · novo</span></td>
+<td class="num">ago–out</td>
+<td class="num r">56% → 52% <span class="neg">(−3,8)</span></td>
+<td class="num r neg">−13%</td><td class="num r">−8%</td>
+<td class="num r b neg">−21%</td><td class="num r muted">+51%</td>
+<td class="num r neg">−21%</td><td class="num r pos">+11%</td><td class="num r">R$ 137</td></tr></tbody></table></div>
+</section>
+
+<section id="bc" class="city">
+  <div class="sec-head"><span class="eyebrow">Balneário Camboriú</span><h2>Só TSO: prêmio alto e mercado estável, com o dobro da oferta</h2></div>
+  <h3>Nosso prêmio</h3>
+  <ul class="bul"><li>TSO é o único prédio em Balneário Camboriú (entrou em jun/25). Prêmio de ago–out +138,4% → +165,2%; nov 1–17 +72,7% → +74,6%. O jan–out de 2025 tem só jun–out, então use ago–out para comparar.</li><li>O nível de prêmio (acima de +100%) vem da diária muito acima da mediana do comp set de 2 quartos de BC: mede mais o encaixe do comp set do que o pricing.</li></ul>
+  <div class="tbl"><table class="t-prem"><thead><tr><th>Grupo</th><th class="r">Jan–out 25 → 26</th><th class="r">Δ</th><th class="r">Ago–out</th><th class="r">Δ</th><th class="r">Outubro</th><th class="r">Δ</th><th class="r">Nov 1–17</th><th class="r">Δ</th></tr></thead>
+<tbody><tr class=""><td>Prédios novos (1 prédios)</td><td class="num r">– → <b>+112,3%</b></td><td class="num r muted"></td><td class="num r">– → <b>+165,2%</b></td><td class="num r muted"></td><td class="num r">– → <b>+151,4%</b></td><td class="num r muted"></td><td class="num r">– → <b>+74,6%</b></td><td class="num r muted"></td></tr><tr class=""><td>Total da cidade</td><td class="num r">+144,5% → <b>+112,3%</b></td><td class="num r neg">−32,2 p.p.</td><td class="num r">+138,4% → <b>+165,2%</b></td><td class="num r pos">+26,8 p.p.</td><td class="num r">+140,7% → <b>+151,4%</b></td><td class="num r pos">+10,6 p.p.</td><td class="num r">+72,7% → <b>+74,6%</b></td><td class="num r pos">+2,0 p.p.</td></tr></tbody></table></div>
+  <div class="panel"><div class="legend"><span><i class="c25"></i>TSO ’25</span><span><i class="c26"></i>TSO ’26</span><span>* nov = dias 1 a 17</span></div><svg viewBox="0 0 760 280" role="img" aria-label="Prêmio mensal em Balneário Camboriú">
+<line x1="56" x2="642" y1="248.0" y2="248.0" class="grid"/>
+<text x="48" y="252.0" class="tick" text-anchor="end">+50%</text>
+<line x1="56" x2="642" y1="175.5" y2="175.5" class="grid"/>
+<text x="48" y="179.5" class="tick" text-anchor="end">+100%</text>
+<line x1="56" x2="642" y1="103.0" y2="103.0" class="grid"/>
+<text x="48" y="107.0" class="tick" text-anchor="end">+150%</text>
+<line x1="56" x2="642" y1="30.5" y2="30.5" class="grid"/>
+<text x="48" y="34.5" class="tick" text-anchor="end">+200%</text>
+<text x="56.0" y="270" class="tick" text-anchor="middle">jan</text>
+<text x="114.6" y="270" class="tick" text-anchor="middle">fev</text>
+<text x="173.2" y="270" class="tick" text-anchor="middle">mar</text>
+<text x="231.8" y="270" class="tick" text-anchor="middle">abr</text>
+<text x="290.4" y="270" class="tick" text-anchor="middle">mai</text>
+<text x="349.0" y="270" class="tick" text-anchor="middle">jun</text>
+<text x="407.6" y="270" class="tick" text-anchor="middle">jul</text>
+<text x="466.2" y="270" class="tick" text-anchor="middle">ago</text>
+<text x="524.8" y="270" class="tick" text-anchor="middle">set</text>
+<text x="583.4" y="270" class="tick" text-anchor="middle">out</text>
+<text x="642.0" y="270" class="tick" text-anchor="middle">nov*</text>
+<polyline points="349.0,141.4 407.6,75.3 466.2,63.5 524.8,156.5 583.4,116.5 642.0,215.1" class="ln y25"/>
+<circle cx="349.0" cy="141.4" r="4" class="dot y25"><title>TSO ’25 · jun: prêmio +123,5%</title></circle>
+<circle cx="349.0" cy="141.4" r="11" class="hit"><title>TSO ’25 · jun: prêmio +123,5%</title></circle>
+<circle cx="407.6" cy="75.3" r="4" class="dot y25"><title>TSO ’25 · jul: prêmio +169,1%</title></circle>
+<circle cx="407.6" cy="75.3" r="11" class="hit"><title>TSO ’25 · jul: prêmio +169,1%</title></circle>
+<circle cx="466.2" cy="63.5" r="4" class="dot y25"><title>TSO ’25 · ago: prêmio +177,3%</title></circle>
+<circle cx="466.2" cy="63.5" r="11" class="hit"><title>TSO ’25 · ago: prêmio +177,3%</title></circle>
+<circle cx="524.8" cy="156.5" r="4" class="dot y25"><title>TSO ’25 · set: prêmio +113,1%</title></circle>
+<circle cx="524.8" cy="156.5" r="11" class="hit"><title>TSO ’25 · set: prêmio +113,1%</title></circle>
+<circle cx="583.4" cy="116.5" r="4" class="dot y25"><title>TSO ’25 · out: prêmio +140,7%</title></circle>
+<circle cx="583.4" cy="116.5" r="11" class="hit"><title>TSO ’25 · out: prêmio +140,7%</title></circle>
+<circle cx="642.0" cy="215.1" r="4" class="dot y25"><title>TSO ’25 · nov 1–17: prêmio +72,7%</title></circle>
+<circle cx="642.0" cy="215.1" r="11" class="hit"><title>TSO ’25 · nov 1–17: prêmio +72,7%</title></circle>
+<polyline points="56.0,219.6 114.6,225.5 173.2,121.8 231.8,132.3 290.4,85.1 349.0,91.7 407.6,114.1 466.2,28.1 524.8,97.0 583.4,101.0 642.0,212.3" class="ln y26"/>
+<circle cx="56.0" cy="219.6" r="4" class="dot y26"><title>TSO ’26 · jan: prêmio +69,6%</title></circle>
+<circle cx="56.0" cy="219.6" r="11" class="hit"><title>TSO ’26 · jan: prêmio +69,6%</title></circle>
+<circle cx="114.6" cy="225.5" r="4" class="dot y26"><title>TSO ’26 · fev: prêmio +65,5%</title></circle>
+<circle cx="114.6" cy="225.5" r="11" class="hit"><title>TSO ’26 · fev: prêmio +65,5%</title></circle>
+<circle cx="173.2" cy="121.8" r="4" class="dot y26"><title>TSO ’26 · mar: prêmio +137,0%</title></circle>
+<circle cx="173.2" cy="121.8" r="11" class="hit"><title>TSO ’26 · mar: prêmio +137,0%</title></circle>
+<circle cx="231.8" cy="132.3" r="4" class="dot y26"><title>TSO ’26 · abr: prêmio +129,8%</title></circle>
+<circle cx="231.8" cy="132.3" r="11" class="hit"><title>TSO ’26 · abr: prêmio +129,8%</title></circle>
+<circle cx="290.4" cy="85.1" r="4" class="dot y26"><title>TSO ’26 · mai: prêmio +162,3%</title></circle>
+<circle cx="290.4" cy="85.1" r="11" class="hit"><title>TSO ’26 · mai: prêmio +162,3%</title></circle>
+<circle cx="349.0" cy="91.7" r="4" class="dot y26"><title>TSO ’26 · jun: prêmio +157,8%</title></circle>
+<circle cx="349.0" cy="91.7" r="11" class="hit"><title>TSO ’26 · jun: prêmio +157,8%</title></circle>
+<circle cx="407.6" cy="114.1" r="4" class="dot y26"><title>TSO ’26 · jul: prêmio +142,4%</title></circle>
+<circle cx="407.6" cy="114.1" r="11" class="hit"><title>TSO ’26 · jul: prêmio +142,4%</title></circle>
+<circle cx="466.2" cy="28.1" r="4" class="dot y26"><title>TSO ’26 · ago: prêmio +201,7%</title></circle>
+<circle cx="466.2" cy="28.1" r="11" class="hit"><title>TSO ’26 · ago: prêmio +201,7%</title></circle>
+<circle cx="524.8" cy="97.0" r="4" class="dot y26"><title>TSO ’26 · set: prêmio +154,1%</title></circle>
+<circle cx="524.8" cy="97.0" r="11" class="hit"><title>TSO ’26 · set: prêmio +154,1%</title></circle>
+<circle cx="583.4" cy="101.0" r="4" class="dot y26"><title>TSO ’26 · out: prêmio +151,4%</title></circle>
+<circle cx="583.4" cy="101.0" r="11" class="hit"><title>TSO ’26 · out: prêmio +151,4%</title></circle>
+<circle cx="642.0" cy="212.3" r="4" class="dot y26"><title>TSO ’26 · nov 1–17: prêmio +74,6%</title></circle>
+<circle cx="642.0" cy="212.3" r="11" class="hit"><title>TSO ’26 · nov 1–17: prêmio +74,6%</title></circle>
+<text x="652" y="216.3" class="dlab">TSO ’26</text>
+<text x="652" y="232.3" class="dlab">TSO ’25</text>
+</svg></div>
+  <h3>Mercado</h3>
+  <ul class="bul"><li>RevPAR do mercado de BC em jan–out: +1,0% (ocupação +0,1 p.p., diária fechada +1,4%), com a oferta do comp set dobrando (+105%). Em nov 1–17: RevPAR −2,9%, diária +15,1% e ocupação −5,6 p.p.</li><li>Pace do verão: dez/26 23% vs 22% e jan/27 20% vs 17%, no mesmo ritmo ou à frente do ano passado.</li></ul>
+  <div class="tbl"><table class="t-city"><thead><tr><th>Métrica</th><th class="r">jan</th><th class="r">fev</th><th class="r">mar</th><th class="r">abr</th><th class="r">mai</th><th class="r">jun</th><th class="r">jul</th><th class="r">ago</th><th class="r">set</th><th class="r">out</th><th class="r">nov 1–17</th><th class="r">Jan–out</th><th class="r">Nível jan–out 26</th></tr></thead>
+<tbody><tr><td class="mlab">Ocupação</td><td class="num r hm" style="--a:13%" data-t="neg">−2,4</td><td class="num r hm" style="--a:20%" data-t="pos">+3,9</td><td class="num r hm" style="--a:3%" data-t="neg">−0,5</td><td class="num r hm" style="--a:18%" data-t="pos">+3,5</td><td class="num r hm" style="--a:12%" data-t="neg">−2,3</td><td class="num r hm" style="--a:13%" data-t="neg">−2,6</td><td class="num r hm" style="--a:1%" data-t="neg">−0,1</td><td class="num r hm" style="--a:31%" data-t="pos">+5,9</td><td class="num r hm" style="--a:10%" data-t="neg">−1,9</td><td class="num r hm" style="--a:12%" data-t="neg">−2,2</td><td class="num r hm" style="--a:30%" data-t="neg">−5,6</td><td class="num r hm ytd" style="--a:1%" data-t="pos">+0,1</td><td class="num r muted">34%</td></tr><tr><td class="mlab">Diária fechada</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:23%" data-t="neg">−11%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:10%" data-t="pos">+5%</td><td class="num r hm" style="--a:42%" data-t="pos">+20%</td><td class="num r hm" style="--a:18%" data-t="pos">+8%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:3%" data-t="pos">+1%</td><td class="num r hm" style="--a:7%" data-t="pos">+3%</td><td class="num r hm" style="--a:32%" data-t="pos">+15%</td><td class="num r hm ytd" style="--a:3%" data-t="pos">+1%</td><td class="num r muted">R$ 344</td></tr><tr><td class="mlab">Preço anunciado (p50)</td><td class="num r hm" style="--a:5%" data-t="pos">+2%</td><td class="num r hm" style="--a:20%" data-t="pos">+9%</td><td class="num r hm" style="--a:12%" data-t="neg">−6%</td><td class="num r hm" style="--a:3%" data-t="pos">+2%</td><td class="num r hm" style="--a:22%" data-t="pos">+11%</td><td class="num r hm" style="--a:22%" data-t="pos">+10%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm" style="--a:12%" data-t="pos">+6%</td><td class="num r hm" style="--a:18%" data-t="pos">+9%</td><td class="num r hm" style="--a:9%" data-t="pos">+4%</td><td class="num r hm" style="--a:13%" data-t="pos">+6%</td><td class="num r hm ytd" style="--a:11%" data-t="pos">+5%</td><td class="num r muted">R$ 420</td></tr><tr><td class="mlab">RevPAR</td><td class="num r hm" style="--a:15%" data-t="neg">−7%</td><td class="num r hm" style="--a:37%" data-t="pos">+17%</td><td class="num r hm" style="--a:30%" data-t="neg">−14%</td><td class="num r hm" style="--a:4%" data-t="pos">+2%</td><td class="num r hm" style="--a:3%" data-t="neg">−1%</td><td class="num r hm" style="--a:21%" data-t="pos">+10%</td><td class="num r hm" style="--a:18%" data-t="pos">+9%</td><td class="num r hm" style="--a:42%" data-t="pos">+37%</td><td class="num r hm" style="--a:8%" data-t="neg">−4%</td><td class="num r hm" style="--a:5%" data-t="neg">−2%</td><td class="num r hm" style="--a:6%" data-t="neg">−3%</td><td class="num r hm ytd" style="--a:2%" data-t="pos">+1%</td><td class="num r muted">R$ 131</td></tr><tr><td class="mlab">Oferta (anúncios)</td><td class="num r hm neu">+88%</td><td class="num r hm neu">+94%</td><td class="num r hm neu">+84%</td><td class="num r hm neu">+71%</td><td class="num r hm neu">+83%</td><td class="num r hm neu">+140%</td><td class="num r hm neu">+202%</td><td class="num r hm neu">+208%</td><td class="num r hm neu">+184%</td><td class="num r hm neu">+35%</td><td class="num r hm neu">+46%</td><td class="num r hm ytd neu">+105%</td><td class="num r muted"></td></tr><tr><td class="mlab">Noites vendidas</td><td class="num r hm neu">+80%</td><td class="num r hm neu">+111%</td><td class="num r hm neu">+81%</td><td class="num r hm neu">+90%</td><td class="num r hm neu">+67%</td><td class="num r hm neu">+116%</td><td class="num r hm neu">+200%</td><td class="num r hm neu">+304%</td><td class="num r hm neu">+168%</td><td class="num r hm neu">+26%</td><td class="num r hm neu">+22%</td><td class="num r hm ytd neu">+101%</td><td class="num r muted"></td></tr></tbody></table></div>
+  
+  <div class="two">
+    <div class="col"><h3>Semana × fim de semana</h3><div class="tbl"><table class="t-wk"><thead><tr><th>Noites</th><th class="r">Ocupação</th><th class="r">Diária fechada</th><th class="r">RevPAR</th></tr></thead>
+<tbody><tr><td>Jan–out · dom–qui</td><td class="num r">31% → 32% <span class="zero">(+0,8)</span></td>
+<td class="num r">R$ 340 → R$ 342 <span class="zero">(+1%)</span></td>
+<td class="num r b zero">+1,7%</td></tr><tr><td>Jan–out · sex–sáb</td><td class="num r">41% → 39% <span class="neg">(−1,6)</span></td>
+<td class="num r">R$ 337 → R$ 347 <span class="pos">(+3%)</span></td>
+<td class="num r b zero">−1,2%</td></tr><tr><td>Ago–out · dom–qui</td><td class="num r">25% → 27% <span class="pos">(+1,6)</span></td>
+<td class="num r">R$ 264 → R$ 269 <span class="pos">(+2%)</span></td>
+<td class="num r b pos">+7,6%</td></tr><tr><td>Ago–out · sex–sáb</td><td class="num r">37% → 35% <span class="neg">(−1,8)</span></td>
+<td class="num r">R$ 261 → R$ 272 <span class="pos">(+4%)</span></td>
+<td class="num r b zero">−1,4%</td></tr></tbody></table></div></div>
+    <div class="col"><h3>Pace dos próximos meses</h3><div class="tbl"><table class="t-pace"><thead><tr><th>Ocupação do mercado já vendida<br>hoje vs mesmo dia do ano passado</th><th class="r">dez/26</th><th class="r">jan/27</th><th class="r">fev/27</th><th class="r">mar/27</th><th class="r">Oferta dez<br>vs LY</th></tr></thead>
+<tbody><tr class="em"><td class="bname">Cidade inteira</td><td class="num r">23% <span class="muted">vs 22%</span> <span class="zero">(+0,6)</span></td><td class="num r">20% <span class="muted">vs 17%</span> <span class="pos">(+3,7)</span></td><td class="num r">9% <span class="muted">vs 7%</span> <span class="pos">(+2,1)</span></td><td class="num r">2% <span class="muted">vs 1%</span> <span class="pos">(+1,1)</span></td><td class="num r muted">+71%</td></tr></tbody></table></div></div>
+  </div>
+  
+  <h3>Prédios novos</h3><div class="tbl"><table class="t-new"><thead><tr><th>Prédio</th><th>Entrada</th><th class="r">Unid. 26</th><th class="r">Meses 1–3</th><th class="r">Meses 4–6</th><th class="r">Meses 7–12</th><th class="r">Ago–out 26</th><th class="r">Ocup. ago–out<br>nós / mercado</th><th class="r">Diária ago–out (R$)<br>nós / mercado</th></tr></thead>
+<tbody><tr><td><span class="bname">TSO 001</span><span class="bsub">The Spot One</span></td>
+<td class="num">05/06/25</td><td class="num r">52</td>
+<td class="num r">+153%</td><td class="num r">+94%</td><td class="num r">+120%</td><td class="num r b">+165%</td>
+<td class="num r">71% / 28%</td><td class="num r">289 / 274</td></tr></tbody></table></div>
+  <h3>Mercado por prédio</h3>
+  <div class="tbl"><table class="t-mkt"><thead><tr><th>Mercado do prédio</th><th>Base</th><th class="r">Ocupação 25 → 26</th><th class="r">Diária fechada</th><th class="r">Preço anunciado</th><th class="r">RevPAR</th><th class="r">Oferta</th><th class="r">RevPAR<br>ago–out</th><th class="r">RevPAR<br>nov 1–17</th><th class="r">RevPAR 26</th></tr></thead>
+<tbody><tr><td><span class="bname">TSO 001</span><span class="bsub">The Spot One · novo</span></td>
+<td class="num">jan–out</td>
+<td class="num r">34% → 34% <span class="zero">(+0,1)</span></td>
+<td class="num r zero">+1%</td><td class="num r">+5%</td>
+<td class="num r b zero">+1%</td><td class="num r muted">+104%</td>
+<td class="num r pos">+5%</td><td class="num r neg">−3%</td><td class="num r">R$ 131</td></tr></tbody></table></div>
+</section>
+
+<section class="method" id="metodo">
   <div class="sec-head"><span class="eyebrow">Método</span><h2>Como foi calculado e limites</h2></div>
   <ul>
-    <li><b>Prêmio:</b> mesma conta do card 705 do dashboard 58: <code>AVG(COALESCE(accommodation_adr,0)) / AVG(market_median_booked_price × market_occupancy)</code> em <code>views.listing_daily_stats</code>, só noites com <code>availability = 1</code>, agregando todas as unidades × noites do grupo. Inclui mid-term; a participação de mid-term no same store ficou parecida nos dois anos (~8% das noites).</li>
-    <li><b>Same store:</b> 24 prédios com primeira noite antes de 1/jan/2025 e ainda na base. Prédios que saíram do portfólio (ex. JFL, GAL, AVN, DPS, AUR, ZOM) não estão em <code>listing_daily_stats</code>, então o same store tem viés de sobrevivência.</li>
-    <li><b>Prédios novos:</b> todos que entraram de fev/2025 em diante. "Mês 1" é o primeiro mês cheio após a primeira noite; meses com menos de ~2 unidades foram ignorados.</li>
-    <li><b>Mercado:</b> tabelas do Pricelabs (<code>pricelabs_future_prices_latest</code> e <code>pricelabs_occupancy_latest</code>, nova metodologia). Para cada prédio, categoria de quartos e dia, usei a mediana entre os nossos listings ativos (alguns listings inativos no Pricelabs têm mercado zerado, ex. NXV 022 e 081). Categorias pesadas pelo mix de unidades de 2026. RevPAR de mercado = média diária de ocupação × diária mediana fechada.</li>
-    <li><b>Histórico parcial:</b> o Pricelabs tem preço desde jan/2024 para todos os listings, mas a ocupação de 2025 só existe a partir da data em que cada listing entrou no Pricelabs. Para AGR, HEG, AYM, PVF, PVJ, PVN, URB e TBG a base do YoY é só os meses com dado nos dois anos (coluna "Base"). OMG, EQL, NXM, MEL, MOU e PED não têm 2025.</li>
-    <li><b>Oferta:</b> <code>total_available_listings</code> do comp set do Pricelabs. O crescimento é alto em todas as praças (+20% a +120%) e pode refletir também ampliação de cobertura do Pricelabs; usar como direção, não como número exato.</li>
-    <li><b>Atenção operacional:</b> MEL, MOU e PED (2 unidades cada, desde 11/set) não têm nenhuma noite vendida até 17/nov.</li>
+    <li><b>Prêmio:</b> mesma conta do card 705 do dashboard 58: <code>AVG(COALESCE(accommodation_adr,0)) / AVG(market_median_booked_price × market_occupancy)</code> em <code>views.listing_daily_stats</code>, só noites com <code>availability = 1</code>. O numerador é o nosso RevPAR de hospedagem (diária de hospedagem sem taxas nas noites vendidas, zero nas não vendidas). O denominador é o RevPAR do mercado: diária mediana fechada do Pricelabs × ocupação do mercado, na mesma categoria de quartos e na mesma noite. Inclui mid-term.</li>
+    <li><b>Same store:</b> prédios com primeira noite antes de 1/jan/2025 e ainda na base (18 em SP, 6 em Florianópolis, nenhum em BC). Prédios que saíram do portfólio não estão em <code>listing_daily_stats</code>, então há viés de sobrevivência.</li>
+    <li><b>Prédios novos:</b> entradas de fev/2025 em diante. "Mês 1" é o primeiro mês cheio após a primeira noite. Fora das curvas: EQL 130, MEL 184, MOU 1508, NXM 118, PED 832 (menos de 3 meses ou sem reserva; MEL, MOU e PED têm 2 unidades cada desde 11/set e nenhuma noite vendida).</li>
+    <li><b>Mercado:</b> <code>pricelabs_future_prices_latest</code> e <code>pricelabs_occupancy_latest</code>. Por prédio, categoria de quartos e noite, a mediana entre os nossos listings ativos (alguns listings inativos no Pricelabs têm mercado zerado). Categorias pesadas pelo mix de unidades de 2026. RevPAR de mercado = média diária de ocupação × diária mediana fechada. Preço anunciado = percentis 25/50/75 dos preços anunciados no comp set.</li>
+    <li><b>Cidade e submercado:</b> média dos mercados dos nossos prédios, ponderada pelas nossas unidades, só com prédios que têm dado nos dois anos em cada mês. Comp sets de prédios vizinhos se sobrepõem, então é o mercado como o nosso portfólio o vê.</li>
+    <li><b>Oferta e noites vendidas:</b> oferta = <code>total_available_listings</code> do comp set; noites vendidas = ocupação × oferta. O próprio Pricelabs mostra crescimento parecido ou maior no campo de ano anterior (<code>total_available_listings_ly</code>), mas parte pode ser ampliação de cobertura; use como direção.</li>
+    <li><b>Pace:</b> ocupação do mercado já vendida hoje (18/nov) para cada mês futuro contra o mesmo dia do ano passado (<code>occupancy_stly</code> do Pricelabs).</li>
+    <li><b>Histórico parcial:</b> o Pricelabs tem preço desde jan/2024 para todos os listings, mas ocupação de 2025 só a partir da entrada de cada listing no Pricelabs (AGR, HEG, AYM, PVF, PVJ, PVN, URB e TBG têm só parte de 2025; coluna "Base").</li>
+    <li><b>Calendário:</b> Carnaval em março/2025 e fevereiro/2026; Páscoa em 20/abr/2025 e 5/abr/2026; F1 de SP dentro de nov 1–17 nos dois anos.</li>
     <li>Fontes, queries e scripts: <code>analises/2026-11_premio_mercado/</code> no repositório Pricing-viva.</li>
   </ul>
 </section>

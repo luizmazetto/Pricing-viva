@@ -38,3 +38,34 @@ from `views.listing_daily_stats` s where availability=1 and date between '2026-0
 -- q4 · data/first_day.psv  (header: b|first_day)
 select s.buildingName b, min(s.date) first_day
 from `views.listing_daily_stats` s join `replicas.vivadb_listing` l on s.idlisting=l.id_ where availability=1 group by 1 order by 2;
+
+-- q5 · data/market_building_cat_month_dt.psv  (header: b|cat|m|dt|n|mbp|p25|p50|p75|occ|rp|tal)
+-- igual à q2, com percentis de preço anunciado e quebra por tipo de noite (dt: wd = dom–qui, we = sex–sáb)
+with act as (select distinct idlisting listing_id from `views.listing_daily_stats` where availability=1 and date between '2026-10-01' and '2026-11-17'),
+pl as (select l.id_ listing_id, l.buildingName b, cast(greatest(p.n_bedrooms,1) as string) cat
+  from views.pricelabs_listings_latest p join `replicas.vivadb_listing` l on l.id_=p.listing_id join act on act.listing_id=l.id_ where l.buildingName is not null),
+j as (select pl.b, pl.cat, date(o.date) d, o.occupancy/100 occ, f.median_booked_price mbp, f.`25th_percentile` p25, f.`50th_percentile` p50, f.`75th_percentile` p75, o.total_available_listings tal
+  from pl join views.pricelabs_occupancy_latest o on o.listing_id=pl.listing_id and o.category=pl.cat
+  join views.pricelabs_future_prices_latest f on f.listing_id=pl.listing_id and f.category=pl.cat and date(f.date)=date(o.date)
+  where date(o.date) between '2025-01-01' and '2026-11-17' and f.median_booked_price > 0 and o.occupancy is not null),
+bd as (select b, cat, d, approx_quantiles(occ, 2)[offset(1)] occ, approx_quantiles(mbp, 2)[offset(1)] mbp, approx_quantiles(p25, 2)[offset(1)] p25,
+  approx_quantiles(p50, 2)[offset(1)] p50, approx_quantiles(p75, 2)[offset(1)] p75, approx_quantiles(tal, 2)[offset(1)] tal from j group by 1,2,3)
+select string_agg(format('%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.4f|%.2f|%.1f', b, cat, m, dt, n, mbp, p25, p50, p75, occ, rp, tal), '\n' order by b, cat, m, dt) from (
+select b, cat, if(d between '2025-11-01' and '2025-11-17' or d between '2026-11-01' and '2026-11-17', format_date('%Y-11p', d), format_date('%Y-%m', d)) m,
+  if(extract(dayofweek from d) in (6,7), 'we', 'wd') dt, count(*) n,
+  avg(mbp) mbp, avg(p25) p25, avg(p50) p50, avg(p75) p75, avg(occ) occ, avg(occ*mbp) rp, avg(tal) tal
+from bd group by 1,2,3,4);
+
+-- q6 · data/market_forward.psv  (header: b|cat|m|n|occ|stly|ly|tal|tal_ly)
+with act as (select distinct idlisting listing_id from `views.listing_daily_stats` where availability=1 and date between '2026-10-01' and '2026-11-17'),
+pl as (select l.id_ listing_id, l.buildingName b, cast(greatest(p.n_bedrooms,1) as string) cat
+  from views.pricelabs_listings_latest p join `replicas.vivadb_listing` l on l.id_=p.listing_id join act on act.listing_id=l.id_ where l.buildingName is not null),
+j as (select pl.b, pl.cat, date(o.date) d, o.occupancy/100 occ, o.occupancy_stly/100 stly, o.occupancy_ly/100 ly, o.total_available_listings tal, o.total_available_listings_ly tal_ly
+  from pl join views.pricelabs_occupancy_latest o on o.listing_id=pl.listing_id and o.category=pl.cat
+  join views.pricelabs_future_prices_latest f on f.listing_id=pl.listing_id and f.category=pl.cat and date(f.date)=date(o.date)
+  where date(o.date) between '2026-11-18' and '2027-03-31' and o.occupancy is not null and f.`50th_percentile` > 0),
+bd as (select b, cat, d, approx_quantiles(occ, 2)[offset(1)] occ, approx_quantiles(stly, 2)[offset(1)] stly, approx_quantiles(ly, 2)[offset(1)] ly,
+  approx_quantiles(tal, 2)[offset(1)] tal, approx_quantiles(tal_ly, 2)[offset(1)] tal_ly from j group by 1,2,3)
+select string_agg(format('%s|%s|%s|%d|%.4f|%.4f|%.4f|%.1f|%.1f', b, cat, m, n, occ, stly, ly, tal, tal_ly), '\n' order by b, cat, m) from (
+select b, cat, format_date('%Y-%m', d) m, count(*) n, avg(occ) occ, avg(stly) stly, avg(ly) ly, avg(tal) tal, avg(tal_ly) tal_ly
+from bd group by 1,2,3);

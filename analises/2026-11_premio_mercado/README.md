@@ -13,9 +13,12 @@ Arquivos:
 - `data/us_building_month.psv`: nosso lado + mercado por prédio e mês (q1).
 - `data/market_building_cat_month.psv`: mercado Pricelabs por prédio, categoria e mês (q2).
 - `data/mix_2026.psv`: unidades × noites por prédio e categoria em 2026 (q3). `data/first_day.psv`: primeira noite de cada prédio (q4).
-- `analysis.py` gera `analise.json`; `build_html.py` + `template.html` geram `relatorio_premio_mercado.html`.
+- `data/market_building_cat_month_dt.psv`: mercado por prédio, categoria, mês e tipo de noite (dom–qui / sex–sáb), com percentis de preço anunciado (q5).
+- `data/market_forward.psv`: pace do mercado para dez/26–mar/27 (ocupação já vendida hoje vs mesmo dia do ano passado) (q6).
+- `analysis.py` gera `analise.json` (portfólio e prédios); `analysis_cidades.py` gera `cidades.json` (cidades e submercados, definidos no topo do script);
+  `build_relatorio.py` + `pagina.html` geram `relatorio_premio_mercado.html`, organizado por cidade.
 - `queries.sql`: as queries (Metabase, database 7 = BigQuery).
 
 Para atualizar: rode as queries trocando as datas de corte (hoje 2026-11-17), salve os `.psv` em `data/` e rode
-`python3 analysis.py && python3 build_html.py`. Os textos do resumo são montados a partir dos números, mas revise a
+`python3 analysis.py && python3 analysis_cidades.py && python3 build_relatorio.py`. Os textos do resumo são montados a partir dos números, mas revise a
 redação (ex.: "SP virou em outubro") se a história mudar.
