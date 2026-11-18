@@ -1,0 +1,341 @@
+master|b|rooms|baths|guests|beds|m2|subtype
+658ae856da0f9d1da87e3322|AQL 1420 - Aquarelle|3|2|6|4|81|entire_home
+658ae93fa599b32fc0eb3752|AQL 1420 - Aquarelle|3|2|6|4|83|entire_home
+658ae83c3ca971cf2f7b41f2|AQL 1420 - Aquarelle|3|2|6|4|117|entire_home
+658ae1da40e4150a94701c08|AQL 1420 - Aquarelle|3|2|6|4|81|entire_home
+63adacd3d39aaf4544a01b8b|CAN 203 - Cannes|1|1|2|1|45|entire_home
+63adacde4ac5a3e4813e7a09|CAN 203 - Cannes|1|1|2|1|45|entire_home
+64aefe8e01ec78a6719682aa|CAN 203 - Cannes|1|1|3|2|45|entire_home
+63adac5bf117c488cd3ff4be|CAN 203 - Cannes|1|1|2|1|45|entire_home
+64ada31951a9e45ad356e7f7|CAN 203 - Cannes|1|1|3|2|45|entire_home
+64aefc3e6b115f4f11afadfc|CAN 203 - Cannes|1|1|3|2|45|entire_home
+63a60e23cd9483785185b739|AGM 85 - Água Marinha|1|1|3|2|40|entire_home
+63a60a1fcd94837851855ab5|AGM 85 - Água Marinha|1|1|3|2|40|entire_home
+63a60726cd9483785185107b|AGM 85 - Água Marinha|1|1|3|2|40|entire_home
+63a60d29cd94837851859bbe|AGM 85 - Água Marinha|2|2|4|2|75|entire_home
+63a60399cd9483785184d1e5|AGM 85 - Água Marinha|2|2|4|2|70|entire_home
+63a6061c8f3834b749955c40|AGM 85 - Água Marinha|2|1|4|2|75|entire_home
+63a60cdb8f3834b7499624a2|AGM 85 - Água Marinha|2|1|4|2|70|entire_home
+63a60b228f3834b74995fc44|AGM 85 - Água Marinha|2|2|4|2|75|entire_home
+63a607578f3834b749958183|AGM 85 - Água Marinha|2|2|4|2|75|entire_home
+69c134ccd7be298e31801f17|TSO 001 - The Spot One|2|2.5|4|2|90|entire_home
+69eb77ebb9fbb5860e375baf|TSO 001 - The Spot One|2|2.5|4|2|83|entire_home
+683eeb2bf2c52b23e0038d91|TSO 001 - The Spot One|2|2.5|4|2|103|entire_home
+68309ce0d3f1e955c6226ca5|TSO 001 - The Spot One|2|2.5|4|2|96|entire_home
+683eec68a76df0deab2e7461|TSO 001 - The Spot One|2|2.5|4|2|90|entire_home
+683eef679788a05b2df0f829|TSO 001 - The Spot One|2|2.5|4|2|90|entire_home
+683eee4ec3f190046e200eb7|TSO 001 - The Spot One|2|2.5|4|2|90|entire_home
+683eebd1724251cdb224ddd5|TSO 001 - The Spot One|2|2|4|2|84|entire_home
+658ae4ae59f4cf20a3d709cd|AQL 1420 - Aquarelle|2|2|4|3|69|entire_home
+672e4d1e0fdc3b8d4ac072fc|CAN 203 - Cannes|1|1|3|2|55|entire_home
+672e4c30bded472f18412ddf|CAN 203 - Cannes|1|1|3|2|55|entire_home
+672e4d3e49033a2f7f1b7764|CAN 203 - Cannes|1|1|3|2|55|entire_home
+683ef186d4ca68eb3202505f|TSO 001 - The Spot One|3|3.5|6|3|166|entire_home
+662951cfa9657580185fa4bb|SPZ 648 - Share Perdizes|2|1|2|2|34|entire_home
+6446da42d8c75fa061057d42|SPZ 648 - Share Perdizes|1|1|2|1|24|entire_home
+643b0a0b5694ce735aff16cd|SPZ 648 - Share Perdizes|1|1|2|2|26|entire_home
+6aba8d058d6d26a3f85f5991|EQL 130 - Equalize Vila Mariana|2|2|3|2|64|entire_home
+67f55baab2b31d77c38a0ea7|HBV 189 - Hub Boa Vista|1|1|2|1|23|entire_home
+67f55b0a199b1f6a56f7a452|HBV 189 - Hub Boa Vista|1|1|2|1|29|entire_home
+67f574da52f87983a11fd406|HBV 189 - Hub Boa Vista|1|1|2|1|29|entire_home
+6756e1276b3c095c352dcd7c|HBV 189 - Hub Boa Vista|1|1|2|1|23|entire_home
+6ab53b6eaa52f80e30f9e183|EQL 130 - Equalize Vila Mariana|1|1|2|1|25|entire_home
+6a8f0d83ed1bb13670b07644|URB 172 - Urbic Vila Mariana|1|1|2|1|19|entire_home
+6a8f1ed695449733d955d786|URB 172 - Urbic Vila Mariana|1|1|2|1|19|entire_home
+68b0a3b69940a4594ce108bd|FYP 441 - For You Paraíso|1|1|2|1|25|entire_home
+667ac136014a8091728f54d3|FYP 441 - For You Paraíso|1|1|2|1|39|entire_home
+667ac3891ee076722d64f6c8|FYP 441 - For You Paraíso|1|1|2|1|35|entire_home
+667ac3f00af028323e441a06|FYP 441 - For You Paraíso|1|1|2|1|25|entire_home
+667ac4c4028197467ca15903|FYP 441 - For You Paraíso|1|1|2|1|31|entire_home
+667ac56b2b3606cd75cf5406|FYP 441 - For You Paraíso|1|1|2|1|25|entire_home
+698a51097f81838f18300a3f|URB 172 - Urbic Vila Mariana|1|1|2|1|20|entire_home
+666b33b05870e25fc17139b0|FYP 441 - For You Paraíso|2|2|3|2|66|entire_home
+695434c66d1148ffc31101a9|URB 172 - Urbic Vila Mariana|1|1|2|1|32|entire_home
+694af75eaecff3b18b6453e2|URB 172 - Urbic Vila Mariana|1|1|2|1|25|entire_home
+69600b3a2466d087af7151a7|URB 172 - Urbic Vila Mariana|1|1|2|1|25|entire_home
+695434a575568f723c9ae1a2|URB 172 - Urbic Vila Mariana|1|1|2|1|20|entire_home
+6954331ad652d18ecc763c3c|URB 172 - Urbic Vila Mariana|1|1|2|1|20|entire_home
+6960026e758713138d7d0909|URB 172 - Urbic Vila Mariana|1|1|2|1|20|entire_home
+6a26db4ced5fcda4d4f01991|ONZ 247 - Onze22|1|1|2|1|27|entire_home
+6a26db35bf0c836fa385cfa7|ONZ 247 - Onze22|1|1|2|1|27|entire_home
+6940483d253727ed8e63f613|ONZ 247 - Onze22|1|1|2|1|30|entire_home
+6a8da02a3ceaa01fcdbb0651|MEL 184 - Melo Alves|2|1|3|2|59|entire_home
+6650c5d985f1eab1bda1912e|SPZ 648 - Share Perdizes|4|2|4|4|60|entire_home
+6650ca57c9c28cb457b193e7|SPZ 648 - Share Perdizes|4|2|4|4|60|entire_home
+6aad8f4658007a7915c91b67|AYH 634 -  Ayra Higienópolis|1|1|2|1|32|entire_home
+69efc238ae1859ed811d6910|AYH 634 -  Ayra Higienópolis|1|1|2|1|35|entire_home
+68532ebd3f553fd62a98b35f|ONZ 247 - Onze22|1|1|2|1|31|entire_home
+688a12702e20f1a7b50eb912|ONZ 247 - Onze22|1|1|2|1|28|entire_home
+68532bd6860dfe83e91ff022|ONZ 247 - Onze22|1|1|2|1|31|entire_home
+68532ea2de86a835bdfa806e|ONZ 247 - Onze22|1|1|2|1|28|entire_home
+688b57f99002adfd5de47f25|PQJ 155 - Parque Jockey|1|1|2|1|38|entire_home
+681cfdc14d46c33cf3f268f2|PQJ 155 - Parque Jockey|1|2|2|1|57|entire_home
+6a9adb2486cabac24be37532|TPV 869 - Top Vision|1|1|2|1|40|entire_home
+658f3269b4157c6af8a4944e|TPV 869 - Top Vision|1|1|2|1|50|entire_home
+658f2fb5ef26bd574a5f95fa|TPV 869 - Top Vision|1|1|2|1|36|entire_home
+69f3a3a95837ed78d1a4eb37|TPV 869 - Top Vision|1|1|2|1|34|entire_home
+65f1ebd47537798248c4ebbf|TPV 869 - Top Vision|1|1|2|1|50|entire_home
+65f1ed5567871df05c84b124|TPV 869 - Top Vision|1|1|2|1|50|entire_home
+658f316bfbe56c6d3aebfdb1|TPV 869 - Top Vision|1|1|2|1|41|entire_home
+65f1f2461c02e8ba9f289288|TPV 869 - Top Vision|1|1|2|1|50|entire_home
+693ad04bcb4efef7e8ebb37e|ONZ 247 - Onze22|1|1|2|1|30|entire_home
+6a8d9b0baf1da49329096f3f|MEL 184 - Melo Alves|1|1|2|1|37|entire_home
+668d8362c8a4e7c3bf83251e|TOF 1485 - Terraço Oscar Freire|2|1|3|2|46|entire_home
+66902f3c8bdacac600572163|TOF 1485 - Terraço Oscar Freire|2|1|4|2|46|entire_home
+669a5413cbe3a03e1a05b586|TPV 869 - Top Vision|1|1|2|1|50|entire_home
+669a6626f817199b43bc9c6d|TPV 869 - Top Vision|1|1|2|1|34|entire_home
+645c03421c14d321ca45ec33|PQJ 155 - Parque Jockey|1|1|2|1|38|entire_home
+645c001838444747fb78450b|PQJ 155 - Parque Jockey|1|1|2|1|38|entire_home
+65c111bf53cbcd8e99088c82|PQJ 155 - Parque Jockey|1|1|2|1|38|entire_home
+660c2b3ee72ff38631d681d9|PQJ 155 - Parque Jockey|1|2|2|1|57|entire_home
+660c1680441c4c4b80093fde|PQJ 155 - Parque Jockey|1|1|2|1|38|entire_home
+669032036da27d132021b7ca|TOF 1485 - Terraço Oscar Freire|1|1|2|1|46|entire_home
+669030904ce6d2c9ccf800b4|TOF 1485 - Terraço Oscar Freire|1|1|2|1|36|entire_home
+6690305826198b5080294414|TOF 1485 - Terraço Oscar Freire|1|1|2|1|33|entire_home
+6690223da099bacf5bd25002|TOF 1485 - Terraço Oscar Freire|1|1|2|1|40|entire_home
+669021b8903a59187b3c21c6|TOF 1485 - Terraço Oscar Freire|1|1|2|1|40|entire_home
+66902ff4f483a78d7eb15f9d|TOF 1485 - Terraço Oscar Freire|1|1|2|1|33|entire_home
+65abe48e034b8e134663d006|DGE 197 - Setin Downtown Genebra|1|1|2|1|40|entire_home
+65abe71f7669d755090868d9|DGE 197 - Setin Downtown Genebra|1|1|2|1|40|entire_home
+65abe7319607fd83a527f3a5|DGE 197 - Setin Downtown Genebra|1|1|2|1|45|entire_home
+65e0d4393b9d7d058facac3f|DGE 197 - Setin Downtown Genebra|1|1|2|1|40|entire_home
+65e0d24b7021e2ff472c60ed|DGE 197 - Setin Downtown Genebra|1|1|2|1|49|entire_home
+65abe7469607fd83a527f3f6|DGE 197 - Setin Downtown Genebra|1|1|2|1|51|entire_home
+65abe809179b6c68559fe83a|DGE 197 - Setin Downtown Genebra|1|1|2|1|40|entire_home
+677e9f7792418506022c677a|NXD 382 - Next Home Design|1|1|2|1|32|entire_home
+661989469fea94b47cb0c151|NXD 382 - Next Home Design|1|1|2|1|25|entire_home
+66d5ae840881126fd501f889|NXD 382 - Next Home Design|1|1|2|1|19|entire_home
+6aa1b7487de26c74db0a3181|OMG 45 - Casa Omaguás|1|1|2|1|24|entire_home
+6a6209a84db313dd5ea0b7a2|OMG 45 - Casa Omaguás|1|1|2|1|29|entire_home
+6a7b2bee08cf9bff0fc36ba0|OMG 45 - Casa Omaguás|1|1|2|1|28|entire_home
+6a19d0b68788db686acc425e|OMG 45 - Casa Omaguás|1|1|2|1|24|entire_home
+6a19e2890c36307c21e492bb|OMG 45 - Casa Omaguás|1|1|2|1|24|entire_home
+6a620996c74bf0a57a3ae173|OMG 45 - Casa Omaguás|1|1|2|1|26|entire_home
+69eba59933a502b7bd5ed49e|SCN 59 - Share Consolação|1|1|2|2|30|entire_home
+6895e078e83aa2253f464003|KAS 99 - Kasa|1|1|1|1|24|entire_home
+6894ed5148a9d0956b175e49|KAS 99 - Kasa|1|1|2|1|28|entire_home
+68d6a82ef615ae7289361339|HEG 1200 - Hege Jardins|1|1|2|1|40|entire_home
+63a60876cd94837851853004|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a605038f3834b749953fce|ZEE 135 - ZEE Studios|1|1|2|1|45|entire_home
+63adbca548e59c95e58c5e27|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a604b68f3834b749953962|ZEE 135 - ZEE Studios|1|1|2|1|39|entire_home
+63a60802cd948378518524ef|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a605d4d1b9719e3a9f7e89|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63adbccf48e59c95e58c5e3c|ZEE 135 - ZEE Studios|1|2|2|1|74|entire_home
+63a606f98f3834b7499577ff|ZEE 135 - ZEE Studios|1|1|2|1|39|entire_home
+63a606cacd9483785185027e|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a6099dcd94837851855368|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a60a8a8f3834b74995eaa0|ZEE 135 - ZEE Studios|1|1|2|1|35|entire_home
+63a60956cd948378518545ad|ZEE 135 - ZEE Studios|1|1|2|1|45|entire_home
+66ce0fe74cdcf6714252e73b|NXV 601 - Next Vila Nova|1|1|2|1|29|entire_home
+6615a696eb9124ec16722016|ARB 301 - Rio Branco|1|1|2|1|34|entire_home
+6615a989eb9124ec16722b63|ARB 301 - Rio Branco|1|1|2|1|34|entire_home
+6615aac0eb9124ec16726bde|ARB 301 - Rio Branco|1|1|2|1|34|entire_home
+65dc90d9c4d745e013aa84e0|CNZ 366 - Caza Noz|1|1|2|2|18|private_room
+65dc8b5e7f67395a597eaf17|CNZ 366 - Caza Noz|1|1|2|1|18|private_room
+65414f876e6c4c55b640dc0b|NXD 382 - Next Home Design|1|1|2|1|32|entire_home
+654cc21d5b0ad979022072e1|NXD 382 - Next Home Design|1|1|2|1|39|entire_home
+6517079eff08b00681bb0401|NXD 382 - Next Home Design|1|1|2|1|19|entire_home
+65fdf98c2df49bba45bf1113|NXD 382 - Next Home Design|1|1|2|1|25|entire_home
+65429de6e42f4dcb605a2e75|NXD 382 - Next Home Design|1|1|2|1|26|entire_home
+652d2b38ead283b223b57429|NXD 382 - Next Home Design|1|1|2|1|25|entire_home
+651710d331ab4396e03c3a5e|NXD 382 - Next Home Design|1|1|2|1|17|entire_home
+65f34a25b99949f84144e7ad|NXD 382 - Next Home Design|1|1|2|1|32|entire_home
+65fdfd83f5af89c4b322c348|NXV 601 - Next Vila Nova|1|1|2|1|42|entire_home
+654158493ad5fe6885ab44d1|NXV 601 - Next Vila Nova|1|1|2|1|48|entire_home
+651984d00077db2271259218|NXV 601 - Next Vila Nova|1|1|2|1|19|entire_home
+651984f01ea07d27cc1ff1a0|NXV 601 - Next Vila Nova|1|1|2|1|19|entire_home
+651adbd522d93333df752672|NXV 601 - Next Vila Nova|1|1|2|1|19|entire_home
+6759a0e3a96c18094630b192|NXB 1333 - Next Bela Cintra|1|1|2|1|20|entire_home
+6759a078680c4cea8d2ad062|NXB 1333 - Next Bela Cintra|1|1|2|1|20|entire_home
+6716c2d8f84e7beb6854c698|NXB 1333 - Next Bela Cintra|1|1|2|1|22|entire_home
+67697ec43cc2d84a6243205d|NXB 1333 - Next Bela Cintra|1|1|2|1|20|entire_home
+6716c184914ec529b8a1fc1d|NXB 1333 - Next Bela Cintra|1|1|2|1|25|entire_home
+671802f8f5ce45a5db8a12b6|NXB 1333 - Next Bela Cintra|1|1|2|1|25|entire_home
+69976913eb85baacd9ed3cb9|PVJ 44 - Pivô Jardins|1|1|2|1|23|entire_home
+6776e22fe96953b98cdf781c|ARB 301 - Rio Branco|1|1|2|1|79|entire_home
+6a319b2a7f7f85d38a129133|AYM 181 - Ayra Moema|1|1|2|1|41|entire_home
+6a284f025839adff46b61fd7|AYM 181 - Ayra Moema|1|1|2|1|43|entire_home
+6a2723b59554d1d7d144d2db|AYM 181 - Ayra Moema|1|1|2|1|28|entire_home
+6a2723720f7607c565948ecc|AYM 181 - Ayra Moema|1|1|2|1|31|entire_home
+6a2723ebe1c8460617dc7477|AYM 181 - Ayra Moema|1|1|2|1|34|entire_home
+6a27239d0fb89da5dab404e7|AYM 181 - Ayra Moema|1|1|2|1|30|entire_home
+6a1051464bd451ca20cb8ee0|PVJ 44 - Pivô Jardins|1|1|2|1|52|entire_home
+69f0c216efcd86d62e28b27a|FST 3950 - First|1|1|2|1|80|entire_home
+6926251e1b5cf7d665b15e68|TPV 869 - Top Vision|1|1|2|1|36|entire_home
+66197539931d8fec3986a15b|NXH 720 - Next Haddock Lobo|1|1|2|1|22|entire_home
+64af10f5d1fc8069bba36034|NXH 720 - Next Haddock Lobo|1|1.5|2|1|47|entire_home
+64b2bab2cc7324f699e46190|NXH 720 - Next Haddock Lobo|1|1.5|2|1|55|entire_home
+6536d3839280be258ec89317|NXH 720 - Next Haddock Lobo|1|1|2|1|21|entire_home
+66159db69b03bdaffb5da4a1|NXH 720 - Next Haddock Lobo|1|1|2|1|31|entire_home
+660c1247441c4c4b8008fe18|NXH 720 - Next Haddock Lobo|1|1|2|1|24|entire_home
+6a8dbd53adc6a9e820dee017|PED 832 - Pedroso de Moraes|1|1|2|1|45|entire_home
+65736f4ff34d5c1f071ff287|UPR 1577 - Upper Itaim|1|1|2|1|40|entire_home
+64dd37462556408362308f81|UPR 1577 - Upper Itaim|1|1|2|1|40|entire_home
+64dd375a1dd87ec1b3c01387|UPR 1577 - Upper Itaim|1|1|2|1|38|entire_home
+64dd33ba6817309321791661|UPR 1577 - Upper Itaim|1|1|2|1|45|entire_home
+66abb7843e3e40f4d514ddae|NUN 61 - Helbor NUN|1|1|2|1|53|entire_home
+66abb6e7b2b1c2f6045f21f8|NUN 61 - Helbor NUN|1|1|2|1|42|entire_home
+66abb7d56955648bdf06ba79|NUN 61 - Helbor NUN|1|1|2|1|47|entire_home
+66abb60fad6fad605200ce21|NUN 61 - Helbor NUN|1|1|2|1|39|entire_home
+66ab91c3d1c0bd95bf030da0|NUN 61 - Helbor NUN|1|1|2|1|42|entire_home
+66c635d5aa16ce4291fb4406|SCN 59 - Share Consolação|3|2|3|3|84|entire_home
+68a5daf7ff7dfae6827fe231|FST 3950 - First|1|1|2|1|55|entire_home
+68a5dcec8b905b6a7e551c5d|FST 3950 - First|1|1|2|1|90|entire_home
+68b8738d2a4741e509465cab|FST 3950 - First|1|1|2|1|40|entire_home
+68c026f5c91a92da0d7ce6b7|FST 3950 - First|1|1|2|1|74|entire_home
+698e42e9b4b3f1b5637e5d9c|TBG 1320 - The Bridge|1|1|2|1|102|entire_home
+698e3aba4d97e04218423f08|TBG 1320 - The Bridge|1|1|2|1|63|entire_home
+698e41a7239fafdacab59b8a|TBG 1320 - The Bridge|1|1|2|1|34|entire_home
+698f3430ccb3690bd0be6a34|TBG 1320 - The Bridge|1|1|2|1|41|entire_home
+698f34dd92419e8f02d7337a|TBG 1320 - The Bridge|1|1|2|1|28|entire_home
+698f3c4fc4274e1482210528|TBG 1320 - The Bridge|1|1|2|1|92|entire_home
+697bc0c32d95cf353664ef13|TBG 1320 - The Bridge|1|1|2|1|92|entire_home
+698e3f4d670041ddcea7cc30|TBG 1320 - The Bridge|1|1|2|1|28|entire_home
+698e422c87a7931027978a5d|TBG 1320 - The Bridge|1|1|2|1|41|entire_home
+698e4299e145e4619132df86|TBG 1320 - The Bridge|1|1|2|1|47|entire_home
+698f34627d919da60eaeadf1|TBG 1320 - The Bridge|1|1|2|1|47|entire_home
+698f34b1aa384c2e609708e3|TBG 1320 - The Bridge|1|1|2|1|34|entire_home
+678f9548e0622b99d3bcf402|NXP 950 - Next Pamplona|1|1|2|1|19|entire_home
+677d94ff3662bb87e8cf9a52|NXP 950 - Next Pamplona|1|1|2|1|20|entire_home
+68a330f15e813f9e10717d3c|AYH 634 -  Ayra Higienópolis|1|1|2|1|35|entire_home
+689d0180b7b0990c2bdcac68|AYH 634 -  Ayra Higienópolis|1|1|2|1|25|entire_home
+689e32d66cf91f9015c0ad53|AYH 634 -  Ayra Higienópolis|1|1|2|1|35|entire_home
+689e33166cf91f9015c0ae6b|AYH 634 -  Ayra Higienópolis|1|1|2|1|38|entire_home
+67b3696057c25c1544d7d921|PVP 936 - Pivô Pamplona|2|1|4|3|52|entire_home
+682b966587eca069a3e1a607|PVP 936 - Pivô Pamplona|1|1|2|1|31|entire_home
+688a14162e20f1a7b50ec347|PVP 936 - Pivô Pamplona|1|1|2|1|26|entire_home
+67c87a9ed11d2dad2c9f634c|PVP 936 - Pivô Pamplona|1|1|2|1|30|entire_home
+682cd25b9e9882b89749a8bb|PVP 936 - Pivô Pamplona|1|1|2|1|36|entire_home
+67b3321b3401f1d9f4abdf30|PVP 936 - Pivô Pamplona|1|1|2|1|26|entire_home
+67c87b76e94ec2a6da704bf3|PVP 936 - Pivô Pamplona|1|1|3|2|36|entire_home
+67c87b1a9cdc4a3a70269ae5|PVP 936 - Pivô Pamplona|1|1|2|1|26|entire_home
+682b9686cc1db4d55bf594f5|PVP 936 - Pivô Pamplona|1|1|3|2|43|entire_home
+68191be83efd1d9b9279ea73|PVP 936 - Pivô Pamplona|1|1|3|2|36|entire_home
+65aeb987037ce4d7b9b26dc9|KAS 99 - Kasa|1|1|1|1|30|entire_home
+65f353ea48038fb171886865|KAS 99 - Kasa|1|1|2|1|30|entire_home
+6a344798e7f5fe30b549a521|KAS 99 - Kasa|1|1|1|1|24|entire_home
+6a34514939eed6c0f8617c3d|KAS 99 - Kasa|1|1|2|1|28|entire_home
+6540ea753f4cadd7d73fc2e2|KAS 99 - Kasa|1|1|2|1|30|entire_home
+6494406b513764cf9fecb4da|KAS 99 - Kasa|1|1|2|1|28|entire_home
+64944421513764cf9fecbcd8|KAS 99 - Kasa|1|1|1|1|24|entire_home
+6540fe0124ad97b2fd489964|KAS 99 - Kasa|1|1|2|1|30|entire_home
+64371e8075589b801230656d|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec04c8bbe48fa503e76dc|HLK 407 - Homelike|1|1|2|1|40|entire_home
+64bec0925389e651c61f60e5|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec1464f960ee4f96c1c56|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec05a30d110cd858986da|HLK 407 - Homelike|1|1|2|1|40|entire_home
+6a4411c9f3634a63e717bff0|AGR 965 - Aurora Greystar|1|1|2|1|37|entire_home
+6a8dbedb73fe45d9391ad78f|PED 832 - Pedroso de Moraes|2|2|3|2|60|entire_home
+6945a7c0076699583bdd87cf|PVJ 44 - Pivô Jardins|1|1|2|1|27|entire_home
+6945a2b5753b74b391e87d8d|PVJ 44 - Pivô Jardins|1|1|3|2|80|entire_home
+6945a3352a60425e8a5675c0|PVJ 44 - Pivô Jardins|1|1|3|2|42|entire_home
+6945a3f878a935331b290848|PVJ 44 - Pivô Jardins|1|1|3|2|42|entire_home
+6945a54f5e7f7fc521def475|PVJ 44 - Pivô Jardins|1|1|3|2|40|entire_home
+6945a6466a00601c2b15717c|PVJ 44 - Pivô Jardins|1|1|3|2|56|entire_home
+6945a5bce11af43e2f22bf85|PVJ 44 - Pivô Jardins|1|1|2|1|23|entire_home
+6945a6a8d18c1ca5666df732|PVJ 44 - Pivô Jardins|1|1|2|1|54|entire_home
+6945a745b2975ba17e3973d8|PVJ 44 - Pivô Jardins|1|1|2|1|27|entire_home
+64bec0df8606f05ab5690179|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec0cc766b7a9bd261b0f6|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec0a7b74414fde6be2ce3|HLK 407 - Homelike|1|1|2|1|34|entire_home
+64bec0b39fd364b036470348|HLK 407 - Homelike|1|1|2|1|34|entire_home
+66abb8f6ad6fad605201bdc5|NUN 61 - Helbor NUN|2|2.5|4|2|62|entire_home
+69657cbf04951f9897f2886c|PVJ 44 - Pivô Jardins|1|1|2|1|23|entire_home
+69847ce15303f8a2da7a22e9|PVJ 44 - Pivô Jardins|1|1|2|1|52|entire_home
+69c438104643b48ffb326b64|PVF 1304 - Pivô Alameda Franca|1|1|2|1|49|entire_home
+66bf9697b9b08d0cc7a72ab8|UPR 1577 - Upper Itaim|1|1|2|1|40|entire_home
+675aeb6af5ee862403b2e71e|UPR 1577 - Upper Itaim|1|1|2|1|40|entire_home
+68dc395c9f6daff6a5a12e1b|AGR 965 - Aurora Greystar|1|1|2|1|35|entire_home
+642f639d1b40fc0f67db2851|NXF 444 - Next Franca|1|1|2|1|17|entire_home
+6942ecfbf33b62024d088dcc|FST 3950 - First|2|1|4|2|111|entire_home
+64133e1a400ec836773e56e3|NXF 444 - Next Franca|1|1|2|1|39|entire_home
+64133e93400ec836773e5bc8|NXF 444 - Next Franca|1|1|2|1|25|entire_home
+640b7dd5875147be1f4f22c9|NXF 444 - Next Franca|1|1|2|1|35|entire_home
+64133d79f0a2822232879c48|NXF 444 - Next Franca|1|1|2|1|48|entire_home
+64133d555b548c7f17d7a471|NXF 444 - Next Franca|1|1|2|1|28|entire_home
+64133e62400ec836773e5a4b|NXF 444 - Next Franca|1|1|2|1|36|entire_home
+64133e39400ec836773e58e4|NXF 444 - Next Franca|1|1|2|1|19|entire_home
+64133cf95b548c7f17d7a25e|NXF 444 - Next Franca|1|1|2|1|29|entire_home
+64133cb55c66641ff93506cb|NXF 444 - Next Franca|1|1|2|1|28|entire_home
+64133e7df0a2822232879ecf|NXF 444 - Next Franca|1|1|2|1|31|entire_home
+69445fa7445f59cc98cc5acd|FST 3950 - First|1|1|3|2|57|entire_home
+68fa2ca3398c6d9ecddc146c|FST 3950 - First|1|1|3|2|39.2|entire_home
+6939e0ee26535b2c961e4a6d|FST 3950 - First|1|1|2|1|81|entire_home
+693af99e3f78fe9e8ab395f4|FST 3950 - First|1|1|3|2|57|entire_home
+69415eaf1b9d02d4957f58af|FST 3950 - First|1|1|3|2|53.54|entire_home
+6942eae2819070275a2b3104|FST 3950 - First|1|1|2|1|59|entire_home
+694ad978a26c63277572afc4|FST 3950 - First|1|1|3|2|138|entire_home
+693afb4eae00931c48da806e|FST 3950 - First|1|1|2|1|63|entire_home
+68dd7129037c8715fd15f8b7|AGR 965 - Aurora Greystar|1|1|2|1|40|entire_home
+694041d3cd8f8eeb8d223f42|AGR 965 - Aurora Greystar|1|1|2|1|38|entire_home
+68dd73ae0e4528e181eb6a67|AGR 965 - Aurora Greystar|1|1|2|1|35|entire_home
+68dd6fa1e494440d3b09e245|AGR 965 - Aurora Greystar|1|1|2|1|38|entire_home
+68dd7218e1d28bbdc1b0838d|AGR 965 - Aurora Greystar|1|1|2|1|34|entire_home
+68dd6f4e4cb828643d2f8104|AGR 965 - Aurora Greystar|1|1|2|1|37|entire_home
+69b174bf0309f8ddf5c8b507|PVN 39 - Pivô Vila Nova|1|1|2|1|76|entire_home
+698a31bb5ae445f689af52aa|PVN 39 - Pivô Vila Nova|1|1|3|2|52|entire_home
+699760c0ccf06806618100f3|PVN 39 - Pivô Vila Nova|1|1|2|1|61|entire_home
+6989e285d5f67608dbda8355|PVN 39 - Pivô Vila Nova|1|1|2|1|30|entire_home
+698a34738cb992399584e689|PVN 39 - Pivô Vila Nova|1|1|2|1|30|entire_home
+64482033e805f55e5009e22f|NXP 950 - Next Pamplona|2|1.5|3|2|64|entire_home
+6557be1e2c9a6aada06002f4|NXP 950 - Next Pamplona|1|1|2|1|22|entire_home
+6447d21ee5831ed78a0e3292|NXP 950 - Next Pamplona|1|1|2|1|32|entire_home
+65c10a5c7539c235183ba8b2|NXP 950 - Next Pamplona|1|1|2|1|20|entire_home
+645eba8bf892b52a04d65027|NXP 950 - Next Pamplona|1|1|2|1|33|entire_home
+643b0a428d1c62fa2b2d0834|NXP 950 - Next Pamplona|1|1|2|1|31|entire_home
+6447d405e5831ed78a0e3ef9|NXP 950 - Next Pamplona|1|1|2|1|33|entire_home
+6447d4e5ad09d0e76105bb7a|NXP 950 - Next Pamplona|1|1|2|1|32|entire_home
+6564d1134f303bdca8c7abf3|NXP 950 - Next Pamplona|1|1|3|2|31|entire_home
+643b0a60b979f529aaf1c27b|NXP 950 - Next Pamplona|1|1|2|1|33|entire_home
+6447d930f8af07b947b4d2b8|NXP 950 - Next Pamplona|1|1|2|1|22|entire_home
+64481f3bdeeac171cce43306|NXP 950 - Next Pamplona|1|1|2|1|22|entire_home
+69ebc5677e8ed9cdfef1ac71|NXP 950 - Next Pamplona|1|1|2|1|31|entire_home
+68fa84680ea70066e3b17f86|AYM 181 - Ayra Moema|1|1|2|1|31.5|entire_home
+68fa852ffdf85bd201d41a06|AYM 181 - Ayra Moema|1|1|2|1|34.5|entire_home
+68fa8551420be18388193a4d|AYM 181 - Ayra Moema|1|1|2|1|30|entire_home
+68fa8572b5efc6ff4391d26e|AYM 181 - Ayra Moema|1|1|2|1|21|entire_home
+6abbafd5eb5a75e671dbc9fd|PVP 936 - Pivô Pamplona|1|1|3|2|35|entire_home
+6a7f324c8e9c5b31dad92b6e|PVP 936 - Pivô Pamplona|1|1|2|1|27|entire_home
+6a6365e0c46a03bda12e84e5|PVP 936 - Pivô Pamplona|1|1|2|1|27|entire_home
+6a6365bc027ab03d61eccfdf|PVP 936 - Pivô Pamplona|1|1|2|1|42|entire_home
+6a636511e890b8ac477c3e92|PVP 936 - Pivô Pamplona|1|1|2|1|30|entire_home
+6a04e493ec5315d660a544ba|PVP 936 - Pivô Pamplona|1|1|2|1|35|entire_home
+6a63652b9052d78c6bd78713|PVP 936 - Pivô Pamplona|1|1|2|1|35|entire_home
+68dfde7a7440f067faa460de|AGR 965 - Aurora Greystar|2|1|3|2|50|entire_home
+68dfdf6958d16d4280870c49|AGR 965 - Aurora Greystar|2|1|3|2|50|entire_home
+69494bf9a58a782ffef3d5bf|PVF 1304 - Pivô Alameda Franca|1|1|2|1|39|entire_home
+69494e2853ecaff7465116c4|PVF 1304 - Pivô Alameda Franca|1|1|2|1|46|entire_home
+6949501b97deed1cee049928|PVF 1304 - Pivô Alameda Franca|1|1|2|1|32|entire_home
+69495619f4d72572fc11ebb0|PVF 1304 - Pivô Alameda Franca|1|1|2|1|84|entire_home
+69494eb2617f7a172878d1a7|PVF 1304 - Pivô Alameda Franca|1|1|3|2|49|entire_home
+694947360d046ceb258a3cd1|PVF 1304 - Pivô Alameda Franca|1|1|3|2|49|entire_home
+69430f2fb9bbb1a0924fab7e|PVF 1304 - Pivô Alameda Franca|1|1|3|2|49|entire_home
+6a8db4f225298aac9271a876|MOU 1508 - Mourato Coelho|2|2|3|2|62|entire_home
+6a8dae5d6d495a07d036eaa6|MOU 1508 - Mourato Coelho|1|1|2|1|40|entire_home
+694954f03e47d9e6b881a73f|PVF 1304 - Pivô Alameda Franca|3|2|6|3|129|entire_home
+69419ec4acced65ce2f20a00|PVP 936 - Pivô Pamplona|2|1|3|2|55|entire_home
+69419b1437c8ddd722091680|PVP 936 - Pivô Pamplona|1|1|2|1|55|entire_home
+68f77c6257f4c3254fe8fd1e|PVP 936 - Pivô Pamplona|1|1|2|1|26|entire_home
+69416ffee6888fced11f046c|PVP 936 - Pivô Pamplona|1|1|2|1|27|entire_home
+694172670ea385680ab3a74d|PVP 936 - Pivô Pamplona|1|1|2|1|55|entire_home
+69416ceb56dbff1230866008|PVP 936 - Pivô Pamplona|1|1|2|1|24|entire_home
+69416a843651b7c2d027dac5|PVP 936 - Pivô Pamplona|1|1|2|1|30|entire_home
+694194f4e0555958206bbb6e|PVP 936 - Pivô Pamplona|1|1|2|1|35|entire_home
+69419ca5a1e337fdcf6ad769|PVP 936 - Pivô Pamplona|1|1|2|1|35|entire_home
+6968dfb20804fa7286c8d70d|PVN 39 - Pivô Vila Nova|1|1|3|2|44|entire_home
+6968d2c6e0f06996d4e8a8e9|PVN 39 - Pivô Vila Nova|1|1|2|1|23|entire_home
+6968dfc1f201659852e8ee24|PVN 39 - Pivô Vila Nova|1|1|2|1|29|entire_home
+6968dfd6015cf777cedf096a|PVN 39 - Pivô Vila Nova|1|1|2|1|29|entire_home
+67ebea279c400c2e535d9b1f|AYR 423 - Ayra Pinheiros|1|1|2|1|48|entire_home
+6851842d071040db0a4b2000|AYR 423 - Ayra Pinheiros|1|1|2|1|54|entire_home
+67a606d951ba62f74e16f638|AYR 423 - Ayra Pinheiros|1|1|2|1|38|entire_home
+68a39fc7fb1802d865e065bf|AYR 423 - Ayra Pinheiros|1|1|2|1|44|entire_home
+68dafa6d41bd194414535c72|AYR 423 - Ayra Pinheiros|1|1|2|1|54|entire_home
+67a60789055c4e3c338318db|AYR 423 - Ayra Pinheiros|1|1|2|1|54|entire_home
+672cbce3eab96ab83931a733|AYR 423 - Ayra Pinheiros|1|1|2|1|54|entire_home
+672cdf845436292425366b78|AYR 423 - Ayra Pinheiros|1|1|2|1|54|entire_home
+67ebe9b3dffcd50b2c5aad9e|AYR 423 - Ayra Pinheiros|1|1|2|1|48|entire_home
+699776585fca61121422f021|AYR 423 - Ayra Pinheiros|1|1|2|1|38|entire_home
+6a8f0c6637c0b3913e9557c6|AYR 423 - Ayra Pinheiros|1|1|2|1|48|entire_home
+6a91e562061fcef0470dcac8|AYR 423 - Ayra Pinheiros|1|1|2|1|35|entire_home

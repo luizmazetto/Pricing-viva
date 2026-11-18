@@ -32,3 +32,9 @@ select master_id, s.buildingName b, format_date('%Y-%m', date) m,
  countif(occupancy>0 and reservation.source like '%booking%') n_booking, sum(if(occupancy>0 and reservation.source like '%booking%', accommodation_adr, 0)) rev_booking,
  sum(if(occupancy>0, accommodation_adr, 0)) rev_total, countif(occupancy>0) n_booked
 from `views.listing_daily_stats` s where availability=1 and date between '2024-11-01' and '2026-10-31' group by 1,2,3);
+
+-- q5 · data/caracteristicas_master.psv  (header: master|b|rooms|baths|guests|beds|m2|subtype)
+with m as (select distinct master_id from `views.listing_daily_stats` where availability=1 and date between '2024-11-01' and '2026-10-31')
+select string_agg(format('%s|%s|%s|%s|%s|%s|%s|%s', l.id_, coalesce(l.buildingName,''), coalesce(cast(l.i_rooms as string),''), coalesce(cast(l.f_bathrooms as string),''),
+  coalesce(cast(l.i_maxGuests as string),''), coalesce(cast(l.i_beds as string),''), coalesce(regexp_replace(l.f_square, r'[|\n]', ' '),''), coalesce(l.subtype,'')), '\n')
+from replicas.vivadb_listing l join m on m.master_id=l.id_;

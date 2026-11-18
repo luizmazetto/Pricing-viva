@@ -48,6 +48,7 @@ section.city{border-top:3px solid var(--ink);padding-top:18px}
 .legend i.dt{width:10px;height:10px;border-radius:50%}
 .small{font-size:13px;color:var(--muted)}
 .two{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px}
 .t-wk td:first-child,.t-prem td:first-child{white-space:nowrap}
 .col{display:grid;gap:10px;align-content:start;min-width:0}
 /* svg */
@@ -100,6 +101,8 @@ nav.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line)
 nav.tabs a{font:600 15px var(--body);color:var(--muted);text-decoration:none;padding:8px 14px;border-bottom:3px solid transparent;margin-bottom:-1px}
 nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--c26)}
 nav.tabs a:hover,nav.tabs a:focus-visible{color:var(--ink);outline:none}
+.cil{stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+.t-win{min-width:620px} .t-lag{min-width:380px} .t-split{min-width:900px} .t-lst{min-width:600px}
 .barp{fill:var(--cnew)} .barn{fill:var(--neg)}
 .sc{fill-opacity:.85}
 .t-est{min-width:640px} .t-share{min-width:640px} .t-dim{min-width:560px} .t-sub2{min-width:560px} .t-bld{min-width:1140px} .t-bld td,.t-bld th{padding-inline:7px}
