@@ -16,3 +16,15 @@ select s.buildingName b, format_date('%Y-%m', date) m,
  sum(if(occupancy>0 and (lower(reservation.source) like '%airbnb%' or lower(reservation.source) like '%booking%') and reservation.los>=28, accommodation_adr, 0)) ota_mt,
  countif(occupancy>0 and not (lower(reservation.source) like '%airbnb%' or lower(reservation.source) like '%booking%') and coalesce(reservation.los,0)<28) n_out_st
 from `views.listing_daily_stats` s where availability=1 and date between '2024-11-01' and '2026-10-31' group by 1,2);
+
+-- expedia_receita_predio_mes.psv (header: b|m|rev_exp)
+select string_agg(format('%s|%s|%.0f', b, m, rev_exp), '\n' order by b, m) from (
+select s.buildingName b, format_date('%Y-%m', date) m,
+ sum(if(occupancy>0 and lower(coalesce(reservation.source,'')) like '%expedia%', accommodation_adr, 0)) rev_exp
+from `views.listing_daily_stats` s where availability=1 and date between '2024-01-01' and '2026-10-31' group by 1,2);
+
+-- reviews_expedia_predio_mes.psv (header: b|m|n|sg|mn|mx): nota 1–5
+select string_agg(format('%s|%s|%d|%.1f|%.1f|%.1f', b, m, n, sg, mn, mx), '\n' order by b, m) from (
+select l.buildingName b, format_date('%Y-%m', date(rev.createdAt)) m, count(*) n, sum(rev.general) sg, min(rev.general) mn, max(rev.general) mx
+from replicas.vivadb_review rev join replicas.vivadb_reservation res on rev.idreserve=res.id_ join replicas.vivadb_listing l on l.id_=res.idlisting
+where lower(res.partnerName) like '%expedia%' and rev.general > 0 and l.buildingName is not null and date(rev.createdAt) <= '2026-10-31' group by 1,2);
