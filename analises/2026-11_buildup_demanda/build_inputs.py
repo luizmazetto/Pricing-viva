@@ -316,7 +316,19 @@ def solve_floor(R, target):
     cur = sum(v * b for v, b in pts) / V
     return round(hi, 3), cur
 FLOOR_A, CUR_A = solve_floor(RA, 4.75)
-FLOOR_B, CUR_B = solve_floor(RB, 8.5)
+def solve_floor_keep(R, target, cut=8.0):
+    """prédios com nota >= cut mantêm a própria; os abaixo recebem X para a média (ponderada por volume) dar target"""
+    keep = low = V = 0.0
+    for r in ROWS:
+        if not active(r): continue
+        cd = ROWINFO[r]['code']; v = vol_base(R, cd); b = window(R, cd, 33, 12)[0]
+        if v <= 0: continue
+        V += v
+        if b is None or b >= cut: keep += v * (b if b is not None else target)
+        else: low += v
+    cur = sum(vol_base(R, ROWINFO[r]['code']) * (window(R, ROWINFO[r]['code'], 33, 12)[0] or target) for r in ROWS if active(r)) / V
+    return round((target * V - keep) / low, 3), cur
+FLOOR_B, CUR_B = solve_floor_keep(RB, 8.5)
 
 for c, h in zip('BCF', ['2. Reviews · nota mensal dos reviews novos', 'Valor', 'Racional']):
     put(f'{c}10', h, F_B, FILL_HEAD if c != 'B' else None)
@@ -330,7 +342,8 @@ put('B14', 'Média Airbnb resultante no cenário 2 (conferência)')
 put('C14', "=SUMPRODUCT('Premissas por prédio'!$E$5:$E$57,'Premissas por prédio'!$L$5:$L$57)/SUM('Premissas por prédio'!$E$5:$E$57)", F_CALC, None, '0.000')
 put('B15', 'Meta Booking: média do portfólio (0–10)'); put('C15', 8.5, F_IN, FILL_KEY, '0.00')
 put('F15', f'Premissa do usuário. Hoje o portfólio está em {CUR_B:.2f}'.replace('.', ',') + '. Nota do Booking não entra no prêmio (β Booking = 0), só no acompanhamento.')
-put('B16', 'Piso Booking no cenário 2'); put('C16', FLOOR_B, F_IN, FILL_KEY, '0.00')
+put('B16', 'Nota Booking dos prédios abaixo de 8,0 no cenário 2'); put('C16', FLOOR_B, F_IN, FILL_KEY, '0.00')
+put('F16', 'Prédios com nota Booking 12m ≥ 8,0 (corte do item 7) mantêm a própria nota; os abaixo recebem este valor, calculado para a média do portfólio dar a meta (conferência abaixo).')
 put('B17', 'Média Booking resultante no cenário 2 (conferência)')
 put('C17', "=SUMPRODUCT('Premissas por prédio'!$F$5:$F$57,'Premissas por prédio'!$O$5:$O$57)/SUM('Premissas por prédio'!$F$5:$F$57)", F_CALC, None, '0.000')
 put('B18', 'Volume de reviews por mês'); put('C18', 'média nov/25–out/26')
@@ -392,6 +405,8 @@ put('B59', 'Peso dos reviews dos últimos 12 meses'); put('C59', 0.85, F_IN, FIL
 put('F59', 'Ponderação do Booking desde jan/2025 (estudo com 100 hotéis espanhóis, 74.882 reviews): 85% / 10% / 5%. Antes disso, média simples de 36 meses.')
 put('B60', 'Peso dos reviews de 13 a 24 meses'); put('C60', 0.10, F_IN, FILL_KEY, '0%')
 put('B61', 'Peso dos reviews de 25 a 36 meses'); put('C61', 0.05, F_IN, FILL_KEY, '0%')
+put('B62', 'Margem para entrar/sair da faixa'); put('C62', 0.05, F_IN, FILL_KEY, '0.00')
+put('F62', 'Entra na faixa só com nota ≥ corte + margem (8,05) e sai só abaixo de corte − margem (7,95); entre os dois mantém a faixa do mês anterior (aba Aux Faixa Booking).')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
@@ -414,13 +429,24 @@ for r in ROWS:
         fx = f"=IFERROR(({'+'.join(a for a, _ in parts)})/({'+'.join(b for _, b in parts)}),\"\")"
         x = B36.cell(r, 6 + k, fx); x.font = F_CALC; x.number_format = '0.00'; x.fill = FILL_IN
 
+FB = mirror('Aux Faixa Booking', 'Faixa Booking ≥ 8,0 (1 = dentro), com margem',
+            'Mês 1 da projeção parte da faixa em out/26 (Premissas por prédio, coluna X). Entra com nota ≥ corte + margem, sai com nota < corte − margem; entre os dois repete o mês anterior.')
+month_header(FB)
+for r in ROWS:
+    if not active(r): continue
+    for k in range(K_NOV, K_END + 1):
+        cl = col(k); prev = f"'Premissas por prédio'!$X{r}" if k == K_NOV else f"{col(k - 1)}{r}"
+        sc = f"'Booking Nota Exibida'!{cl}{r}"
+        fx = f"=IF(ISNUMBER({sc}),IF({sc}>=Premissas!$C$54+Premissas!$C$62,1,IF({sc}<Premissas!$C$54-Premissas!$C$62,0,{prev})),{prev})"
+        FB.cell(r, 6 + k, fx).font = F_CALC
+
 # ------------------------------------------------------------------ Premissas por prédio
 PP = mirror('Premissas por prédio', 'Premissas por prédio', 'Calculadas a partir do realizado; podem ser sobrescritas (ex.: volume de reviews de prédio novo).')
 heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/mês (média nov/25–out/26)', 7: 'Prêmio base (média jul–out/26)',
          8: 'Nota Airbnb 12m base (média jul–out/26)', 9: 'Nota Booking 12m base (média jul–out/26)',
          10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mai–ago/26)',
          11: 'Nota Airbnb atual (12m até out/26)', 12: 'Nota Airbnb no cenário meta (máx. entre atual e piso)', 13: 'Nota Airbnb mensal usada na projeção',
-         14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta', 16: 'Nota Booking mensal usada na projeção',
+         14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta (mantém se ≥ 8,0)', 16: 'Nota Booking mensal usada na projeção',
          17: 'Ocupação média (nov/25–out/26)', 18: 'Ganho líquido por ponto · demais outros canais', 19: 'Δ share Expedia a partir de jan/27 (p.p.)',
          20: 'Δ share demais outros a partir de jan/27 (p.p.)', 21: 'Share Expedia atual (média nov/25–out/26)', 22: 'Share demais outros atual (média nov/25–out/26)',
          23: 'Nota Booking exibida em out/26', 24: 'Acima do corte em out/26 (1 = sim)'}
@@ -440,7 +466,7 @@ for r in ROWS:
         12: (f"=IF(ISNUMBER(K{r}),MAX(K{r},Premissas!$C$13),Premissas!$C$12)", '0.00'),
         13: (f"=IF(Premissas!$C$11=2,L{r},IF(ISNUMBER(K{r}),K{r},Premissas!$C$12))", '0.00'),
         14: (f"=IF(ISNUMBER('Reviews Booking'!AM{r}),'Reviews Booking'!AM{r},\"\")", '0.00'),
-        15: (f"=IF(ISNUMBER(N{r}),MAX(N{r},Premissas!$C$16),Premissas!$C$15)", '0.00'),
+        15: (f"=IF(ISNUMBER(N{r}),IF(N{r}>=Premissas!$C$54,N{r},Premissas!$C$16),Premissas!$C$15)", '0.00'),
         16: (f"=IF(Premissas!$C$11=2,O{r},IF(ISNUMBER(N{r}),N{r},Premissas!$C$15))", '0.00'),
         17: (f"=IFERROR(AVERAGE('Buildup Ocupação'!AC{r}:AM{r}),\"\")", '0.0%'),
         18: (f"=IF(ISNUMBER(Q{r}),IF(Q{r}>=Premissas!$C$47,Premissas!$C$48,Premissas!$C$49),Premissas!$C$49)", '0.00'),
@@ -493,7 +519,7 @@ for r in ROWS:
         tb = f"IFERROR(Premissas!$C$22*'% Booking'!{cl}{r}*('Reviews Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
         mixf = f"*(1+Premissas!$C$50*'Premissas por prédio'!$S{r}+'Premissas por prédio'!$R{r}*'Premissas por prédio'!$T{r})" if k >= 36 else ""
         bkf = (f"*IFERROR(POWER(1+IF('% Booking'!{cl}{r}>=Premissas!$C$56,Premissas!$C$55,Premissas!$C$57),"
-               f"IF('Booking Nota Exibida'!{cl}{r}>=Premissas!$C$54,1,0)-'Premissas por prédio'!$X{r}),1)")
+               f"'Aux Faixa Booking'!{cl}{r}-'Premissas por prédio'!$X{r}),1)")
         wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}-1,\"\")").font = F_CALC
 
 # ------------------------------------------------------------------ Buildup RevPAR
