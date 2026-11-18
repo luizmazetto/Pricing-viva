@@ -17,7 +17,7 @@ do fechamento do Report DB). Abas novas: Premissas, Premissas por prédio, Sazon
 Reviews: cenário 1 = nota atual (12m) de cada prédio; cenário 2 = meta de portfólio 4,75 (prédios abaixo do piso sobem ao piso, ~4,71).
 Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal (do prédio, ou da cidade para prédios novos) × exp(0,95 × %Airbnb × Δnota Airbnb 12m
 + β Booking × %Booking × Δnota Booking 12m) − 1. RevPAR nosso = RevPAR mercado × (1 + prêmio) × fator de calibração
-(Report DB ÷ Metabase, mai–ago/26). Ocupação = mesmo mês do ano anterior × (1 + variação da cidade); ADR = RevPAR ÷ Ocupação.
+(Report DB ÷ Metabase, mediana mai–ago/26). Ocupação = mesmo mês do ano anterior × (1 + variação da cidade); ADR = RevPAR ÷ Ocupação.
 - `data/ocupacao_predio_mes.psv`: ocupação mensal por prédio (Metabase), usada em set–out/26 e na base de prédios em ramp-up.
 
 Canais (Premissas, item 8): cenário 1 = mix de jul–out/26 de cada prédio, constante. Cenário 2 (padrão) = portfólio chega a

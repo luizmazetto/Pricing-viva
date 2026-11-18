@@ -374,7 +374,7 @@ lines = [
     'RevPAR de mercado(t) = mesmo mês do ano anterior × (1 + variação da cidade, item 1).',
     'Prêmio(t) = (1 + prêmio base) × sazonalidade (do prédio ou da cidade) × exp( β Airbnb × %Airbnb × [Nota Airbnb 12m(t) − nota base] + β Booking × %Booking × [Nota Booking 12m(t) − nota base] ) − 1.',
     'Nota 12m(t) (abas Reviews) = soma das notas ÷ quantidade de reviews dos últimos 12 meses: realizado até out/26 e, depois, volume mensal × nota mensal do cenário (item 2). Nota base = média jul–out/26.',
-    'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mai–ago/26).',
+    'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mediana dos meses mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
     'Outros canais (itens 6 e 8): quando o share de Expedia ou dos demais canais sobe (cenário de crescimento do item 8 e/ou colunas S e T por prédio), o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
     'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 7,5% nos prédios com Booking ≥ 35% da receita.',
@@ -468,7 +468,7 @@ for r in ROWS:
 PP = mirror('Premissas por prédio', 'Premissas por prédio', 'Calculadas a partir do realizado; podem ser sobrescritas (ex.: volume de reviews de prédio novo).')
 heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/mês (média nov/25–out/26)', 7: 'Prêmio base (média jul–out/26)',
          8: 'Nota Airbnb 12m base (média jul–out/26)', 9: 'Nota Booking 12m base (média jul–out/26)',
-         10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mai–ago/26)',
+         10: 'Fator de calibração RevPAR (Report DB ÷ Mercado × (1+Prêmio), mediana dos meses mai–ago/26)',
          11: 'Nota Airbnb atual (12m até out/26)', 12: 'Nota Airbnb no cenário meta (máx. entre atual e piso)', 13: 'Nota Airbnb mensal usada na projeção',
          14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta (mantém se ≥ 8,0)', 16: 'Nota Booking mensal usada na projeção',
          17: 'Ocupação média (nov/25–out/26)', 18: 'Ganho líquido por ponto · demais outros canais', 19: 'Δ share Expedia a partir de jan/27 (p.p.)',
@@ -498,10 +498,17 @@ for r in ROWS:
         18: (f"=IF(ISNUMBER(Q{r}),IF(Q{r}>=Premissas!$C$47,Premissas!$C$48,Premissas!$C$49),Premissas!$C$49)", '0.00'),
         23: (f"=IF(ISNUMBER('Booking Nota Exibida'!AM{r}),'Booking Nota Exibida'!AM{r},\"\")", '0.00'),
         24: (f"=IF(ISNUMBER(W{r}),IF(W{r}>=Premissas!$C$54,1,0),\"\")", '0'),
-        10: (f"=IFERROR(SUMPRODUCT('ADR Acomodação'!AH{r}:AK{r},'Ocupação (Disponível)'!AH{r}:AK{r})/SUMPRODUCT('RevPar Mercado'!AH{r}:AK{r},1+'Prêmio de Mercado'!AH{r}:AK{r}),1)", '0.000'),
     }
     for c, (fx, fmt) in f.items():
         x = PP.cell(r, c, fx); x.font = F_CALC; x.number_format = fmt; x.fill = FILL_IN
+    # calibração: mediana dos 4 meses (um mês fora da curva no Report DB não contamina a projeção inteira)
+    rat = []
+    for k in range(28, 32):
+        a_, o_ = ADR.cell(r, 6 + k).value, OCC.cell(r, 6 + k).value
+        m_, p_ = wb['RevPar Mercado'].cell(r, 6 + k).value, wb['Prêmio de Mercado'].cell(r, 6 + k).value
+        if all(isinstance(z, (int, float)) for z in (a_, o_, m_, p_)) and m_ * (1 + p_) > 0: rat.append(a_ * o_ / (m_ * (1 + p_)))
+    rat.sort(); cal = (rat[(len(rat) - 1) // 2] + rat[len(rat) // 2]) / 2 if rat else 1.0
+    x = PP.cell(r, 10, round(cal, 4)); x.font = F_IN; x.number_format = '0.000'; x.fill = FILL_IN
     for cc in (19, 20):
         x = PP.cell(r, cc, 0); x.font = F_IN; x.fill = FILL_KEY; x.number_format = '0.0%'
     cd_ = ROWINFO[r]['code']; ks_ = [k for k in range(22, 34) if H.get(cd_, {}).get(k) and H[cd_][k]['tot'] > 0]
