@@ -1,6 +1,6 @@
 """Preenche o histórico e as projeções (fórmulas) das abas de demanda do Inputs_Demanda.xlsx.
 Entrada: data/Inputs_Demanda_original.xlsx + dados extraídos (ver README.md). Saída: Inputs_Demanda_buildup.xlsx"""
-import csv, collections, copy
+import datetime, csv, collections, copy
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter as L
@@ -96,9 +96,9 @@ NOTES = {
     'Prêmio de Mercado': 'Prêmio = RevPAR de hospedagem nosso ÷ RevPAR de mercado − 1 (dashboard 58). Projeção: (1 + prêmio base) × exp(β Airbnb × %Airbnb × Δnota Airbnb 12m + β Booking × %Booking × Δnota Booking 12m) − 1.',
     'Reviews Booking': 'Média dos reviews do Booking (general × 2, escala 0–10) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas).',
     'Reviews Airbnb': 'Média dos reviews do Airbnb (general, 1–5) criados nos últimos 12 meses. Projeção: volume e nota mensal de Premissas por prédio (cenário em Premissas). É a nota usada na fórmula do prêmio.',
-    '% Airbnb': 'Receita de hospedagem de reservas Airbnb ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
-    '% Booking': 'Receita de hospedagem de reservas Booking ÷ receita de hospedagem total. Projeção: média nov/25–out/26.',
-    '% outros': 'Tudo que não é Airbnb nem Booking (Expedia ~50%, Swap, Homelike, DIVID, Direct, Extensão, Yuca, Decolar, corretores, B2B). Projeção: média nov/25–out/26 + aumento de share da coluna S de Premissas por prédio (a partir de jan/27).',
+    '% Airbnb': 'Receita de hospedagem de reservas Airbnb ÷ receita de hospedagem total. Projeção: divide com o Booking o que sobra dos outros canais, na proporção Airbnb/Booking de jul–out/26 do prédio (cenário de outros canais em Premissas, item 8).',
+    '% Booking': 'Receita de hospedagem de reservas Booking ÷ receita de hospedagem total. Projeção: divide com o Airbnb o que sobra dos outros canais, na proporção Airbnb/Booking de jul–out/26 do prédio (cenário de outros canais em Premissas, item 8).',
+    '% outros': 'Tudo que não é Airbnb nem Booking (Expedia ~50%, Swap, Homelike, DIVID, Direct, Extensão, Yuca, Decolar, corretores, B2B). Projeção (Premissas, item 8): cenário 1 = mix de jul–out/26 constante; cenário 2 = Expedia e demais de jul–out/26 crescendo em linha reta até a meta do portfólio. Nos dois, soma os aumentos manuais das colunas S e T de Premissas por prédio (a partir de jan/27).',
 }
 
 def value_for(sheet, c, k):
@@ -356,7 +356,7 @@ put('F22', 'Estimado −0,08 (intervalo −0,19 a +0,02), não significativo: ze
 put('B23', 'Base do prêmio: 1 = média jul–out/26 constante · 2 = média jul–out/26 × sazonalidade da cidade'); put('C23', 2, F_IN, FILL_KEY, '0')
 put('F23', '2 (padrão) = média de jul–out/26 do prédio, ajustada mês a mês pela sazonalidade do próprio prédio (quem tem 12 meses maduros) ou da cidade (aba Sazonalidade Prêmio Prédio). Em FLN o prêmio vai de ~0% no verão a ~+40% no inverno.')
 put('B25', '4. Canais', F_B)
-put('B26', '% Airbnb, % Booking e % outros'); put('C26', 'média nov/25–out/26, constante')
+put('B26', '% Airbnb, % Booking e % outros'); put('C26', 'cenário no item 8 (linha 65)')
 put('B28', '5. Ocupação × ADR · variação da nossa ocupação vs mesmo mês do ano anterior', F_B)
 for c, h in zip('BCDEF', ['Cidade', '2026 (nov–dez)', '2027', '2028', 'Racional']):
     put(f'{c}29', h, F_B, FILL_HEAD)
@@ -376,7 +376,7 @@ lines = [
     'Nota 12m(t) (abas Reviews) = soma das notas ÷ quantidade de reviews dos últimos 12 meses: realizado até out/26 e, depois, volume mensal × nota mensal do cenário (item 2). Nota base = média jul–out/26.',
     'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
-    'Outros canais (item 6): se o share de Expedia ou dos demais canais sobe a partir de jan/27, o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
+    'Outros canais (itens 6 e 8): quando o share de Expedia ou dos demais canais sobe (cenário de crescimento do item 8 e/ou colunas S e T por prédio), o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
     'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 7,5% nos prédios com Booking ≥ 35% da receita.',
     'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
@@ -407,6 +407,30 @@ put('B60', 'Peso dos reviews de 13 a 24 meses'); put('C60', 0.10, F_IN, FILL_KEY
 put('B61', 'Peso dos reviews de 25 a 36 meses'); put('C61', 0.05, F_IN, FILL_KEY, '0%')
 put('B62', 'Margem para entrar/sair da faixa'); put('C62', 0.05, F_IN, FILL_KEY, '0.00')
 put('F62', 'Entra na faixa só com nota ≥ corte + margem (8,05) e sai só abaixo de corte − margem (7,95); entre os dois mantém a faixa do mês anterior (aba Aux Faixa Booking).')
+PPN = "'Premissas por prédio'"
+put('B64', '8. Crescimento de canais · Expedia e demais outros canais', F_B)
+put('B65', 'Cenário de canais: 1 = proporções atuais (jul–out/26) · 2 = crescimento até a meta'); put('C65', 2, F_IN, FILL_KEY, '0')
+put('F65', '1 = % de cada canal fica no mix de jul–out/26 do prédio (mesma base do prêmio), constante. 2 = parte do mix de jul–out/26 de cada prédio e Expedia e demais crescem em linha reta (nov/26 até o mês da meta), no mesmo multiplicador para todos os prédios que crescem; Airbnb e Booking dividem o resto na proporção atual de cada prédio.')
+put('B66', 'Meta · Expedia no portfólio'); put('C66', 0.15, F_IN, FILL_KEY, '0.0%')
+put('B67', 'Meta · demais outros canais no portfólio'); put('C67', 0.12, F_IN, FILL_KEY, '0.0%')
+put('F67', 'Demais = tudo que não é Airbnb, Booking nem Expedia (direto, Swap, B2B, mid-term, corretores).')
+put('B68', 'Mês em que o portfólio atinge a meta'); put('C68', datetime.datetime(2027, 12, 1), F_IN, FILL_KEY, 'mmm/yy')
+put('F68', 'Depois deste mês o mix fica constante. Para chegar já em dez/26, troque por dez/26.')
+put('B69', 'Prédios que não crescem: outros canais (Expedia + demais) acima de'); put('C69', 0.50, F_IN, FILL_KEY, '0%')
+put('F69', 'Homelike, Cannes e Equalize já têm mais de 50% fora de Airbnb/Booking (quase tudo mid-term): mantêm o mix de jul–out/26. Crescer na mesma proporção levaria a Homelike a 90%.')
+put('B70', 'Base do portfólio jul–out/26 · Expedia'); put('C70', f"=SUMPRODUCT({PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
+put('F70', 'Ponderado pela receita de hospedagem de jul–out/26 de cada prédio (Premissas por prédio, coluna AC).')
+put('B71', 'Base do portfólio jul–out/26 · demais outros'); put('C71', f"=SUMPRODUCT({PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
+put('B72', 'Multiplicador do share · Expedia (prédios que crescem)')
+put('C72', f"=(C66*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
+put('F72', 'Calculado para fechar a meta do portfólio descontando os prédios que não crescem.')
+put('B73', 'Multiplicador do share · demais outros (prédios que crescem)')
+put('C73', f"=(C67*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
+put('B74', 'Check · Expedia no portfólio no mês da meta'); put('C74', f"=SUMPRODUCT({PPN}!$AE$5:$AE$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
+put('F74', 'Com os pesos de receita de jul–out/26 (deve bater com a meta). Sem contar os aumentos manuais das colunas S e T.')
+put('B75', 'Check · demais outros no portfólio no mês da meta'); put('C75', f"=SUMPRODUCT({PPN}!$AF$5:$AF$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
+put('B76', 'Meses de rampa (nov/26 até o mês da meta)'); put('C76', '=MAX(1,(YEAR(C68)-2026)*12+MONTH(C68)-10)', F_CALC, None, '0')
+put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,41 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
@@ -449,7 +473,9 @@ heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/
          14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta (mantém se ≥ 8,0)', 16: 'Nota Booking mensal usada na projeção',
          17: 'Ocupação média (nov/25–out/26)', 18: 'Ganho líquido por ponto · demais outros canais', 19: 'Δ share Expedia a partir de jan/27 (p.p.)',
          20: 'Δ share demais outros a partir de jan/27 (p.p.)', 21: 'Share Expedia atual (média nov/25–out/26)', 22: 'Share demais outros atual (média nov/25–out/26)',
-         23: 'Nota Booking exibida em out/26', 24: 'Acima do corte em out/26 (1 = sim)'}
+         23: 'Nota Booking exibida em out/26', 24: 'Acima do corte em out/26 (1 = sim)',
+         25: 'Share Airbnb jul–out/26', 26: 'Share Booking jul–out/26', 27: 'Share Expedia jul–out/26', 28: 'Share demais outros jul–out/26',
+         29: 'Receita de hospedagem jul–out/26 (R$, peso)', 30: 'Cresce no cenário 2 (1 = sim)', 31: 'Share Expedia no mês da meta (cenário 2)', 32: 'Share demais outros no mês da meta (cenário 2)'}
 for c, h in heads.items():
     x = PP.cell(4, c, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(c)].width = 20
 PP.row_dimensions[4].height = 78
@@ -483,6 +509,21 @@ for r in ROWS:
         tot_ = sum(H[cd_][k]['tot'] for k in ks_); ex_ = sum(H[cd_][k].get('exp', 0) for k in ks_)
         ot_ = sum(H[cd_][k]['tot'] - H[cd_][k]['air'] - H[cd_][k]['bk'] for k in ks_)
         PP.cell(r, 21, round(ex_ / tot_, 4)).number_format = '0.0%'; PP.cell(r, 22, round((ot_ - ex_) / tot_, 4)).number_format = '0.0%'
+    ks4 = [k for k in range(30, 34) if H.get(cd_, {}).get(k) and H[cd_][k]['tot'] > 0]
+    if ks4:
+        S4 = {f: sum(H[cd_][k][f] for k in ks4) for f in ('tot', 'air', 'bk', 'exp')}
+        b4 = dict(air=S4['air'] / S4['tot'], bk=S4['bk'] / S4['tot'], exp=S4['exp'] / S4['tot'])
+        b4['dem'] = max(0.0, 1 - b4['air'] - b4['bk'] - b4['exp'])
+        for cc, kk in ((25, 'air'), (26, 'bk'), (27, 'exp'), (28, 'dem')):
+            x = PP.cell(r, cc, round(b4[kk], 4)); x.number_format = '0.0%'; x.font = F_IN
+        x = PP.cell(r, 29, round(S4['tot'], 2)); x.number_format = '#,##0'; x.font = F_IN
+    else:
+        for cc, v in ((25, 0.5), (26, 0.5), (27, 0), (28, 0), (29, 0)):
+            x = PP.cell(r, cc, v); x.number_format = '0.0%' if cc < 29 else '#,##0'; x.font = F_CALC
+    for cc, fx in ((30, f"=IF(AA{r}+AB{r}>Premissas!$C$69,0,1)"),
+                   (31, f"=AA{r}*IF(AD{r}=1,Premissas!$C$72,1)"),
+                   (32, f"=AB{r}*IF(AD{r}=1,Premissas!$C$73,1)")):
+        x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0' if cc == 30 else '0.0%'
 
 # AVERAGE ignora células vazias: volume de reviews deve contar meses sem review como zero
 for canal in ('Airbnb', 'Booking'):
@@ -492,6 +533,17 @@ for canal in ('Airbnb', 'Booking'):
         for k in range(22, K_OUT + 1):
             if q.cell(r, 6 + k).value is None and active(r) and (H.get(cd, {}).get(k)):
                 q.cell(r, 6 + k, 0).font = F_IN; AUX[canal][1].cell(r, 6 + k, 0).font = F_IN
+
+# ------------------------------------------------------------------ Aux % Expedia
+AXE = mirror('Aux % Expedia', 'Share Expedia (% da receita de hospedagem)', 'Realizado até out/26 (Metabase). Projeção conforme o cenário de canais (Premissas, item 8). Está dentro de % outros.')
+month_header(AXE)
+for r in ROWS:
+    cd = ROWINFO[r]['code']; AXE.cell(r, 5, '% da receita')
+    for k in range(0, K_END + 1):
+        h = H.get(cd, {}).get(k)
+        if k <= K_OUT and h and h['tot'] > 0 and (had_units(r, k) or (k > K_LAST_REAL and active(r))):
+            AXE.cell(r, 6 + k, round(h['exp'] / h['tot'], 6)).font = F_IN
+        AXE.cell(r, 6 + k).number_format = '0.0%'
 
 # ------------------------------------------------------------------ fórmulas de projeção nas abas de dados
 def gcell(r, k):
@@ -505,10 +557,15 @@ for r in ROWS:
         base = f"'Aux Base Mercado'!{L(6 + (k - K_NOV))}{r}" if k - K_NOV < 12 else f"{col(k - 12)}{r}"
         wb['RevPar Mercado'].cell(r, 6 + k, f"=IFERROR({base}*(1+{gcell(r, k)}),\"\")").font = F_CALC
         # canais
-        ds = f"'Premissas por prédio'!$S{r}+'Premissas por prédio'!$T{r}" if k >= 36 else "0"
-        wb['% outros'].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r})+{ds},\"\")").font = F_CALC
-        for nm in ('% Airbnb', '% Booking'):
-            wb[nm].cell(r, 6 + k, f"=IFERROR(AVERAGE($AC{r}:$AM{r})*(1-'% outros'!{cl}{r})/(1-AVERAGE('% outros'!$AC{r}:$AM{r})),\"\")").font = F_CALC
+        PPr = "'Premissas por prédio'!"
+        ds = f"{PPr}$S{r}+{PPr}$T{r}" if k >= 36 else "0"
+        ramp = f"MIN(1,{k - K_OUT}/Premissas!$C$76)"
+        dexp = f"IF(Premissas!$C$65=2,({PPr}$AE{r}-{PPr}$AA{r})*{ramp},0)"
+        ddem = f"IF(Premissas!$C$65=2,({PPr}$AF{r}-{PPr}$AB{r})*{ramp},0)"
+        wb['% outros'].cell(r, 6 + k, f"=IFERROR(MIN(1,{PPr}$AA{r}+{PPr}$AB{r}+{dexp}+{ddem}+{ds}),\"\")").font = F_CALC
+        for nm, cc in (('% Airbnb', 'Y'), ('% Booking', 'Z')):
+            wb[nm].cell(r, 6 + k, f"=IFERROR({PPr}${cc}{r}/({PPr}$Y{r}+{PPr}$Z{r})*(1-'% outros'!{cl}{r}),\"\")").font = F_CALC
+        wb['Aux % Expedia'].cell(r, 6 + k, f"=IFERROR({PPr}$AA{r}+{dexp}+{PPr}$S{r}*{1 if k >= 36 else 0},\"\")").font = F_CALC
         # reviews 6m
         for canal in ('Airbnb', 'Booking'):
             wb[f'Reviews {canal}'].cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas {canal}'!{col(k-11)}{r}:{cl}{r})/SUM('Aux Qtd Reviews {canal}'!{col(k-11)}{r}:{cl}{r}),\"\")").font = F_CALC
@@ -517,7 +574,8 @@ for r in ROWS:
         basep = f"(1+'Premissas por prédio'!$G{r})*IF(Premissas!$C$23=2,{idx},1)"
         ta = f"IFERROR(Premissas!$C$21*'% Airbnb'!{cl}{r}*('Reviews Airbnb'!{cl}{r}-'Premissas por prédio'!$H{r}),0)"
         tb = f"IFERROR(Premissas!$C$22*'% Booking'!{cl}{r}*('Reviews Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
-        mixf = f"*(1+Premissas!$C$50*'Premissas por prédio'!$S{r}+'Premissas por prédio'!$R{r}*'Premissas por prédio'!$T{r})" if k >= 36 else ""
+        sx, tx = (f"+{PPr}$S{r}", f"+{PPr}$T{r}") if k >= 36 else ("", "")
+        mixf = f"*(1+Premissas!$C$50*({dexp}{sx})+{PPr}$R{r}*({ddem}{tx}))"
         bkf = (f"*IFERROR(POWER(1+IF('% Booking'!{cl}{r}>=Premissas!$C$56,Premissas!$C$55,Premissas!$C$57),"
                f"'Aux Faixa Booking'!{cl}{r}-'Premissas por prédio'!$X{r}),1)")
         wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}-1,\"\")").font = F_CALC

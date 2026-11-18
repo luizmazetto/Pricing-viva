@@ -19,3 +19,9 @@ Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal (do 
 + β Booking × %Booking × Δnota Booking 12m) − 1. RevPAR nosso = RevPAR mercado × (1 + prêmio) × fator de calibração
 (Report DB ÷ Metabase, mai–ago/26). Ocupação = mesmo mês do ano anterior × (1 + variação da cidade); ADR = RevPAR ÷ Ocupação.
 - `data/ocupacao_predio_mes.psv`: ocupação mensal por prédio (Metabase), usada em set–out/26 e na base de prédios em ramp-up.
+
+Canais (Premissas, item 8): cenário 1 = mix de jul–out/26 de cada prédio, constante. Cenário 2 (padrão) = portfólio chega a
+15% de Expedia e 12% de demais outros canais em dez/27 (mês editável), em linha reta a partir de nov/26. Cada prédio cresce no
+mesmo multiplicador sobre o próprio share de jul–out/26 (hoje 1,37x Expedia e 1,71x demais). Prédios com mais de 50% fora de
+Airbnb/Booking (Homelike, Cannes, Equalize) ficam como estão. Airbnb e Booking dividem o resto na proporção atual do prédio.
+O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,41 × ΔExpedia + 0,41 ou 1,00 × Δdemais).
