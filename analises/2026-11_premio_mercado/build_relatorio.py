@@ -405,7 +405,7 @@ summary = [
 
 page = open('pagina.html', encoding='utf-8').read()
 for k, v in dict(KPIS='\n'.join(kpis), SUMMARY='\n'.join(f'<li>{x}</li>' for x in summary), SECTIONS='\n'.join(sections),
-                 EXCL_LIST=', '.join(short(b) for b in A['excl_ramp'])).items():
+                 EXCL_LIST=', '.join(short(b) for b in A['excl_ramp']), REVIEWS=open('../2026-11_reviews_premio/reviews_body.html', encoding='utf-8').read()).items():
     page = page.replace('{{' + k + '}}', v)
 assert '{{' not in page, page[page.index('{{'):page.index('{{') + 40]
 open('relatorio_premio_mercado.html', 'w', encoding='utf-8').write(page)

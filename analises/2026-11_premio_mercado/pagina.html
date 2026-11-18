@@ -93,15 +93,27 @@ tr.em td{background:var(--soft)}
 .method ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:100ch}
 code{font:12.5px var(--mono);background:var(--soft);padding:1px 5px;border-radius:4px}
 @media (max-width:640px){h2{font-size:21px}.kpi .v{font-size:24px}}
+
+.tab{display:grid;gap:48px}
+[hidden]{display:none!important}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);margin-top:6px}
+nav.tabs a{font:600 15px var(--body);color:var(--muted);text-decoration:none;padding:8px 14px;border-bottom:3px solid transparent;margin-bottom:-1px}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--c26)}
+nav.tabs a:hover,nav.tabs a:focus-visible{color:var(--ink);outline:none}
+.barp{fill:var(--cnew)} .barn{fill:var(--neg)}
+.sc{fill-opacity:.85}
+.t-est{min-width:640px} .t-share{min-width:640px} .t-dim{min-width:560px} .t-sub2{min-width:560px} .t-bld{min-width:1140px} .t-bld td,.t-bld th{padding-inline:7px}
 </style>
 
 <div class="wrap">
 <header>
   <span class="eyebrow">Revenue management · Pricing · 18/nov/2026</span>
-  <h1>Prêmio de mercado 2026 por cidade</h1>
-  <p class="meta">2026 vs 2025 nos meses fechados (jan–out) e em nov 1–17 contra nov 1–17 do ano passado. Dados de mercado do Pricelabs já com a nova metodologia.</p>
-  <nav class="cities"><a href="#sp">São Paulo</a><a href="#fln">Florianópolis</a><a href="#bc">Balneário Camboriú</a><a href="#metodo">Método</a></nav>
+  <h1>Prêmio de mercado 2026</h1>
+  <nav class="tabs" aria-label="Abas"><a href="#premio" data-tab="premio">Prêmio e mercados por cidade</a><a href="#reviews" data-tab="reviews">Reviews × prêmio</a></nav>
 </header>
+<div class="tab" id="premio">
+<p class="meta">2026 vs 2025 nos meses fechados (jan–out) e em nov 1–17 contra nov 1–17 do ano passado. Dados de mercado do Pricelabs já com a nova metodologia.</p>
+<nav class="cities"><a href="#sp">São Paulo</a><a href="#fln">Florianópolis</a><a href="#bc">Balneário Camboriú</a><a href="#metodo">Método</a></nav>
 
 <section>
   <div class="kpis">{{KPIS}}</div>
@@ -126,3 +138,22 @@ code{font:12.5px var(--mono);background:var(--soft);padding:1px 5px;border-radiu
   </ul>
 </section>
 </div>
+<div class="tab" id="reviews" hidden>
+{{REVIEWS}}
+</div>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab'), links = document.querySelectorAll('nav.tabs a');
+  function show(){
+    var h = (location.hash || '#premio').slice(1), el = document.getElementById(h);
+    var tab = el ? (el.classList.contains('tab') ? el : el.closest('.tab')) : null;
+    if (!tab) tab = document.getElementById('premio');
+    tabs.forEach(function(t){ t.hidden = (t !== tab); });
+    links.forEach(function(a){ if (a.dataset.tab === tab.id) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    if (el && el !== tab) el.scrollIntoView(); else if (el) window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show); show();
+})();
+</script>
