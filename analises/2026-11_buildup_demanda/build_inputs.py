@@ -333,12 +333,12 @@ put('B26', '% Airbnb, % Booking e % outros'); put('C26', 'média nov/25–out/26
 put('B28', '5. Ocupação × ADR · variação da nossa ocupação vs mesmo mês do ano anterior', F_B)
 for c, h in zip('BCDEF', ['Cidade', '2026 (nov–dez)', '2027', '2028', 'Racional']):
     put(f'{c}29', h, F_B, FILL_HEAD)
-OCC_G = {'SP': (30, 0.02, 'Igual à variação da ocupação de mercado em SP em 2026 (+1,2 p.p. sobre ~60%, ≈ +2%), com o mesmo RevPAR de mercado de 2026.'),
-         'FLN': (31, -0.035, 'Em 2026 a ocupação de mercado caiu ~7,5% para um RevPAR de −10,7%. Com mercado −5%, metade disso: −3,5%.'),
-         'BC': (32, 0.003, 'Igual a 2026 (+0,1 p.p.).')}
-for city, (row, g, why) in OCC_G.items():
+OCC_G = {'SP': (30, (0.0, 0.0, 0.0), 'Nossa ocupação same store ficou estável em 2026 (82,7% → 82,6% em jan–out) mesmo com a do mercado subindo +1,2 p.p.: a oferta do comp set cresceu ~50% e a demanda nova se dividiu entre mais anúncios. Variação do mercado vai para a diária.'),
+         'FLN': (31, (-0.03, -0.03, 0.0), 'Em 2026 nossa ocupação same store caiu −4,3 p.p. (~−6%) com mercado a −10,7%. Com mercado a −5%, metade disso (−3%) em nov/26–2027; 2028 sem nova queda.'),
+         'BC': (32, (0.0, 0.0, 0.0), 'Ocupação estável (mercado de BC +0,1 p.p. em 2026).')}
+for city, (row, gs, why) in OCC_G.items():
     put(f'B{row}', city)
-    for c in 'CDE': put(f'{c}{row}', g, F_IN, FILL_KEY, '0.0%')
+    for c, g in zip('CDE', gs): put(f'{c}{row}', g, F_IN, FILL_KEY, '0.0%')
     put(f'F{row}', why)
 put('B33', 'Teto de ocupação'); put('C33', 0.95, F_IN, FILL_KEY, '0.0%')
 put('F33', 'Limite da ocupação projetada.')
