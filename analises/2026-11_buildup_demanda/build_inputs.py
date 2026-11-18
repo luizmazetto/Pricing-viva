@@ -285,6 +285,19 @@ for city, (row, g, why) in MKT_G.items():
     put(f'B{row}', city)
     for c in 'CDE': put(f'{c}{row}', g, F_IN, FILL_KEY, '0.0%')
     put(f'F{row}', why)
+def bk_shown(cd, k, w=(0.85, 0.10, 0.05)):
+    n36 = window(RB, cd, k, 36)
+    if n36[0] is None or n36[1] < 10: return None
+    if k < 12: return n36[0]                      # até dez/24: média simples 36 meses
+    num = den = 0.0
+    for j, wj in enumerate(w):
+        nn = ss = 0.0
+        for t in range(k - 12 * (j + 1) + 1, k - 12 * j + 1):
+            x = RB[cd].get(t)
+            if x: nn += x[0]; ss += x[1]
+        if nn: num += wj * ss / nn; den += wj
+    return num / den if den else None
+
 # piso de nota para a meta de portfólio (resolvido aqui; conferência em Premissas)
 def vol_base(R, cd):
     ks = [k for k in range(22, 34) if H.get(cd, {}).get(k) or R[cd].get(k)]
@@ -351,7 +364,7 @@ lines = [
     'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
     'Outros canais (item 6): se o share de Expedia ou dos demais canais sobe a partir de jan/27, o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
-    'Booking (item 7): se a nota Booking de 36 meses cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 6% nos prédios com Booking ≥ 35% da receita.',
+    'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 7,5% nos prédios com Booking ≥ 35% da receita.',
     'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
 for i, t in enumerate(lines):
@@ -368,29 +381,38 @@ put('F50', 'Estimado 0,41 (intervalo 0,21 a 0,65): cada ponto de prêmio via Exp
 put('B51', 'Aumento de share por prédio'); put('C51', 'colunas S (Expedia) e T (demais) de Premissas por prédio, a partir de jan/27')
 put('F51', 'Prêmio × (1 + 0,41 × Δ Expedia + ganho dos demais × Δ demais). Airbnb e Booking perdem share na proporção. Padrão 0 p.p.')
 put('B53', '7. Booking · faixa de nota 8,0 (filtro "Muito bom: 8 ou mais")', F_B)
-put('B54', 'Corte da faixa (nota Booking 36 meses)'); put('C54', 8.0, F_IN, FILL_KEY, '0.0')
-put('F54', 'O Booking calcula a nota com os reviews dos últimos 36 meses (aba Booking 36m).')
-put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.06, F_IN, FILL_KEY, '0.0%')
-put('F55', 'Estimado em 21 prédios com Booking ≥ 35% da receita: +6,1% de prêmio (intervalo +3,0% a +9,4%). Acima de 8,0 a receita via Booking sobe ~0,12 ponto de prêmio e parte sai do Airbnb.')
+put('B54', 'Corte da faixa (nota Booking exibida)'); put('C54', 8.0, F_IN, FILL_KEY, '0.0')
+put('F54', 'Nota exibida reconstruída na aba Booking Nota Exibida (ponderação por ano abaixo).')
+put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.075, F_IN, FILL_KEY, '0.0%')
+put('F55', 'Estimado em 21 prédios com Booking ≥ 35% da receita, com a nota ponderada: +7,6% de prêmio (intervalo +1,4% a +12,7%). Acima de 8,0 a receita via Booking sobe ~0,11 ponto de prêmio e parte sai do Airbnb.')
 put('B56', 'Peso mínimo do Booking na receita para o ganho'); put('C56', 0.35, F_IN, FILL_KEY, '0%')
 put('B57', 'Ganho de prêmio · Booking abaixo do limite de peso'); put('C57', 0.0, F_IN, FILL_KEY, '0.0%')
-put('F57', 'Estimado −3,6% (intervalo −15,5% a +8,0%), não significativo: zero. A faixa 9,0 não mostrou ganho.')
+put('F57', 'Estimado −5,4% (intervalo −14% a +3,7%), não significativo: zero. A faixa 9,0 não mostrou ganho.')
+put('B59', 'Peso dos reviews dos últimos 12 meses'); put('C59', 0.85, F_IN, FILL_KEY, '0%')
+put('F59', 'Ponderação do Booking desde jan/2025 (estudo com 100 hotéis espanhóis, 74.882 reviews): 85% / 10% / 5%. Antes disso, média simples de 36 meses.')
+put('B60', 'Peso dos reviews de 13 a 24 meses'); put('C60', 0.10, F_IN, FILL_KEY, '0%')
+put('B61', 'Peso dos reviews de 25 a 36 meses'); put('C61', 0.05, F_IN, FILL_KEY, '0%')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
 
-B36 = mirror('Booking 36m', 'Nota Booking (0–10) média dos últimos 36 meses',
-             'É a regra do Booking para a nota exibida. Realizado com o histórico completo; projeção soma as abas Aux de Booking (janela a partir de jan/24).')
+B36 = mirror('Booking Nota Exibida', 'Nota Booking exibida (0–10)',
+             'Regra do Booking: até dez/24, média simples dos últimos 36 meses; desde jan/25, 85% média dos últimos 12 meses + 10% dos 12 anteriores + 5% dos 12 antes desses (pesos em Premissas, item 7). Projeção pelas abas Aux de Booking (a partir de jan/24).')
 month_header(B36)
 for r in ROWS:
     cd = ROWINFO[r]['code']; B36.cell(r, 5, 'nota 0–10')
     for k in range(0, K_OUT + 1):
-        v = window(RB, cd, k, 36)
-        if v[0] is not None and v[1] >= 10: x = B36.cell(r, 6 + k, round(v[0], 4)); x.font = F_IN; x.number_format = '0.00'
+        v = bk_shown(cd, k)
+        if v is not None: x = B36.cell(r, 6 + k, round(v, 4)); x.font = F_IN; x.number_format = '0.00'
     if not active(r): continue
     for k in range(K_NOV, K_END + 1):
-        lo = col(max(0, k - 35)); cl = col(k)
-        x = B36.cell(r, 6 + k, f"=IFERROR(SUM('Aux Soma Notas Booking'!{lo}{r}:{cl}{r})/SUM('Aux Qtd Reviews Booking'!{lo}{r}:{cl}{r}),\"\")"); x.font = F_CALC; x.number_format = '0.00'; x.fill = FILL_IN
+        parts = []
+        for j, wc in enumerate(('$C$59', '$C$60', '$C$61')):
+            hi_, lo_ = k - 12 * j, max(0, k - 12 * (j + 1) + 1)
+            S_ = f"SUM('Aux Soma Notas Booking'!{col(lo_)}{r}:{col(hi_)}{r})"; N_ = f"SUM('Aux Qtd Reviews Booking'!{col(lo_)}{r}:{col(hi_)}{r})"
+            parts.append((f"Premissas!{wc}*IF({N_}>0,{S_}/{N_},0)", f"Premissas!{wc}*({N_}>0)"))
+        fx = f"=IFERROR(({'+'.join(a for a, _ in parts)})/({'+'.join(b for _, b in parts)}),\"\")"
+        x = B36.cell(r, 6 + k, fx); x.font = F_CALC; x.number_format = '0.00'; x.fill = FILL_IN
 
 # ------------------------------------------------------------------ Premissas por prédio
 PP = mirror('Premissas por prédio', 'Premissas por prédio', 'Calculadas a partir do realizado; podem ser sobrescritas (ex.: volume de reviews de prédio novo).')
@@ -401,7 +423,7 @@ heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/
          14: 'Nota Booking atual (12m até out/26)', 15: 'Nota Booking no cenário meta', 16: 'Nota Booking mensal usada na projeção',
          17: 'Ocupação média (nov/25–out/26)', 18: 'Ganho líquido por ponto · demais outros canais', 19: 'Δ share Expedia a partir de jan/27 (p.p.)',
          20: 'Δ share demais outros a partir de jan/27 (p.p.)', 21: 'Share Expedia atual (média nov/25–out/26)', 22: 'Share demais outros atual (média nov/25–out/26)',
-         23: 'Nota Booking 36m em out/26', 24: 'Acima do corte em out/26 (1 = sim)'}
+         23: 'Nota Booking exibida em out/26', 24: 'Acima do corte em out/26 (1 = sim)'}
 for c, h in heads.items():
     x = PP.cell(4, c, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(c)].width = 20
 PP.row_dimensions[4].height = 78
@@ -422,7 +444,7 @@ for r in ROWS:
         16: (f"=IF(Premissas!$C$11=2,O{r},IF(ISNUMBER(N{r}),N{r},Premissas!$C$15))", '0.00'),
         17: (f"=IFERROR(AVERAGE('Buildup Ocupação'!AC{r}:AM{r}),\"\")", '0.0%'),
         18: (f"=IF(ISNUMBER(Q{r}),IF(Q{r}>=Premissas!$C$47,Premissas!$C$48,Premissas!$C$49),Premissas!$C$49)", '0.00'),
-        23: (f"=IF(ISNUMBER('Booking 36m'!AM{r}),'Booking 36m'!AM{r},\"\")", '0.00'),
+        23: (f"=IF(ISNUMBER('Booking Nota Exibida'!AM{r}),'Booking Nota Exibida'!AM{r},\"\")", '0.00'),
         24: (f"=IF(ISNUMBER(W{r}),IF(W{r}>=Premissas!$C$54,1,0),\"\")", '0'),
         10: (f"=IFERROR(SUMPRODUCT('ADR Acomodação'!AH{r}:AK{r},'Ocupação (Disponível)'!AH{r}:AK{r})/SUMPRODUCT('RevPar Mercado'!AH{r}:AK{r},1+'Prêmio de Mercado'!AH{r}:AK{r}),1)", '0.000'),
     }
@@ -471,7 +493,7 @@ for r in ROWS:
         tb = f"IFERROR(Premissas!$C$22*'% Booking'!{cl}{r}*('Reviews Booking'!{cl}{r}-'Premissas por prédio'!$I{r}),0)"
         mixf = f"*(1+Premissas!$C$50*'Premissas por prédio'!$S{r}+'Premissas por prédio'!$R{r}*'Premissas por prédio'!$T{r})" if k >= 36 else ""
         bkf = (f"*IFERROR(POWER(1+IF('% Booking'!{cl}{r}>=Premissas!$C$56,Premissas!$C$55,Premissas!$C$57),"
-               f"IF('Booking 36m'!{cl}{r}>=Premissas!$C$54,1,0)-'Premissas por prédio'!$X{r}),1)")
+               f"IF('Booking Nota Exibida'!{cl}{r}>=Premissas!$C$54,1,0)-'Premissas por prédio'!$X{r}),1)")
         wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}-1,\"\")").font = F_CALC
 
 # ------------------------------------------------------------------ Buildup RevPAR
@@ -573,12 +595,12 @@ for sh in ('ADR Acomodação', 'Ocupação (Disponível)'):
 
 # fonte Arial nas abas novas
 for ws in wb.worksheets:
-    if ws.title in DATA_SHEETS or ws.title.startswith('Aux') or ws.title in ('Booking 36m', 'Premissas', 'Premissas por prédio', 'Buildup RevPAR', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup Ocupação', 'Buildup ADR'):
+    if ws.title in DATA_SHEETS or ws.title.startswith('Aux') or ws.title in ('Booking Nota Exibida', 'Premissas', 'Premissas por prédio', 'Buildup RevPAR', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup Ocupação', 'Buildup ADR'):
         for row in ws.iter_rows():
             for c in row:
                 if c.value is not None and (c.font is None or c.font.name != ARIAL):
                     f = copy.copy(c.font); f.name = ARIAL; c.font = f
-order = ['Leia-me', 'Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup RevPAR', 'Buildup Ocupação', 'Buildup ADR'] + DATA_SHEETS + ['Booking 36m']
+order = ['Leia-me', 'Premissas', 'Premissas por prédio', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup RevPAR', 'Buildup Ocupação', 'Buildup ADR'] + DATA_SHEETS + ['Booking Nota Exibida']
 rest = [w for w in wb.sheetnames if w not in order and not w.startswith('Aux')]
 aux = [w for w in wb.sheetnames if w.startswith('Aux')]
 wb._sheets = [wb[n] for n in order + rest + aux]

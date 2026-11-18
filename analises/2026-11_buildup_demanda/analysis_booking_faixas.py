@@ -10,11 +10,21 @@ D = D[(D.mrevpar.notna()) & (D.n >= 150) & (D.n_mkt / D.n >= 0.8)].copy()
 D['c'] = D.b.str.split(' - ').str[0].str.strip(); D['t'] = D.m.map(mi); D['w'] = D.n
 D['p_tot'] = D.rev_tot / D.n / D.mrevpar; D['lp'] = np.log(D.p_tot)
 D['p_bk'] = D.rev_bk / D.n / D.mrevpar; D['s_bk'] = D.rev_bk / D.rev_tot
+W_BK = (0.85, 0.10, 0.05)          # Booking desde jan/2025: últimos 12m, 13–24m, 25–36m
+T_NEW = mi('2025-01')
 def score(c, t, k=36):
+    """nota exibida no fim do mês t-1: média simples 36m até dez/24; ponderada 85/10/5 por ano a partir de jan/25"""
     try: g = G.loc[c]
     except KeyError: return np.nan, 0
-    x = g[(g.index <= t - 1) & (g.index > t - 1 - k)]
-    return (x.sg.sum() / x.n.sum(), x.n.sum()) if x.n.sum() else (np.nan, 0)
+    e = t - 1
+    x = g[(g.index <= e) & (g.index > e - k)]
+    if not x.n.sum(): return np.nan, 0
+    if t - 1 < T_NEW: return x.sg.sum() / x.n.sum(), x.n.sum()
+    num = den = 0.0
+    for j, w in enumerate(W_BK):
+        y = g[(g.index <= e - 12 * j) & (g.index > e - 12 * (j + 1))]
+        if y.n.sum(): num += w * y.sg.sum() / y.n.sum(); den += w
+    return num / den, x.n.sum()
 sc = [score(c, t) for c, t in zip(D.c, D.t)]
 D['bk'] = [s if n >= 10 else np.nan for s, n in sc]; D['bk_n'] = [n for _, n in sc]
 D = D.dropna(subset=['bk']).copy()
