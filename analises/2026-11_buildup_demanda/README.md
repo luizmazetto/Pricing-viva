@@ -32,3 +32,9 @@ FLN −10,7%, BC 0%; notas e mix de canais atuais, sem ganho). C11 (reviews) e C
 
 Coeficientes (19/nov/2026): estimativa conjunta de `analysis_canais_controle_reviews.py` — β Airbnb 1,16; faixa Booking ≥ 8,0
 +9,9% (Booking ≥ 35%); Expedia 0,35; demais 0,40 (cheio) / 1,00 (folga, limitado). Antes: 0,95 / 7,5% / 0,41 / 0,41.
+
+Histórico de ADR Acomodação e Ocupação conferido contra a Report DB (VivaProp/Portfolio-Management-Viva, `report_db_short.csv`,
+receita de acomodação ÷ diárias e diárias ÷ dias disponíveis por prédio × contrato × mês): jan/24–set/26 bate 100%.
+Set/26 vem da Report DB emitida (`data/report_db_predio_mes.psv`); out/26 segue do Metabase até a emissão fechar.
+Atenção: em ago/26 a Report DB tem 46 linhas com receita de acomodação e 0 diárias (NXP 950, NXF 444, NUN 61, PQJ 155, KAS 99),
+o que infla o ADR desses prédios no mês (NXP R$ 633 vs ~R$ 236).

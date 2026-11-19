@@ -604,9 +604,17 @@ for r in ROWS:
                f"'Aux Faixa Booking'!{cl}{r}-'Premissas por prédio'!$X{r}),1)")
         wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}-1,\"\")").font = F_CALC
 
+# Report DB emitida (data/report_db_predio_mes.psv, de VivaProp/Portfolio-Management-Viva): set/26 já fechado, substitui o Metabase
+RDB_MONTHS = [K_SET]
+RDB = {}
+for x in rd('data/report_db_predio_mes.psv'):
+    rv, di, dp = float(x['rev'] or 0), float(x['dia'] or 0), float(x['disp'] or 0)
+    if di > 0 and dp > 0: RDB[(x['b'], x['ctr'], kof(x['m']))] = (rv / di, di / dp)
+def rdb(r, k): return RDB.get((ROWINFO[r]['code'], ROWINFO[r]['ctr'], k)) if k in RDB_MONTHS else None
+
 # ------------------------------------------------------------------ Buildup RevPAR
 BU = mirror('Buildup RevPAR', 'RevPAR nosso (R$ por noite disponível)',
-            'Até ago/26: ADR Acomodação × Ocupação (Report DB). Set/26 em diante: RevPAR Mercado × (1 + Prêmio) × fator de calibração do prédio.')
+            'Até set/26: ADR Acomodação × Ocupação (Report DB; set/26 em verde, Report DB emitida). Out/26 em diante: RevPAR Mercado × (1 + Prêmio) × fator de calibração do prédio.')
 month_header(BU)
 for r in ROWS:
     BU.cell(r, 5, 'R$ por noite disponível')
@@ -615,6 +623,8 @@ for r in ROWS:
         if k <= K_LAST_REAL:
             fx = f"=IF(AND(ISNUMBER('ADR Acomodação'!{cl}{r}),ISNUMBER('Ocupação (Disponível)'!{cl}{r})),'ADR Acomodação'!{cl}{r}*'Ocupação (Disponível)'!{cl}{r},\"\")"
             BU.cell(r, 6 + k, fx).font = F_LINK
+        elif active(r) and rdb(r, k):
+            a_, o_ = rdb(r, k); c = BU.cell(r, 6 + k, round(a_ * o_, 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
         elif active(r):
             fx = f"=IFERROR('RevPar Mercado'!{cl}{r}*(1+'Prêmio de Mercado'!{cl}{r})*'Premissas por prédio'!$J{r},\"\")"
             BU.cell(r, 6 + k, fx).font = F_CALC; BU.cell(r, 6 + k).fill = FILL_IN
@@ -631,6 +641,7 @@ def occ_real(r, k):
     if k <= K_LAST_REAL:
         v = OCC.cell(r, 6 + k).value
         return v if num_(v) and v > 0 else None
+    if rdb(r, k): return rdb(r, k)[1]
     v = MO.get((ROWINFO[r]['code'], k)); return v if v else None
 def fk_of(cd): return kof(FIRST[cd][:7]) if cd in FIRST else None
 occ_idx = {}
@@ -644,7 +655,7 @@ for city in ('SP', 'FLN', 'BC'):
     base = sum(prof[k] for k in range(30, 34) if prof[k]) / len([k for k in range(30, 34) if prof[k]])
     occ_idx[city] = {k: (prof[k] / base if prof[k] else 1.0) for k in BASE_K}
 bo = mirror('Aux Base Ocupação', 'Base de ocupação (nov/25–out/26) para projetar nov/26–out/27',
-            'Ocupação realizada da linha (Report DB até ago/26; Metabase em set–out/26). Mês em ramp-up (menos de 3 meses de operação) ou sem dado: média do prédio em jul–out/26 × sazonalidade de ocupação da cidade (verde).')
+            'Ocupação realizada da linha (Report DB até set/26; Metabase em out/26). Mês em ramp-up (menos de 3 meses de operação) ou sem dado: média do prédio em jul–out/26 × sazonalidade de ocupação da cidade (verde).')
 for i, k in enumerate(BASE_K):
     y = (K0 + k) // 12; m = (K0 + k) % 12
     c = bo.cell(4, 6 + i, f'{MESES[m]}/{str(y)[2:]}'); c.font = F_B; c.fill = FILL_HEAD
@@ -669,9 +680,9 @@ def ogcell(r, k):
     y = (K0 + k) // 12
     return f"Premissas!${'C' if y == 2026 else ('D' if y == 2027 else 'E')}${OCC_G[ROWINFO[r]['city']][0]}"
 BO = mirror('Buildup Ocupação', 'Ocupação (noites ocupadas ÷ disponíveis)',
-            'Até ago/26: aba Ocupação (Disponível) (Report DB). Set–out/26: realizado no Metabase. Depois: mesmo mês do ano anterior × (1 + variação da cidade em Premissas, item 5), com teto.')
+            'Até ago/26: aba Ocupação (Disponível) (Report DB). Set/26: Report DB emitida. Out/26: realizado no Metabase. Depois: mesmo mês do ano anterior × (1 + variação da cidade em Premissas, item 5), com teto.')
 BA = mirror('Buildup ADR', 'ADR Acomodação (R$ por noite ocupada)',
-            'Até ago/26: aba ADR Acomodação (Report DB). Set/26 em diante: RevPAR nosso (Buildup RevPAR) ÷ Ocupação (Buildup Ocupação).')
+            'Até set/26: Report DB (set/26 em verde). Out/26 em diante: RevPAR nosso (Buildup RevPAR) ÷ Ocupação (Buildup Ocupação).')
 for ws in (BO, BA): month_header(ws)
 for r in ROWS:
     BO.cell(r, 5, 'noites ocupadas ÷ disponíveis'); BA.cell(r, 5, 'R$ por noite ocupada')
@@ -682,13 +693,16 @@ for r in ROWS:
             BA.cell(r, 6 + k, f"=IF(ISNUMBER('ADR Acomodação'!{cl}{r}),'ADR Acomodação'!{cl}{r},\"\")").font = F_LINK
         elif active(r):
             if k <= K_OUT:
-                v = MO.get((ROWINFO[r]['code'], k))
+                v = occ_real(r, k)
                 if v:
                     c = BO.cell(r, 6 + k, round(v, 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
             else:
                 base = f"'Aux Base Ocupação'!{L(6 + (k - K_NOV))}{r}" if k - K_NOV < 12 else f"{col(k - 12)}{r}"
                 c = BO.cell(r, 6 + k, f"=IFERROR(MIN(Premissas!$C$33,{base}*(1+{ogcell(r, k)})),\"\")"); c.font = F_CALC; c.fill = FILL_IN
-            c = BA.cell(r, 6 + k, f"=IFERROR('Buildup RevPAR'!{cl}{r}/'Buildup Ocupação'!{cl}{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN
+            if rdb(r, k):
+                c = BA.cell(r, 6 + k, round(rdb(r, k)[0], 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
+            else:
+                c = BA.cell(r, 6 + k, f"=IFERROR('Buildup RevPAR'!{cl}{r}/'Buildup Ocupação'!{cl}{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN
             # liga nas abas de input do BP
             for sh, src in (('ADR Acomodação', 'Buildup ADR'), ('Ocupação (Disponível)', 'Buildup Ocupação')):
                 x = wb[sh].cell(r, 6 + k)
