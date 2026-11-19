@@ -431,7 +431,7 @@ put('B64', '8. Crescimento de canais · Expedia e demais outros canais', F_B)
 put('B65', 'Cenário de canais: 1 = proporções atuais (jul–out/26) · 2 = crescimento até a meta'); put('C65', '=IF($C$3=1,$C$81,$D$81)', F_LINK, FILL_KEY, '0')
 put('F65', '1 = % de cada canal fica no mix de jul–out/26 do prédio (mesma base do prêmio), constante. 2 = parte do mix de jul–out/26 de cada prédio e Expedia e demais crescem em linha reta (nov/26 até o mês da meta), no mesmo multiplicador para todos os prédios que crescem; Airbnb e Booking dividem o resto na proporção atual de cada prédio.')
 put('B66', 'Meta · Expedia no portfólio'); put('C66', 0.15, F_IN, FILL_KEY, '0.0%')
-put('B67', 'Meta · demais outros canais no portfólio'); put('C67', 0.12, F_IN, FILL_KEY, '0.0%')
+put('B67', 'Meta · demais outros canais no portfólio'); put('C67', '=C108', F_LINK, FILL_IN, '0.0%')
 put('F67', 'Demais = tudo que não é Airbnb, Booking nem Expedia (direto, Swap, B2B, mid-term, corretores).')
 put('B68', 'Mês em que o portfólio atinge a meta'); put('C68', datetime.datetime(2027, 12, 1), F_IN, FILL_KEY, 'mmm/yy')
 put('F68', 'Depois deste mês o mix fica constante. Para chegar já em dez/26, troque por dez/26.')
@@ -459,7 +459,7 @@ put('F74', 'Com os pesos de receita de jul–out/26 (deve bater com a meta). Sem
 put('B75', 'Check · demais outros no portfólio no mês da meta'); put('C75', f"=SUMPRODUCT({PPN}!$AF$5:$AF$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('B76', 'Meses de rampa (nov/26 até o mês da meta)'); put('C76', '=MAX(1,(YEAR(C68)-2026)*12+MONTH(C68)-10)', F_CALC, None, '0')
 put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,35 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
-put('B77', 'Meta · demais outros no portfólio em dez/28 (2ª rampa, jan–dez/28)'); put('C77', 0.16, F_IN, FILL_KEY, '0.0%')
+put('B77', 'Meta · demais outros no portfólio em dez/28 (2ª rampa, jan–dez/28)'); put('C77', '=D108', F_LINK, FILL_IN, '0.0%')
 put('H77', mult_cap('C77'), F_CALC, None, '0.00"x"'); put('I77', mult_cap('C77', 'AJ'), F_CALC, None, '0.00"x"')
 put('D77', mult_cap('C77', 'AK'), F_CALC, None, '0.00"x"')
 put('E77', f"=SUMPRODUCT({PPN}!$AG$5:$AG$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
@@ -758,6 +758,55 @@ for r in ROWS:
 for sh in ('ADR Acomodação', 'Ocupação (Disponível)'):
     wb[sh]['AL3'] = 'Set/26 em diante: puxa do Buildup (Premissas)'
 
+# ------------------------------------------------------------------ Demais outros canais: canal direto × outros canais
+DIRF = {}
+for x in rd('data/demais_direto_outros_jul_out26.psv'):
+    d_, o_ = float(x['rev_dir']), float(x['rev_out'])
+    if d_ + o_ > 0: DIRF[code(x['b'])] = d_ / (d_ + o_)
+_W = sum(float(x['rev_dir']) + float(x['rev_out']) for x in rd('data/demais_direto_outros_jul_out26.psv'))
+DIRF_PORT = sum(float(x['rev_dir']) for x in rd('data/demais_direto_outros_jul_out26.psv')) / _W
+for cc, h in ((43, 'Fração do canal direto dentro dos demais (jul–out/26, Metabase)'), (44, 'Share canal direto jul–out/26'), (45, 'Share outros canais jul–out/26')):
+    x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 20
+for r in ROWS:
+    if not active(r): continue
+    x = PP.cell(r, 43, round(DIRF.get(ROWINFO[r]['code'], DIRF_PORT), 4)); x.font = F_IN; x.number_format = '0.0%'
+    for cc, fx in ((44, f"=AB{r}*AQ{r}"), (45, f"=AB{r}*(1-AQ{r})")):
+        x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0.0%'
+W_, AD_, DIR_, OUT_ = f"{PPN}!$AC$5:$AC$57", f"{PPN}!$AD$5:$AD$57", f"{PPN}!$AR$5:$AR$57", f"{PPN}!$AS$5:$AS$57"
+put('B104', '11. Demais outros canais · canal direto (Viva) × outros canais (Base Case)', F_B)
+for c, h in zip('BCDF', ['Premissa', 'dez/27', 'dez/28', 'Racional']):
+    put(f'{c}105', h, F_B, FILL_HEAD)
+put('B106', 'Canal direto · meta no portfólio'); put('C106', 0.05, F_IN, FILL_KEY, '0.0%'); put('D106', '=C106/C108*D108', F_CALC, FILL_KEY, '0.0%')
+put('F106', 'Canal da Viva: Direct, Direct - empresas (Swap Financial, VIP Leilões, Facio...), Extensão, site. Hoje 2,7% (R$ ~178 mil/mês de hospedagem). Meta conservadora de 5% (5 empresas novas/mês, ~R$ 4,5–6 mil/mês cada, churn).')
+put('B107', 'Outros canais · meta no portfólio'); put('C107', '=C108-C106', F_CALC, None, '0.0%'); put('D107', '=D108-D106', F_CALC, None, '0.0%')
+put('F107', 'B2B, Onfly, Cangooroo, Swap, Quinto Andar, DIVID, Homelike, Decolar... Hoje 5,3%; meta 7% em dez/27.')
+put('B108', 'Total demais outros canais · meta (vai para C67 e C77)'); put('C108', 0.12, F_IN, FILL_KEY, '0.0%'); put('D108', 0.16, F_IN, FILL_KEY, '0.0%')
+put('F108', 'dez/27: 12% = direto 5% + outros 7%. dez/28: 16%, na mesma proporção (direto 6,7%, outros 9,3%) — D106 pode ser sobrescrito.')
+put('B109', 'Base jul–out/26 no portfólio · canal direto / outros canais')
+put('C109', f"=SUMPRODUCT({DIR_},{W_})/SUM({W_})", F_CALC, None, '0.0%'); put('D109', f"=SUMPRODUCT({OUT_},{W_})/SUM({W_})", F_CALC, None, '0.0%')
+put('B110', 'Multiplicador do canal direto (prédios que crescem) · dez/27 / dez/28')
+put('C110', f"=(C106*SUM({W_})-SUMPRODUCT(1-{AD_},{DIR_},{W_}))/SUMPRODUCT({AD_},{DIR_},{W_})", F_CALC, None, '0.00"x"')
+put('D110', f"=(D106*SUM({W_})-SUMPRODUCT(1-{AD_},{DIR_},{W_}))/SUMPRODUCT({AD_},{DIR_},{W_})", F_CALC, None, '0.00"x"')
+put('B111', 'Multiplicador dos outros canais (prédios que crescem) · dez/27 / dez/28')
+put('C111', f"=(C107*SUM({W_})-SUMPRODUCT(1-{AD_},{OUT_},{W_}))/SUMPRODUCT({AD_},{OUT_},{W_})", F_CALC, None, '0.00"x"')
+put('D111', f"=(D107*SUM({W_})-SUMPRODUCT(1-{AD_},{OUT_},{W_}))/SUMPRODUCT({AD_},{OUT_},{W_})", F_CALC, None, '0.00"x"')
+put('F111', 'O total de demais de cada prédio segue o item 8 (com o teto de 25%); estes multiplicadores definem a divisão entre direto e outros dentro dele (cada prédio parte da própria divisão de jul–out/26).')
+put('B112', 'Check · canal direto no portfólio · dez/27 / dez/28')
+put('C112', f"=SUMPRODUCT('Aux % Direto'!$BA$5:$BA$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')
+put('D112', f"=SUMPRODUCT('Aux % Direto'!$BM$5:$BM$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')
+AXD = mirror('Aux % Direto', 'Share canal direto (% da receita de hospedagem)', 'Dentro de % outros. Demais outros (% outros − Expedia) × fração do canal direto, que migra da fração de jul–out/26 do prédio conforme os multiplicadores do item 11 (só no cenário de canais 2).')
+month_header(AXD)
+for r in ROWS:
+    AXD.cell(r, 5, '% da receita')
+    if not active(r): continue
+    for k in range(K_OUT, K_END + 1):
+        cl = col(k)
+        r1 = f"MIN(1,{k - K_OUT}/Premissas!$C$76)"; r2 = f"{min(1, max(0, (k - 47) / 12)):.6f}"
+        md = f"IF(Premissas!$C$65=2,1+(Premissas!$C$110-1)*{r1}+(Premissas!$D$110-Premissas!$C$110)*{r2},1)"
+        mo = f"IF(Premissas!$C$65=2,1+(Premissas!$C$111-1)*{r1}+(Premissas!$D$111-Premissas!$C$111)*{r2},1)"
+        comp = f"{PPN}!$AR{r}*{md}/({PPN}!$AR{r}*{md}+{PPN}!$AS{r}*{mo})"
+        c = AXD.cell(r, 6 + k, f"=IFERROR(('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r})*{comp},0)"); c.font = F_CALC; c.number_format = '0.0%'
+
 # ------------------------------------------------------------------ Comissão de canais, LOS, taxa de limpeza, OTA taxa de limpeza
 RDBX = {}
 for x in rd('data/report_db_predio_mes.psv'):
@@ -791,9 +840,10 @@ for c, h in zip('BCDEF', ['Premissa', 'Base Case', 'Bear Case', 'Em uso', 'Racio
 for row, lab, v, why in ((93, 'Taxa efetiva de comissão · Airbnb (% do GMV total)', 0.181, 'Metabase, reservas com check-in ago–out/26: Σ commissionValue ÷ Σ GMV total (acomodação + limpeza). Estável em ~18% desde nov/25 (era 15,4% em jan/25).'),
                          (94, 'Taxa efetiva de comissão · Booking', 0.178, 'Subiu ao longo de 2026: 13,2% em 2025, 13,6%–15,0% em jan–jun/26, 16,4% jul, 17,5% ago, 18,0% set, 17,7% out. Usado o nível atual.'),
                          (95, 'Taxa efetiva de comissão · Expedia', 0.164, 'Estável em ~16,4% desde 2025.'),
-                         (96, 'Taxa efetiva de comissão · demais outros canais', 0.128, 'Direto, Swap, B2B, mid-term, corretores: 11,9%–14,1% em ago–out/26 (oscila mais).')):
+                         (96, 'Taxa efetiva de comissão · outros canais (Swap, Quinto Andar, DIVID, Homelike, Decolar, B2B...)', 0.132, 'Check-in ago–out/26, 878 reservas.'),
+                         (97, 'Taxa efetiva de comissão · canal direto (Viva: Direct, Direct - empresas, Extensão, site)', 0.118, 'Check-in ago–out/26, 660 reservas. Custo do canal direto para o proprietário.')):
     put(f'B{row}', lab); put(f'C{row}', v, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'E{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'F{row}', why)
-put('F97', 'Comissão(t) = comissão do prédio em ago–set/26 (Report DB, já com a comissão nova do Booking) × [Σ taxa do canal × % do canal no mês] ÷ [o mesmo com o mix de jul–out/26]. Segue sozinha o cenário de canais. Mesma regra para a OTA da taxa de limpeza (Revenue Model).')
+put('F102', 'Comissão(t) = comissão do prédio em ago–set/26 (Report DB, já com a comissão nova do Booking) × [Σ taxa do canal × % do canal no mês] ÷ [o mesmo com o mix de jul–out/26]. Segue sozinha o cenário de canais. Mesma regra para a OTA da taxa de limpeza (Revenue Model).')
 put('B98', 'LOS · crescimento anual histórico (mesmo prédio, mesmo mês)'); put('C98', 0.049, F_IN, FILL_KEY, '0.0%'); put('D98', '=C98', F_LINK, None, '0.0%')
 put('F98', 'Report DB, jan–set, mesmo prédio e mês do ano anterior (sem Homelike): 2025 +6,6%, 2026 +3,3%; média +4,9%.')
 put('B99', 'LOS · desconto sobre o histórico'); put('C99', 0.5, F_IN, FILL_KEY, '0%')
@@ -816,7 +866,7 @@ for r in ROWS:
     for cc, kk, fmt in ((38, 'com', '0.0%'), (40, 'otl', '0.0%'), (41, 'tl', '#,##0.00'), (42, 'los', '0.00')):
         if bm.get(kk) is not None:
             x = PP.cell(r, cc, round(bm[kk], 6)); x.font = F_IN; x.number_format = fmt
-    x = PP.cell(r, 39, f"=Premissas!$E$93*Y{r}+Premissas!$E$94*Z{r}+Premissas!$E$95*AA{r}+Premissas!$E$96*AB{r}"); x.font = F_CALC; x.number_format = '0.0%'; x.fill = FILL_IN
+    x = PP.cell(r, 39, f"=Premissas!$E$93*Y{r}+Premissas!$E$94*Z{r}+Premissas!$E$95*AA{r}+Premissas!$E$97*AR{r}+Premissas!$E$96*AS{r}"); x.font = F_CALC; x.number_format = '0.0%'; x.fill = FILL_IN
 
 PPr = "'Premissas por prédio'!"
 for r in ROWS:
@@ -837,7 +887,7 @@ for r in ROWS:
     for k in range(K_OUT, K_END + 1):
         cl = col(k); y = (K0 + k) // 12
         mix = (f"(Premissas!$E$93*'% Airbnb'!{cl}{r}+Premissas!$E$94*'% Booking'!{cl}{r}+Premissas!$E$95*'Aux % Expedia'!{cl}{r}"
-               f"+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}))")
+               f"+Premissas!$E$97*'Aux % Direto'!{cl}{r}+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}-'Aux % Direto'!{cl}{r}))")
         c = SH_COM.cell(r, 6 + k, f"=IFERROR({PPr}$AL{r}*{mix}/{PPr}$AM{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '0.0%'
         c = SH_TL.cell(r, 6 + k, f"=IFERROR({PPr}$AO{r}*(1+Premissas!$E$101)^{y - 2026},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '#,##0.00'
         kp = k - 12
@@ -855,7 +905,7 @@ for q in range(5, 58):
     for k in range(K_OUT, K_END + 1):
         cl = col(k)
         mix = (f"(Premissas!$E$93*'% Airbnb'!{cl}{r}+Premissas!$E$94*'% Booking'!{cl}{r}+Premissas!$E$95*'Aux % Expedia'!{cl}{r}"
-               f"+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}))")
+               f"+Premissas!$E$97*'Aux % Direto'!{cl}{r}+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}-'Aux % Direto'!{cl}{r}))")
         c = SH_OTL.cell(q, 6 + k, f"=IFERROR({PPr}$AN{r}*{mix}/{PPr}$AM{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '0.0%'
 for sh in (SH_COM, SH_LOS, SH_TL, SH_OTL):
     sh['AM3'] = 'Set/26: Report DB emitida · Out/26 em diante: projeção (Premissas, item 10)'

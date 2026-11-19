@@ -57,3 +57,8 @@ projeção de out/26 a dez/28:
 - Taxa de Limpeza por reserva = receita de limpeza ÷ reservas. Média jul–set/26 do prédio, reajuste de 4,5% em jan/27 e jan/28.
 - Ago–set/26: a Report DB tem ~220 unidades/mês com diárias e 0 reservas (16 prédios). Reservas completadas com a calendar do Metabase
   (reservas com noite no mês, mesma definição; bate 93–97% por unidade em mai–jul/26): data/report_db_reservas_ajuste.psv.
+
+Demais outros canais divididos em canal direto (Viva: 0. Direct, Direct - empresas, 1. Extensão, Website, Reserva Interna) e outros
+canais (Swap, Quinto Andar, DIVID, Homelike, Decolar, API B2B, Cangooroo...): Premissas, item 11; aba Aux % Direto. Hoje (jul–out/26)
+direto 2,7% e outros 5,3% da receita de hospedagem. Metas: dez/27 direto 5% + outros 7% = 12%; dez/28 16% na mesma proporção
+(6,7% / 9,3%). Custo (commissionValue ÷ GMV, check-in ago–out/26): direto 11,8%, outros canais 13,2%. Base: data/demais_direto_outros_jul_out26.psv.

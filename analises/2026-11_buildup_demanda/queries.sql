@@ -48,3 +48,9 @@ select internalName u, format_date('%Y-%m', date) m, count(distinct if(occupancy
  count(distinct if(occupancy>0 and format_date('%Y-%m', date_sub(reservation.checkout, interval 1 day))=format_date('%Y-%m', date), reservation.id, null)) n_checkout,
  countif(occupancy>0) nights
 from `views.listing_daily_stats` where date between '2026-05-01' and '2026-09-30' and availability=1 and internalName is not null group by 1,2;
+
+-- demais_direto_outros_jul_out26.psv (b|rev_tot|rev_dir|rev_out): receita de hospedagem jul–out/26, canal direto vs outros canais
+select s.buildingName b, sum(if(occupancy>0, accommodation_adr, 0)) rev_tot,
+ sum(if(occupancy>0 and regexp_contains(lower(coalesce(reservation.source,'')), r'^0\. direct|^direct|extens|website|reserva interna'), accommodation_adr, 0)) rev_dir,
+ sum(if(occupancy>0 and not regexp_contains(lower(coalesce(reservation.source,'')), r'airbnb|booking|expedia|^0\. direct|^direct|extens|website|reserva interna'), accommodation_adr, 0)) rev_out
+from `views.listing_daily_stats` s where availability=1 and date between '2026-07-01' and '2026-10-31' group by 1;
