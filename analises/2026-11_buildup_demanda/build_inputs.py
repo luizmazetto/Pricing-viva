@@ -481,7 +481,7 @@ for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesm
                                    ('BC', 87, 0.01, 0.0, 'Base e Bear: mesma variação de 2027.')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · 2028')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
-put('B89', 'Teto do share de demais outros canais por prédio (Base Case)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
+put('B89', 'Teto do share de demais outros canais por prédio (não usado desde o crescimento em p.p. iguais, item 11)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
 put('F89', 'Nenhum prédio que cresce passa deste share de demais (dez/27 e dez/28); o excedente é redistribuído entre os outros prédios (multiplicadores C73 e D77, 3 iterações em H/I). Prédios que já estão acima não caem. Expedia sem teto.')
 put('B88', 'Ocupação (item 5)'); put('C88', 'igual nos dois'); put('D88', 'igual nos dois')
 put('F88', 'A ocupação só divide o RevPAR entre ocupação e diária; não muda o RevPAR. Itens 1 e 5 mostram o que está em uso no cenário escolhido.')
@@ -786,13 +786,12 @@ def solve_split(td, to):
             res[r] = (d, o); D += b['w'] * d; O += b['w'] * o; Wt += b['w']
         md *= (td * Wt / D) ** 0.7 if D else 1; mo *= (to * Wt / O) ** 0.7 if O else 1
     return md, mo, res, D / Wt, O / Wt
-for yy, (td, to) in TGT.items():
-    SOLV[yy] = solve_split(td, to); print('item 11', yy, 'mult direto %.3f outros %.3f -> direto %.4f outros %.4f' % (SOLV[yy][0], SOLV[yy][1], SOLV[yy][3], SOLV[yy][4]))
 for cc, h in ((46, 'Meta canal direto dez/27'), (47, 'Meta outros canais dez/27'), (48, 'Meta canal direto dez/28'), (49, 'Meta outros canais dez/28')):
     x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 14
 for r in BASE4:
     for cc, (yy, j) in zip((46, 47, 48, 49), ((27, 0), (27, 1), (28, 0), (28, 1))):
-        x = PP.cell(r, cc, round(SOLV[yy][2][r][j], 6)); x.font = F_IN; x.number_format = '0.0%'
+        fx = {46: f"=AR{r}+AD{r}*Premissas!$C$110", 47: f"=AS{r}+AD{r}*Premissas!$C$111", 48: f"=AR{r}+AD{r}*Premissas!$D$110", 49: f"=AS{r}+AD{r}*Premissas!$D$111"}[cc]
+        x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0.0%'
 for cc, h in ((43, 'Fração do canal direto dentro dos demais (jul–out/26, Metabase)'), (44, 'Share canal direto jul–out/26'), (45, 'Share outros canais jul–out/26')):
     x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 20
 for r in ROWS:
@@ -812,13 +811,13 @@ put('B108', 'Total demais outros canais · meta (vai para C67 e C77)'); put('C10
 put('F108', 'Sem a Swap (reserva espelho): dez/27 10% = direto 5% + outros 5%; dez/28 14% = direto 7% + outros 7% (base jul–out/26: direto 2,7%, outros 3,0%).')
 put('B109', 'Base jul–out/26 no portfólio · canal direto / outros canais')
 put('C109', f"=SUMPRODUCT({DIR_},{W_})/SUM({W_})", F_CALC, None, '0.0%'); put('D109', f"=SUMPRODUCT({OUT_},{W_})/SUM({W_})", F_CALC, None, '0.0%')
-put('B110', 'Multiplicador do canal direto (prédios que crescem) · dez/27 / dez/28')
-put('C110', round(SOLV[27][0], 4), F_IN, None, '0.00"x"')
-put('D110', round(SOLV[28][0], 4), F_IN, None, '0.00"x"')
-put('B111', 'Multiplicador dos outros canais (prédios que crescem) · dez/27 / dez/28')
-put('C111', round(SOLV[27][1], 4), F_IN, None, '0.00"x"')
-put('D111', round(SOLV[28][1], 4), F_IN, None, '0.00"x"')
-put('F111', 'Multiplicadores resolvidos no build para fechar EXATAMENTE as metas (C106/C107, D106/D107) com o teto de 25% (C89) por prédio; metas por prédio em Premissas por prédio, colunas AT–AW. Se mudar as metas, rodar build_inputs.py de novo (o check abaixo mostra o que fecha).')
+put('B110', 'Acréscimo do canal direto em cada prédio que cresce (p.p.) · dez/27 / dez/28')
+put('C110', f"=(C106*SUM({W_})-SUMPRODUCT({DIR_},{W_}))/SUMPRODUCT({AD_},{W_})", F_CALC, None, '0.00%')
+put('D110', f"=(D106*SUM({W_})-SUMPRODUCT({DIR_},{W_}))/SUMPRODUCT({AD_},{W_})", F_CALC, None, '0.00%')
+put('B111', 'Acréscimo dos outros canais em cada prédio que cresce (p.p.) · dez/27 / dez/28')
+put('C111', f"=(C107*SUM({W_})-SUMPRODUCT({OUT_},{W_}))/SUMPRODUCT({AD_},{W_})", F_CALC, None, '0.00%')
+put('D111', f"=(D107*SUM({W_})-SUMPRODUCT({OUT_},{W_}))/SUMPRODUCT({AD_},{W_})", F_CALC, None, '0.00%')
+put('F111', 'Crescimento em pontos iguais: todo prédio que cresce (Expedia + demais ≤ 50%) ganha os mesmos p.p. de canal direto e de outros canais sobre a própria base de jul–out/26 (canais vendidos por empresa/contrato, não pelo histórico do prédio). Fecha exatamente a meta; sem teto (C89 não se aplica aos demais). Metas por prédio: Premissas por prédio, AT–AW.')
 put('B112', 'Check · canal direto no portfólio · dez/27 / dez/28')
 put('C112', f"=SUMPRODUCT('Aux % Direto'!$BA$5:$BA$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')
 put('D112', f"=SUMPRODUCT('Aux % Direto'!$BM$5:$BM$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')

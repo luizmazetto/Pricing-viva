@@ -71,3 +71,5 @@ reestimados sem a Swap: β Airbnb 1,08; Expedia 0,31; demais 0,41 (cheio) / 1,00
 Metas de demais (sem a Swap): dez/27 10% (direto 5% + outros 5%); dez/28 14% (direto 7% + outros 7%).
 
 Metas de canal direto e outros canais fecham exatamente (dez/27 5% + 5%; dez/28 7% + 7%): multiplicadores próprios resolvidos no build com o teto de 25% (metas por prédio em Premissas por prédio, AT–AW). Mudou as metas em TGT (build_inputs.py) => rodar o build de novo.
+
+Canal direto e outros canais: crescimento em p.p. iguais nos prédios que crescem (Premissas C110:D111 = acréscimo), fecha exato e é fórmula; sem teto.
