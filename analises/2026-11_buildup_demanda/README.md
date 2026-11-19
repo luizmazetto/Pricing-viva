@@ -39,3 +39,6 @@ Set/26 vem da Report DB emitida (`data/report_db_predio_mes.psv`); out/26 segue 
 Atenção: em ago/26 a Report DB tem 46 linhas com receita de acomodação e 0 diárias (NXP 950, NXF 444, NUN 61, PQJ 155, KAS 99),
 o que infla o ADR desses prédios no mês (NXP R$ 633 vs ~R$ 236). Corrigido só na planilha (Report DB fica como emitida): diárias e dias disponíveis dessas 41 unidades vêm da calendar do
 Metabase (bate 100% com a Report DB em jul e set/26); ADR e ocupação de ago/26 recalculados (células em laranja com comentário).
+
+2028 (Base Case, cenário de canais 2): notas ficam no nível de dez/27 (4,75 / 8,5); Expedia fica em 15%; demais outros canais
+sobem de 12% (dez/27) para 16% em dez/28, em linha reta (Premissas C77; multiplicador D77 sobre o share de jul–out/26).
