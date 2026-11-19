@@ -114,19 +114,19 @@ def value_for(sheet, c, k):
 
 def active(r): return ROWINFO[r]['st'] == 'Ativo'
 
-# Ajuste ago/26 (só na planilha, Report DB fica como emitida): linhas com receita de acomodação e 0 diárias / 0 dias
-# disponíveis (diárias não preenchidas) inflam o ADR. ADR do mês = receita só das linhas com diárias ÷ diárias.
-K_FIX_ADR = [31]
-for x in rd('data/report_db_predio_mes.psv'):
-    k_ = kof(x['m']); rv, ok, di = float(x['rev'] or 0), float(x['rev_ok'] or 0), float(x['dia'] or 0)
-    if k_ not in K_FIX_ADR or di <= 0 or abs(rv - ok) < 1: continue
+# Ajuste ago/26 (só na planilha, Report DB fica como emitida): unidades com receita de acomodação e 0 diárias / 0 dias
+# disponíveis (diárias não preenchidas). Diárias e dias disponíveis dessas unidades vêm da calendar do Metabase (listing_daily_stats,
+# data/metabase_unidade_jul_set26.psv; bate 100% com a Report DB em jul e set/26). Ajuste em data/report_db_ago26_ajuste.psv:
+# ADR = receita total ÷ diárias ajustadas, ocupação = diárias ajustadas ÷ dias ajustados.
+for x in rd('data/report_db_ago26_ajuste.psv'):
+    k_ = kof(x['m']); rv, da, pa = float(x['rev']), float(x['dia_aj']), float(x['disp_aj'])
     for r in ROWS:
         if ROWINFO[r]['code'] == x['b'] and ROWINFO[r]['ctr'] == x['ctr'] and isinstance(ADR.cell(r, 6 + k_).value, (int, float)):
-            c = ADR.cell(r, 6 + k_); old = c.value; c.value = round(ok / di, 6)
-            c.fill = PatternFill('solid', fgColor='FCE4D6')
-            c.comment = Comment(f'Ajustado: Report DB {old:,.2f} inclui R$ {rv - ok:,.0f} de unidades com receita e 0 diárias (diárias não preenchidas). '
-                                f'Aqui: receita só das unidades com diárias ÷ diárias.', 'buildup')
-            print('ADR ajustado', x['b'], x['ctr'], x['m'], round(old, 2), '->', round(ok / di, 2))
+            for ws_, new_, lab in ((ADR, rv / da, 'ADR'), (OCC, da / pa, 'Ocupação')):
+                c = ws_.cell(r, 6 + k_); old = c.value; c.value = round(new_, 6); c.fill = PatternFill('solid', fgColor='FCE4D6')
+                c.comment = Comment(f'{lab} ajustado: na Report DB {x["n_sem"]} unidades têm receita e 0 diárias (não preenchidas). Diárias e dias disponíveis '
+                                    f'dessas unidades: calendar do Metabase. Report DB: {old:,.4g}.', 'buildup')
+            print('ajustado', x['b'], x['ctr'], x['m'], 'ADR', round(rv / da, 1), 'ocup', round(da / pa, 3))
 def had_units(r, k): return isinstance(ADR.cell(r, 6 + k).value, (int, float))
 
 for name in DATA_SHEETS:

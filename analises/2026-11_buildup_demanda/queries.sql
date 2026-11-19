@@ -28,3 +28,9 @@ select string_agg(format('%s|%s|%d|%.1f|%.1f|%.1f', b, m, n, sg, mn, mx), '\n' o
 select l.buildingName b, format_date('%Y-%m', date(rev.createdAt)) m, count(*) n, sum(rev.general) sg, min(rev.general) mn, max(rev.general) mx
 from replicas.vivadb_review rev join replicas.vivadb_reservation res on rev.idreserve=res.id_ join replicas.vivadb_listing l on l.id_=res.idlisting
 where lower(res.partnerName) like '%expedia%' and rev.general > 0 and l.buildingName is not null and date(rev.createdAt) <= '2026-10-31' group by 1,2);
+
+-- metabase_unidade_jul_set26.psv (header: u;m;disp;dia;rev): diárias por unidade para o ajuste de ago/26 da Report DB
+select internalName u, format_date('%Y-%m', date) m, countif(availability=1) disp, countif(availability=1 and occupancy>0) dia,
+ sum(if(availability=1 and occupancy>0, accommodation_adr, 0)) rev
+from `views.listing_daily_stats` where date between '2026-07-01' and '2026-09-30'
+ and regexp_contains(internalName, r'^(NXP 950|NXF 444|NUN 61|PQJ 155|KAS 99) ') group by 1,2;
