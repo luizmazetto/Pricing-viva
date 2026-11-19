@@ -67,3 +67,5 @@ Swap ("0.1. Swap") = reserva espelho de realocação (hóspede trocado de unidad
 em historico_predio_mes.psv (código HM… na nota interna → Airbnb; número de 9–10 dígitos → Booking; não identificada (5%) → 56,5/43,5).
 Era 2,3% da receita de hospedagem em jul–out/26. Demais outros canais sem a Swap: 5,7% (direto 2,7%, outros 3,0%). Coeficientes
 reestimados sem a Swap: β Airbnb 1,08; Expedia 0,31; demais 0,41 (cheio) / 1,00 (folga); faixa Booking +9,5%.
+
+Metas de demais (sem a Swap): dez/27 10% (direto 5% + outros 5%); dez/28 14% (direto 7% + outros 7%).
