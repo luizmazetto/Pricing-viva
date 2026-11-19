@@ -113,6 +113,20 @@ def value_for(sheet, c, k):
     if sheet == 'Reviews Booking': return window(RB, c, k, 12)[0]
 
 def active(r): return ROWINFO[r]['st'] == 'Ativo'
+
+# Ajuste ago/26 (só na planilha, Report DB fica como emitida): linhas com receita de acomodação e 0 diárias / 0 dias
+# disponíveis (diárias não preenchidas) inflam o ADR. ADR do mês = receita só das linhas com diárias ÷ diárias.
+K_FIX_ADR = [31]
+for x in rd('data/report_db_predio_mes.psv'):
+    k_ = kof(x['m']); rv, ok, di = float(x['rev'] or 0), float(x['rev_ok'] or 0), float(x['dia'] or 0)
+    if k_ not in K_FIX_ADR or di <= 0 or abs(rv - ok) < 1: continue
+    for r in ROWS:
+        if ROWINFO[r]['code'] == x['b'] and ROWINFO[r]['ctr'] == x['ctr'] and isinstance(ADR.cell(r, 6 + k_).value, (int, float)):
+            c = ADR.cell(r, 6 + k_); old = c.value; c.value = round(ok / di, 6)
+            c.fill = PatternFill('solid', fgColor='FCE4D6')
+            c.comment = Comment(f'Ajustado: Report DB {old:,.2f} inclui R$ {rv - ok:,.0f} de unidades com receita e 0 diárias (diárias não preenchidas). '
+                                f'Aqui: receita só das unidades com diárias ÷ diárias.', 'buildup')
+            print('ADR ajustado', x['b'], x['ctr'], x['m'], round(old, 2), '->', round(ok / di, 2))
 def had_units(r, k): return isinstance(ADR.cell(r, 6 + k).value, (int, float))
 
 for name in DATA_SHEETS:

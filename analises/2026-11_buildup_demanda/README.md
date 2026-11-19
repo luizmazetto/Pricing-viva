@@ -37,4 +37,5 @@ Histórico de ADR Acomodação e Ocupação conferido contra a Report DB (VivaPr
 receita de acomodação ÷ diárias e diárias ÷ dias disponíveis por prédio × contrato × mês): jan/24–set/26 bate 100%.
 Set/26 vem da Report DB emitida (`data/report_db_predio_mes.psv`); out/26 segue do Metabase até a emissão fechar.
 Atenção: em ago/26 a Report DB tem 46 linhas com receita de acomodação e 0 diárias (NXP 950, NXF 444, NUN 61, PQJ 155, KAS 99),
-o que infla o ADR desses prédios no mês (NXP R$ 633 vs ~R$ 236).
+o que infla o ADR desses prédios no mês (NXP R$ 633 vs ~R$ 236). Corrigido só na planilha (Report DB fica como emitida):
+ADR ago/26 = receita das linhas com diárias ÷ diárias (células em laranja com comentário).
