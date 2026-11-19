@@ -443,7 +443,7 @@ put('B71', 'Base do portfólio jul–out/26 · demais outros'); put('C71', f"=SU
 put('B72', 'Multiplicador do share · Expedia (prédios que crescem)')
 put('C72', f"=(C66*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
 put('F72', 'Calculado para fechar a meta do portfólio descontando os prédios que não crescem.')
-put('B73', 'Multiplicador do share · demais outros (prédios que crescem)')
+put('B73', 'Multiplicador do share · demais outros (referência; metas por prédio vêm do item 11)')
 def mult_cap(tgt, flag=None):
     # multiplicador dos demais nos prédios que crescem; prédios com flag (já no teto) entram com o teto fixo
     W, AB, AD = f"{PPN}!$AC$5:$AC$57", f"{PPN}!$AB$5:$AB$57", f"{PPN}!$AD$5:$AD$57"
@@ -519,6 +519,7 @@ for r in ROWS:
         FB.cell(r, 6 + k, fx).font = F_CALC
 
 # ------------------------------------------------------------------ Premissas por prédio
+BASE4 = {}
 PP = mirror('Premissas por prédio', 'Premissas por prédio', 'Calculadas a partir do realizado; podem ser sobrescritas (ex.: volume de reviews de prédio novo).')
 heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/mês (média nov/25–out/26)', 7: 'Prêmio base (média jul–out/26)',
          8: 'Nota Airbnb 12m base (média jul–out/26)', 9: 'Nota Booking 12m base (média jul–out/26)',
@@ -575,6 +576,7 @@ for r in ROWS:
         S4 = {f: sum(H[cd_][k][f] for k in ks4) for f in ('tot', 'air', 'bk', 'exp')}
         b4 = dict(air=S4['air'] / S4['tot'], bk=S4['bk'] / S4['tot'], exp=S4['exp'] / S4['tot'])
         b4['dem'] = max(0.0, 1 - b4['air'] - b4['bk'] - b4['exp'])
+        BASE4[r] = dict(exp=b4['exp'], dem=b4['dem'], w=S4['tot'])
         for cc, kk in ((25, 'air'), (26, 'bk'), (27, 'exp'), (28, 'dem')):
             x = PP.cell(r, cc, round(b4[kk], 4)); x.number_format = '0.0%'; x.font = F_IN
         x = PP.cell(r, 29, round(S4['tot'], 2)); x.number_format = '#,##0'; x.font = F_IN
@@ -583,8 +585,8 @@ for r in ROWS:
             x = PP.cell(r, cc, v); x.number_format = '0.0%' if cc < 29 else '#,##0'; x.font = F_CALC
     for cc, fx in ((30, f"=IF(AA{r}+AB{r}>Premissas!$C$69,0,1)"),
                    (31, f"=AA{r}*IF(AD{r}=1,Premissas!$C$72,1)"),
-                   (32, f"=IF(AD{r}=1,MAX(AB{r},MIN(Premissas!$C$89,AB{r}*Premissas!$C$73)),AB{r})"),
-                   (33, f"=IF(AD{r}=1,MAX(AB{r},MIN(Premissas!$C$89,AB{r}*Premissas!$D$77)),AB{r})"),
+                   (32, f"=AT{r}+AU{r}"),
+                   (33, f"=AV{r}+AW{r}"),
                    (34, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$H$73>Premissas!$C$89),1,0)"),
                    (35, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$I$73>Premissas!$C$89),1,0)"),
                    (36, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$H$77>Premissas!$C$89),1,0)"),
@@ -765,6 +767,32 @@ for x in rd('data/demais_direto_outros_jul_out26.psv'):
     if d_ + o_ > 0: DIRF[code(x['b'])] = d_ / (d_ + o_)
 _W = sum(float(x['rev_dir']) + float(x['rev_out']) for x in rd('data/demais_direto_outros_jul_out26.psv'))
 DIRF_PORT = sum(float(x['rev_dir']) for x in rd('data/demais_direto_outros_jul_out26.psv')) / _W
+# metas por prédio de canal direto e outros canais que fecham EXATAMENTE as metas do portfólio (item 11), com o teto de 25%
+# por prédio no total de demais: multiplicador próprio de cada um nos prédios que crescem; se direto + outros passa do teto,
+# os dois são reduzidos na proporção. Resolvido aqui (iterativo); mudar as metas => rodar o build de novo.
+TGT = {27: (0.05, 0.05), 28: (0.07, 0.07)}; CAP, LIM_GROW = 0.25, 0.50
+SOLV = {}
+def solve_split(td, to):
+    md = mo = 1.0
+    for _ in range(500):
+        D = O = Wt = 0.0; res = {}
+        for r, b in BASE4.items():
+            f = DIRF.get(ROWINFO[r]['code'], DIRF_PORT); d0, o0 = b['dem'] * f, b['dem'] * (1 - f)
+            if b['exp'] + b['dem'] > LIM_GROW: d, o = d0, o0
+            else:
+                d, o = d0 * md, o0 * mo
+                if d + o > CAP and d0 + o0 < CAP: k_ = CAP / (d + o); d, o = d * k_, o * k_
+                elif d0 + o0 >= CAP: d, o = d0, o0
+            res[r] = (d, o); D += b['w'] * d; O += b['w'] * o; Wt += b['w']
+        md *= (td * Wt / D) ** 0.7 if D else 1; mo *= (to * Wt / O) ** 0.7 if O else 1
+    return md, mo, res, D / Wt, O / Wt
+for yy, (td, to) in TGT.items():
+    SOLV[yy] = solve_split(td, to); print('item 11', yy, 'mult direto %.3f outros %.3f -> direto %.4f outros %.4f' % (SOLV[yy][0], SOLV[yy][1], SOLV[yy][3], SOLV[yy][4]))
+for cc, h in ((46, 'Meta canal direto dez/27'), (47, 'Meta outros canais dez/27'), (48, 'Meta canal direto dez/28'), (49, 'Meta outros canais dez/28')):
+    x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 14
+for r in BASE4:
+    for cc, (yy, j) in zip((46, 47, 48, 49), ((27, 0), (27, 1), (28, 0), (28, 1))):
+        x = PP.cell(r, cc, round(SOLV[yy][2][r][j], 6)); x.font = F_IN; x.number_format = '0.0%'
 for cc, h in ((43, 'Fração do canal direto dentro dos demais (jul–out/26, Metabase)'), (44, 'Share canal direto jul–out/26'), (45, 'Share outros canais jul–out/26')):
     x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 20
 for r in ROWS:
@@ -785,12 +813,12 @@ put('F108', 'Sem a Swap (reserva espelho): dez/27 10% = direto 5% + outros 5%; d
 put('B109', 'Base jul–out/26 no portfólio · canal direto / outros canais')
 put('C109', f"=SUMPRODUCT({DIR_},{W_})/SUM({W_})", F_CALC, None, '0.0%'); put('D109', f"=SUMPRODUCT({OUT_},{W_})/SUM({W_})", F_CALC, None, '0.0%')
 put('B110', 'Multiplicador do canal direto (prédios que crescem) · dez/27 / dez/28')
-put('C110', f"=(C106*SUM({W_})-SUMPRODUCT(1-{AD_},{DIR_},{W_}))/SUMPRODUCT({AD_},{DIR_},{W_})", F_CALC, None, '0.00"x"')
-put('D110', f"=(D106*SUM({W_})-SUMPRODUCT(1-{AD_},{DIR_},{W_}))/SUMPRODUCT({AD_},{DIR_},{W_})", F_CALC, None, '0.00"x"')
+put('C110', round(SOLV[27][0], 4), F_IN, None, '0.00"x"')
+put('D110', round(SOLV[28][0], 4), F_IN, None, '0.00"x"')
 put('B111', 'Multiplicador dos outros canais (prédios que crescem) · dez/27 / dez/28')
-put('C111', f"=(C107*SUM({W_})-SUMPRODUCT(1-{AD_},{OUT_},{W_}))/SUMPRODUCT({AD_},{OUT_},{W_})", F_CALC, None, '0.00"x"')
-put('D111', f"=(D107*SUM({W_})-SUMPRODUCT(1-{AD_},{OUT_},{W_}))/SUMPRODUCT({AD_},{OUT_},{W_})", F_CALC, None, '0.00"x"')
-put('F111', 'O total de demais de cada prédio segue o item 8 (com o teto de 25%); estes multiplicadores definem a divisão entre direto e outros dentro dele (cada prédio parte da própria divisão de jul–out/26).')
+put('C111', round(SOLV[27][1], 4), F_IN, None, '0.00"x"')
+put('D111', round(SOLV[28][1], 4), F_IN, None, '0.00"x"')
+put('F111', 'Multiplicadores resolvidos no build para fechar EXATAMENTE as metas (C106/C107, D106/D107) com o teto de 25% (C89) por prédio; metas por prédio em Premissas por prédio, colunas AT–AW. Se mudar as metas, rodar build_inputs.py de novo (o check abaixo mostra o que fecha).')
 put('B112', 'Check · canal direto no portfólio · dez/27 / dez/28')
 put('C112', f"=SUMPRODUCT('Aux % Direto'!$BA$5:$BA$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')
 put('D112', f"=SUMPRODUCT('Aux % Direto'!$BM$5:$BM$57,{W_})/SUM({W_})", F_CALC, None, '0.0%')
@@ -805,7 +833,8 @@ for r in ROWS:
         md = f"IF(Premissas!$C$65=2,1+(Premissas!$C$110-1)*{r1}+(Premissas!$D$110-Premissas!$C$110)*{r2},1)"
         mo = f"IF(Premissas!$C$65=2,1+(Premissas!$C$111-1)*{r1}+(Premissas!$D$111-Premissas!$C$111)*{r2},1)"
         comp = f"{PPN}!$AR{r}*{md}/({PPN}!$AR{r}*{md}+{PPN}!$AS{r}*{mo})"
-        c = AXD.cell(r, 6 + k, f"=IFERROR(('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r})*{comp},0)"); c.font = F_CALC; c.number_format = '0.0%'
+        r2b = f"{min(1, max(0, (k - 47) / 12)):.6f}"
+        c = AXD.cell(r, 6 + k, f"=IFERROR(IF(Premissas!$C$65=2,{PPN}!$AR{r}+({PPN}!$AT{r}-{PPN}!$AR{r})*{r1}+({PPN}!$AV{r}-{PPN}!$AT{r})*{r2b},{PPN}!$AR{r}),0)"); c.font = F_CALC; c.number_format = '0.0%'
 
 # ------------------------------------------------------------------ Comissão de canais, LOS, taxa de limpeza, OTA taxa de limpeza
 RDBX = {}
