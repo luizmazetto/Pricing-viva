@@ -28,7 +28,7 @@ O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,35 × ΔExpedia 
 
 Cenário (Premissas, C3; valores no item 9): 1 = Base Case (mercado SP −1,1%, FLN −10,7%, BC +1%; meta de reviews Airbnb 4,75 /
 Booking 8,5; Expedia 15% e demais 12% em dez/27). 2 = Bear Case (cada mercado repete 2026 sem crescimento: SP −1,1%,
-FLN −10,7%, BC 0%; notas e mix de canais atuais, sem ganho). C11 (reviews) e C65 (canais) seguem C3, mas podem ser sobrescritos.
+FLN −10,7%, BC +1%; notas e mix de canais atuais, sem ganho). C11 (reviews) e C65 (canais) seguem C3, mas podem ser sobrescritos.
 
 Coeficientes (19/nov/2026): estimativa conjunta de `analysis_canais_controle_reviews.py` — β Airbnb 1,16; faixa Booking ≥ 8,0
 +9,9% (Booking ≥ 35%); Expedia 0,35; demais 0,40 (cheio) / 1,00 (folga, limitado). Antes: 0,95 / 7,5% / 0,41 / 0,41.
@@ -73,3 +73,5 @@ Metas de demais (sem a Swap): dez/27 10% (direto 5% + outros 5%); dez/28 14% (di
 Metas de canal direto e outros canais fecham exatamente (dez/27 5% + 5%; dez/28 7% + 7%): multiplicadores próprios resolvidos no build com o teto de 25% (metas por prédio em Premissas por prédio, AT–AW). Mudou as metas em TGT (build_inputs.py) => rodar o build de novo.
 
 Canal direto e outros canais: crescimento em p.p. iguais nos prédios que crescem (Premissas C110:D111 = acréscimo), fecha exato e é fórmula; sem teto.
+
+Bear Case: BC +1% (igual ao Base); os dois cenários têm o mesmo mercado e diferem só nos ganhos de reviews e canais.

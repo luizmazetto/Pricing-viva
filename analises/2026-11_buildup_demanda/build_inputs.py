@@ -473,12 +473,12 @@ put('B81', 'Canais (item 8): 1 = mix atual · 2 = crescimento até a meta'); put
 put('F81', 'Base: Expedia 15% e demais 12% do portfólio em dez/27. Bear: mix de jul–out/26 constante (sem ganho).')
 for city, row, base, bear, why in (('SP', 82, -0.011, -0.011, 'Base e Bear: repete 2026 (−1,1% em jan–out/26 vs jan–out/25).'),
                                    ('FLN', 83, -0.107, -0.107, 'Base e Bear: repete 2026, −10,7%.'),
-                                   ('BC', 84, 0.01, 0.0, 'Base: repete 2026 (+1,0%). Bear: 0%, já que 2026 foi de alta e o Bear não tem ganho.')):
+                                   ('BC', 84, 0.01, 0.01, 'Base e Bear: repete 2026 (+1,0%).')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · nov/26–dez/27 (vs mesmo mês do ano anterior)')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
 for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesma variação de 2027.'),
                                    ('FLN', 86, -0.05, -0.05, 'Base e Bear: retração de 5% em 2028 (premissa do usuário), depois de −10,7% em 2026 e 2027.'),
-                                   ('BC', 87, 0.01, 0.0, 'Base e Bear: mesma variação de 2027.')):
+                                   ('BC', 87, 0.01, 0.01, 'Base e Bear: mesma variação de 2027.')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · 2028')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
 put('B89', 'Teto do share de demais outros canais por prédio (não usado desde o crescimento em p.p. iguais, item 11)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
