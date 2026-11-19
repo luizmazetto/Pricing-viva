@@ -62,3 +62,8 @@ Demais outros canais divididos em canal direto (Viva: 0. Direct, Direct - empres
 canais (Swap, Quinto Andar, DIVID, Homelike, Decolar, API B2B, Cangooroo...): Premissas, item 11; aba Aux % Direto. Hoje (jul–out/26)
 direto 2,7% e outros 5,3% da receita de hospedagem. Metas: dez/27 direto 5% + outros 7% = 12%; dez/28 16% na mesma proporção
 (6,7% / 9,3%). Custo (commissionValue ÷ GMV, check-in ago–out/26): direto 11,8%, outros canais 13,2%. Base: data/demais_direto_outros_jul_out26.psv.
+
+Swap ("0.1. Swap") = reserva espelho de realocação (hóspede trocado de unidade), clonada da reserva original. Devolvida ao canal original
+em historico_predio_mes.psv (código HM… na nota interna → Airbnb; número de 9–10 dígitos → Booking; não identificada (5%) → 56,5/43,5).
+Era 2,3% da receita de hospedagem em jul–out/26. Demais outros canais sem a Swap: 5,7% (direto 2,7%, outros 3,0%). Coeficientes
+reestimados sem a Swap: β Airbnb 1,08; Expedia 0,31; demais 0,41 (cheio) / 1,00 (folga); faixa Booking +9,5%.
