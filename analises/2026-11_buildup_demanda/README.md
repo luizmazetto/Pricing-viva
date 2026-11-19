@@ -44,3 +44,5 @@ Metabase (bate 100% com a Report DB em jul e set/26); ADR e ocupação de ago/26
 sobem de 12% (dez/27) para 16% em dez/28, em linha reta (Premissas C77; multiplicador D77 sobre o share de jul–out/26).
 
 Mercado de FLN: −10,7% em nov/26–dez/27 e −5% em 2028, nos dois cenários (Premissas, item 9, linhas 82–87: por cidade, 2027 e 2028).
+
+Teto de 25% no share de demais outros canais por prédio (Premissas C89, Base Case), com redistribuição do excedente entre os prédios que crescem (multiplicadores C73/D77, iterações em H/I).

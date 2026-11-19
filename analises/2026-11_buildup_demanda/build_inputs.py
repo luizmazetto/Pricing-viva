@@ -444,14 +444,24 @@ put('B72', 'Multiplicador do share · Expedia (prédios que crescem)')
 put('C72', f"=(C66*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AA$5:$AA$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
 put('F72', 'Calculado para fechar a meta do portfólio descontando os prédios que não crescem.')
 put('B73', 'Multiplicador do share · demais outros (prédios que crescem)')
-put('C73', f"=(C67*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
+def mult_cap(tgt, flag=None):
+    # multiplicador dos demais nos prédios que crescem; prédios com flag (já no teto) entram com o teto fixo
+    W, AB, AD = f"{PPN}!$AC$5:$AC$57", f"{PPN}!$AB$5:$AB$57", f"{PPN}!$AD$5:$AD$57"
+    if flag is None:
+        return f"=({tgt}*SUM({W})-SUMPRODUCT(1-{AD},{AB},{W}))/SUMPRODUCT({AD},{AB},{W})"
+    F = f"{PPN}!${flag}$5:${flag}$57"
+    return f"=({tgt}*SUM({W})-SUMPRODUCT(1-{AD},{AB},{W})-$C$89*SUMPRODUCT({AD},{F},{W}))/SUMPRODUCT({AD},1-{F},{AB},{W})"
+put('H72', 'iteração 1', Font(name=ARIAL, size=8, italic=True)); put('I72', 'iteração 2', Font(name=ARIAL, size=8, italic=True))
+put('H73', mult_cap('C67'), F_CALC, None, '0.00"x"'); put('I73', mult_cap('C67', 'AH'), F_CALC, None, '0.00"x"')
+put('C73', mult_cap('C67', 'AI'), F_CALC, None, '0.00"x"')
 put('B74', 'Check · Expedia no portfólio no mês da meta'); put('C74', f"=SUMPRODUCT({PPN}!$AE$5:$AE$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('F74', 'Com os pesos de receita de jul–out/26 (deve bater com a meta). Sem contar os aumentos manuais das colunas S e T.')
 put('B75', 'Check · demais outros no portfólio no mês da meta'); put('C75', f"=SUMPRODUCT({PPN}!$AF$5:$AF$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('B76', 'Meses de rampa (nov/26 até o mês da meta)'); put('C76', '=MAX(1,(YEAR(C68)-2026)*12+MONTH(C68)-10)', F_CALC, None, '0')
 put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,35 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
 put('B77', 'Meta · demais outros no portfólio em dez/28 (2ª rampa, jan–dez/28)'); put('C77', 0.16, F_IN, FILL_KEY, '0.0%')
-put('D77', f"=(C77*SUM({PPN}!$AC$5:$AC$57)-SUMPRODUCT(1-{PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57))/SUMPRODUCT({PPN}!$AD$5:$AD$57,{PPN}!$AB$5:$AB$57,{PPN}!$AC$5:$AC$57)", F_CALC, None, '0.00"x"')
+put('H77', mult_cap('C77'), F_CALC, None, '0.00"x"'); put('I77', mult_cap('C77', 'AJ'), F_CALC, None, '0.00"x"')
+put('D77', mult_cap('C77', 'AK'), F_CALC, None, '0.00"x"')
 put('E77', f"=SUMPRODUCT({PPN}!$AG$5:$AG$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('F77', 'D77 = multiplicador sobre o share de jul–out/26 (prédios que crescem); E77 = check no portfólio. De jan a dez/28 os demais vão em linha reta da meta de dez/27 (C67) até esta. Expedia fica na meta de dez/27; notas ficam no nível de dez/27. Só no cenário de canais 2.')
 put('B78', '9. Cenários de simulação · Base Case × Bear Case (escolha em C3)', F_B)
@@ -471,6 +481,8 @@ for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesm
                                    ('BC', 87, 0.01, 0.0, 'Base e Bear: mesma variação de 2027.')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · 2028')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
+put('B89', 'Teto do share de demais outros canais por prédio (Base Case)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
+put('F89', 'Nenhum prédio que cresce passa deste share de demais (dez/27 e dez/28); o excedente é redistribuído entre os outros prédios (multiplicadores C73 e D77, 3 iterações em H/I). Prédios que já estão acima não caem. Expedia sem teto.')
 put('B88', 'Ocupação (item 5)'); put('C88', 'igual nos dois'); put('D88', 'igual nos dois')
 put('F88', 'A ocupação só divide o RevPAR entre ocupação e diária; não muda o RevPAR. Itens 1 e 5 mostram o que está em uso no cenário escolhido.')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
@@ -517,7 +529,7 @@ heads = {5: 'Reviews Airbnb/mês (média nov/25–out/26)', 6: 'Reviews Booking/
          20: 'Δ share demais outros a partir de jan/27 (p.p.)', 21: 'Share Expedia atual (média nov/25–out/26)', 22: 'Share demais outros atual (média nov/25–out/26)',
          23: 'Nota Booking exibida em out/26', 24: 'Acima do corte em out/26 (1 = sim)',
          25: 'Share Airbnb jul–out/26', 26: 'Share Booking jul–out/26', 27: 'Share Expedia jul–out/26', 28: 'Share demais outros jul–out/26',
-         29: 'Receita de hospedagem jul–out/26 (R$, peso)', 30: 'Cresce no cenário 2 (1 = sim)', 31: 'Share Expedia no mês da meta (cenário 2)', 32: 'Share demais outros no mês da meta (cenário 2)', 33: 'Share demais outros em dez/28 (cenário 2)'}
+         29: 'Receita de hospedagem jul–out/26 (R$, peso)', 30: 'Cresce no cenário 2 (1 = sim)', 31: 'Share Expedia no mês da meta (cenário 2)', 32: 'Share demais outros no mês da meta (cenário 2)', 33: 'Share demais outros em dez/28 (cenário 2)', 34: 'No teto dez/27 · iteração 1', 35: 'No teto dez/27 · iteração 2', 36: 'No teto dez/28 · iteração 1', 37: 'No teto dez/28 · iteração 2'}
 for c, h in heads.items():
     x = PP.cell(4, c, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(c)].width = 20
 PP.row_dimensions[4].height = 78
@@ -571,9 +583,13 @@ for r in ROWS:
             x = PP.cell(r, cc, v); x.number_format = '0.0%' if cc < 29 else '#,##0'; x.font = F_CALC
     for cc, fx in ((30, f"=IF(AA{r}+AB{r}>Premissas!$C$69,0,1)"),
                    (31, f"=AA{r}*IF(AD{r}=1,Premissas!$C$72,1)"),
-                   (32, f"=AB{r}*IF(AD{r}=1,Premissas!$C$73,1)"),
-                   (33, f"=AB{r}*IF(AD{r}=1,Premissas!$D$77,1)")):
-        x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0' if cc == 30 else '0.0%'
+                   (32, f"=IF(AD{r}=1,MAX(AB{r},MIN(Premissas!$C$89,AB{r}*Premissas!$C$73)),AB{r})"),
+                   (33, f"=IF(AD{r}=1,MAX(AB{r},MIN(Premissas!$C$89,AB{r}*Premissas!$D$77)),AB{r})"),
+                   (34, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$H$73>Premissas!$C$89),1,0)"),
+                   (35, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$I$73>Premissas!$C$89),1,0)"),
+                   (36, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$H$77>Premissas!$C$89),1,0)"),
+                   (37, f"=IF(AND(AD{r}=1,AB{r}*Premissas!$I$77>Premissas!$C$89),1,0)")):
+        x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0' if cc == 30 or cc >= 34 else '0.0%'
 
 # AVERAGE ignora células vazias: volume de reviews deve contar meses sem review como zero
 for canal in ('Airbnb', 'Booking'):
