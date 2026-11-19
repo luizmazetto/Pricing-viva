@@ -50,8 +50,8 @@ Teto de 25% no share de demais outros canais por prédio (Premissas C89, Base Ca
 Comissão de Canais %, LOS, Taxa de Limpeza por reserva e OTA Taxa Limpeza % (Premissas, item 10). Set/26 da Report DB emitida;
 projeção de out/26 a dez/28:
 - Comissão = (OTAs Fee + Custo Canal Tx Limpeza) ÷ Total. Projeção: base jul–set/26 do prédio × índice de mix (taxa efetiva por
-  canal × % do canal no mês) ÷ índice na base. Taxas (Metabase, commissionValue ÷ GMV total, mai–set/26): Airbnb 18,0%, Booking 16,4%,
-  Expedia 16,4%, demais 11,6%. Segue sozinha o cenário de canais. OTA Taxa Limpeza (Custo Canal Tx Limpeza ÷ Receita de Limpeza,
+  canal × % do canal no mês) ÷ índice na base. Taxas (Metabase, commissionValue ÷ GMV total, check-in ago–out/26): Airbnb 18,1%, Booking 17,8%
+  (subiu de ~13% em 2025 para ~18% em ago–out/26), Expedia 16,4%, demais 12,8%. Base de comissão do prédio: ago–set/26. Segue sozinha o cenário de canais. OTA Taxa Limpeza (Custo Canal Tx Limpeza ÷ Receita de Limpeza,
   só Revenue Model, aba com linhas próprias): mesma regra.
 - LOS = diárias ÷ reservas. Base Case: mesmo mês do ano anterior × (1 + 4,9% × (1 − 50%)) = +2,45% a.a.; Bear: igual ao ano anterior.
 - Taxa de Limpeza por reserva = receita de limpeza ÷ reservas. Média jul–set/26 do prédio, reajuste de 4,5% em jan/27 e jan/28.

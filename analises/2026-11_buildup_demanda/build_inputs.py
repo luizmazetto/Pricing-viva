@@ -788,12 +788,12 @@ def base_metric(key, ks=(30, 31, 32)):
 put('B91', '10. Comissão de canais, LOS e taxa de limpeza', F_B)
 for c, h in zip('BCDEF', ['Premissa', 'Base Case', 'Bear Case', 'Em uso', 'Racional']):
     put(f'{c}92', h, F_B, FILL_HEAD)
-for row, lab, v, why in ((93, 'Taxa efetiva de comissão · Airbnb (% do GMV total)', 0.180, 'Metabase, reservas com check-in mai–set/26: Σ commissionValue ÷ Σ GMV total (acomodação + limpeza). 18.136 reservas.'),
-                         (94, 'Taxa efetiva de comissão · Booking', 0.164, '15.984 reservas.'),
-                         (95, 'Taxa efetiva de comissão · Expedia', 0.164, '4.436 reservas.'),
-                         (96, 'Taxa efetiva de comissão · demais outros canais', 0.116, '11.956 reservas (direto, Swap, B2B, mid-term, corretores).')):
+for row, lab, v, why in ((93, 'Taxa efetiva de comissão · Airbnb (% do GMV total)', 0.181, 'Metabase, reservas com check-in ago–out/26: Σ commissionValue ÷ Σ GMV total (acomodação + limpeza). Estável em ~18% desde nov/25 (era 15,4% em jan/25).'),
+                         (94, 'Taxa efetiva de comissão · Booking', 0.178, 'Subiu ao longo de 2026: 13,2% em 2025, 13,6%–15,0% em jan–jun/26, 16,4% jul, 17,5% ago, 18,0% set, 17,7% out. Usado o nível atual.'),
+                         (95, 'Taxa efetiva de comissão · Expedia', 0.164, 'Estável em ~16,4% desde 2025.'),
+                         (96, 'Taxa efetiva de comissão · demais outros canais', 0.128, 'Direto, Swap, B2B, mid-term, corretores: 11,9%–14,1% em ago–out/26 (oscila mais).')):
     put(f'B{row}', lab); put(f'C{row}', v, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'E{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'F{row}', why)
-put('F97', 'Comissão(t) = comissão do prédio em jul–set/26 (Report DB) × [Σ taxa do canal × % do canal no mês] ÷ [o mesmo com o mix de jul–out/26]. Segue sozinha o cenário de canais. Mesma regra para a OTA da taxa de limpeza (Revenue Model).')
+put('F97', 'Comissão(t) = comissão do prédio em ago–set/26 (Report DB, já com a comissão nova do Booking) × [Σ taxa do canal × % do canal no mês] ÷ [o mesmo com o mix de jul–out/26]. Segue sozinha o cenário de canais. Mesma regra para a OTA da taxa de limpeza (Revenue Model).')
 put('B98', 'LOS · crescimento anual histórico (mesmo prédio, mesmo mês)'); put('C98', 0.049, F_IN, FILL_KEY, '0.0%'); put('D98', '=C98', F_LINK, None, '0.0%')
 put('F98', 'Report DB, jan–set, mesmo prédio e mês do ano anterior (sem Homelike): 2025 +6,6%, 2026 +3,3%; média +4,9%.')
 put('B99', 'LOS · desconto sobre o histórico'); put('C99', 0.5, F_IN, FILL_KEY, '0%')
@@ -806,12 +806,13 @@ put('E101', '=IF($C$3=1,C101,D101)', F_LINK, FILL_IN, '0.0%')
 put('F101', 'Valor médio por reserva do prédio em jul–set/26 (Report DB), reajustado em jan/27 e jan/28.')
 
 # Premissas por prédio: bases
-for cc, h in ((38, 'Comissão de canais jul–set/26 (Report DB)'), (39, 'Índice de mix de comissão na base (jul–out/26)'), (40, 'OTA taxa de limpeza jul–set/26 (Revenue Model)'),
+for cc, h in ((38, 'Comissão de canais ago–set/26 (Report DB)'), (39, 'Índice de mix de comissão na base (jul–out/26)'), (40, 'OTA taxa de limpeza jul–set/26 (Revenue Model)'),
               (41, 'Taxa de limpeza por reserva jul–set/26 (R$)'), (42, 'LOS jul–set/26')):
     x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 20
 for r in ROWS:
     if not active(r): continue
     key = (ROWINFO[r]['code'], ROWINFO[r]['ctr']); bm = base_metric(key)
+    bm['com'] = base_metric(key, ks=(31, 32))['com'] or bm['com']
     for cc, kk, fmt in ((38, 'com', '0.0%'), (40, 'otl', '0.0%'), (41, 'tl', '#,##0.00'), (42, 'los', '0.00')):
         if bm.get(kk) is not None:
             x = PP.cell(r, cc, round(bm[kk], 6)); x.font = F_IN; x.number_format = fmt
