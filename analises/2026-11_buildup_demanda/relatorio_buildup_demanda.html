@@ -1,0 +1,529 @@
+<title>Buildup de Demanda 2027–28</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+/* layout: coluna editorial de 1040px, seções empilhadas com régua hairline; toggle de cenário fixo no topo */
+:root{
+  --bg:#F4F3F0; --surface:#FFFFFF; --ink:#0B1B2E; --ink-2:rgba(11,27,46,.72); --ink-3:rgba(11,27,46,.52);
+  --line:rgba(11,27,46,.10); --line-2:rgba(11,27,46,.18); --fill:rgba(11,27,46,.05);
+  --accent:#C45A3D; --accent-soft:rgba(196,90,61,.12); --ocre:#B98546; --ocre-soft:rgba(212,165,116,.22);
+  --pos:#2F6B4F; --neg:#B4442C; --mkt:rgba(11,27,46,.38);
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Jost", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1B2E; --surface:#112338; --ink:#F4F3F0; --ink-2:rgba(244,243,240,.76); --ink-3:rgba(244,243,240,.55);
+  --line:rgba(244,243,240,.12); --line-2:rgba(244,243,240,.22); --fill:rgba(244,243,240,.06);
+  --accent:#E07A5C; --accent-soft:rgba(224,122,92,.16); --ocre:#D4A574; --ocre-soft:rgba(212,165,116,.18);
+  --pos:#7CC39F; --neg:#F08B70; --mkt:rgba(244,243,240,.42); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1B2E; --surface:#112338; --ink:#F4F3F0; --ink-2:rgba(244,243,240,.76); --ink-3:rgba(244,243,240,.55);
+  --line:rgba(244,243,240,.12); --line-2:rgba(244,243,240,.22); --fill:rgba(244,243,240,.06);
+  --accent:#E07A5C; --accent-soft:rgba(224,122,92,.16); --ocre:#D4A574; --ocre-soft:rgba(212,165,116,.18);
+  --pos:#7CC39F; --neg:#F08B70; --mkt:rgba(244,243,240,.42); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(34px,5.2vw,54px);line-height:1.05}
+h2{font-size:clamp(26px,3.4vw,34px);line-height:1.15}
+h3{font-size:21px;line-height:1.25}
+p{margin:0;max-width:68ch;color:var(--ink-2)}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.num{font-variant-numeric:tabular-nums}
+.kpi-v{font-family:var(--display);font-weight:500;font-size:34px;line-height:1;letter-spacing:-.01em}
+.muted{color:var(--ink-3)}
+a{color:var(--accent)}
+/* topo */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:.5px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:20px}
+.brand span{color:var(--ink-3);font-family:var(--sans);font-size:13px;margin-left:8px}
+.seg{display:inline-flex;border:.5px solid var(--line-2);border-radius:8px;padding:3px;gap:2px;background:var(--surface)}
+.seg button{font:inherit;font-size:13px;border:0;background:transparent;color:var(--ink-2);padding:6px 12px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+nav.toc{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+nav.toc a{color:var(--ink-2);text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+section{padding-block:56px;border-bottom:.5px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.head{display:grid;gap:12px;margin-bottom:28px}
+.hero{padding-block:48px 40px}
+.hero .lede{font-size:18px;margin-top:14px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:860px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:.5px solid var(--line);border-radius:10px;padding:20px;min-width:0}
+.kpi{display:grid;gap:8px}
+.kpi .row{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--ink-2)}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--fill);color:var(--ink-2)}
+.chip.pos{background:rgba(47,107,79,.12);color:var(--pos)} .chip.neg{background:rgba(180,68,44,.12);color:var(--neg)}
+.up{color:var(--pos)} .down{color:var(--neg)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 10px;text-align:right;border-bottom:.5px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+td{font-variant-numeric:tabular-nums}
+tr.sub td{color:var(--ink-3);font-size:13px}
+.note{font-size:13px;color:var(--ink-3);margin-top:10px;max-width:none}
+svg text{fill:var(--ink-2);font-family:var(--sans);font-size:11px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-top:8px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+/* fórmula */
+.flow{display:grid;grid-template-columns:repeat(5,auto);align-items:center;gap:10px;justify-content:start}
+.flow .box{background:var(--surface);border:.5px solid var(--line-2);border-radius:8px;padding:12px 14px;min-width:0}
+.flow .box b{font-weight:500;display:block}
+.flow .box small{color:var(--ink-3);font-size:12px}
+.flow .op{font-family:var(--display);font-size:26px;color:var(--ink-3)}
+@media (max-width:760px){.flow{grid-template-columns:1fr}.flow .op{text-align:center}}
+.factors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:860px){.factors{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.factor{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:4px}
+.factor.a{border-color:var(--accent)} .factor.o{border-color:var(--ocre)}
+.factor b{font-weight:500}
+.factor small{color:var(--ink-3);font-size:13px;line-height:1.45}
+/* evidências */
+.ev td:nth-child(2),.ev td:nth-child(3){text-align:left;white-space:normal}
+.ev td{vertical-align:top}
+.ci{position:relative;height:10px;width:140px;background:var(--fill);border-radius:5px;display:inline-block;vertical-align:middle}
+.ci span{position:absolute;top:2px;height:6px;border-radius:3px;background:var(--ink-3)}
+.ci em{position:absolute;top:-2px;width:2px;height:14px;background:var(--accent)}
+.ci .zero{position:absolute;top:-3px;width:1px;height:16px;background:var(--line-2)}
+.strength{font-size:12px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.s-forte{background:rgba(47,107,79,.12);color:var(--pos)} .s-mod{background:var(--ocre-soft);color:var(--ink)} .s-zero{background:var(--fill);color:var(--ink-3)}
+/* calculadoras */
+.calc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px}
+@media (max-width:860px){.calc{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;color:var(--ink-2);display:flex;justify-content:space-between;gap:8px}
+.field label output{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--accent)}
+select{font:inherit;font-size:14px;padding:6px 8px;border-radius:6px;border:.5px solid var(--line-2);background:var(--surface);color:var(--ink)}
+.result{display:grid;gap:14px;align-content:start}
+.result .big{font-family:var(--display);font-weight:500;font-size:44px;line-height:1}
+.result .lbl{font-size:13px;color:var(--ink-3)}
+.pill-list{display:flex;flex-wrap:wrap;gap:6px}
+.pill-list span{font-size:12px;padding:3px 8px;border-radius:6px;border:.5px solid var(--line-2);font-variant-numeric:tabular-nums}
+details{border:.5px solid var(--line);border-radius:10px;background:var(--surface);padding:14px 18px}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-weight:500}
+details p,details ul{margin-top:10px;font-size:15px}
+details li{color:var(--ink-2);margin-bottom:6px}
+.takeaway{border-left:2px solid var(--accent);padding:4px 0 4px 16px;margin-top:20px}
+.takeaway p{color:var(--ink);font-size:16px}
+@media (prefers-reduced-motion:no-preference){.bar-anim{transition:width .25s ease,x .25s ease}}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand">viva <span>buildup de demanda 2027–28</span></div>
+    <nav class="toc" aria-label="Seções">
+      <a href="#resumo">resumo</a><a href="#revpar">revpar</a><a href="#evidencias">evidências</a><a href="#reviews">reviews</a><a href="#canais">canais</a><a href="#outras">outras variáveis</a><a href="#metodo">método</a>
+    </nav>
+    <div class="seg" role="group" aria-label="Cenário">
+      <button type="button" id="sc-base" aria-pressed="true">base case</button>
+      <button type="button" id="sc-bear" aria-pressed="false">bear case</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">BP PropCo · inputs de demanda · novembro de 2026</div>
+    <h1>como chegamos ao revpar de 2027 e 2028</h1>
+    <p class="lede">O RevPAR de cada prédio parte do mercado e soma o prêmio que conseguimos sobre ele. O prêmio depende de duas coisas que operamos todo dia: <b>a nota dos reviews</b> e <b>o mix de canais</b>. Este material mostra os números, de onde vem cada efeito e o que cada meta vale.</p>
+    <div class="legend" style="margin-top:18px">
+      <span><b>base case</b>: mercado como em 2026 (FLN −10,7% em 2027, −5% em 2028) + metas de reviews e de canais</span>
+      <span><b>bear case</b>: mesmo mercado, sem nenhum ganho de reviews ou canais</span>
+    </div>
+  </div>
+
+  <section id="resumo">
+    <div class="head">
+      <div class="eyebrow">1 · resumo</div>
+      <h2>as variáveis do modelo, ano contra ano</h2>
+      <p>Variação vs o ano anterior nos mesmos prédios (prédios com o ano inteiro de dados nos dois anos), ponderada por noites disponíveis. Use o seletor no topo para trocar de cenário.</p>
+    </div>
+    <div class="grid g4" id="kpis"></div>
+    <div class="card" style="margin-top:16px">
+      <div class="tbl"><table id="tbl-yoy"></table></div>
+      <p class="note">2025 e 2026 são realizados (2026 com nov–dez projetados). Mercado = RevPAR do comp set no Pricelabs (mediana fechada × ocupação). A ocupação fica estável por premissa (SP e BC 0%, FLN −3% em 2027); o crescimento vai para a diária.</p>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin-bottom:4px">RevPAR mês a mês: nosso × mercado</h3>
+      <p class="note" style="margin-top:0" id="mon-note"></p>
+      <div id="chart-mon"></div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>RevPAR nosso</span><span><i style="background:var(--mkt)"></i>RevPAR de mercado</span><span>linha tracejada = projeção</span></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card"><h3 style="margin-bottom:10px">mix de canais (% da receita de hospedagem)</h3><div id="chart-mix"></div>
+        <div class="legend" id="mix-legend"></div></div>
+      <div class="card"><h3 style="margin-bottom:10px">outras variáveis do BP</h3><div class="tbl"><table id="tbl-oth"></table></div>
+        <p class="note">LOS e taxa de limpeza sem Homelike e Cannes (mid-term). Comissão = OTAs fee ÷ GMV total.</p></div>
+    </div>
+  </section>
+
+  <section id="revpar">
+    <div class="head">
+      <div class="eyebrow">2 · construção</div>
+      <h2>o revpar em uma linha</h2>
+      <p>Cada prédio, cada mês, de nov/26 a dez/28:</p>
+    </div>
+    <div class="flow">
+      <div class="box"><b>RevPAR de mercado</b><small>mesmo mês do ano anterior × variação da cidade</small></div>
+      <div class="op">×</div>
+      <div class="box"><b>(1 + prêmio)</b><small>quanto vendemos acima do comp set</small></div>
+      <div class="op">=</div>
+      <div class="box" style="border-color:var(--accent)"><b>RevPAR nosso</b><small>e daí ADR = RevPAR ÷ ocupação</small></div>
+    </div>
+    <h3 style="margin:32px 0 14px">o prêmio é a soma de cinco efeitos</h3>
+    <div class="factors">
+      <div class="factor"><b>prêmio atual</b><small>média jul–out/26 do prédio, com a sazonalidade do próprio prédio (ou da cidade, nos novos)</small></div>
+      <div class="factor a"><b>nota Airbnb</b><small>× exp(1,08 × %Airbnb × Δnota 12m). Ex.: 45% Airbnb e +0,1★ = +5,0%</small></div>
+      <div class="factor a"><b>faixa Booking 8,0</b><small>+9,5% ao entrar (−9,5% ao sair) se Booking ≥ 35% da receita</small></div>
+      <div class="factor o"><b>Expedia</b><small>× (1 + 0,31 × Δshare). Só 31% é ganho; o resto sai do Airbnb</small></div>
+      <div class="factor o"><b>direto e outros canais</b><small>× (1 + ganho × Δshare). Ganho 0,41 em prédio cheio, 1,00 com folga</small></div>
+    </div>
+    <div class="grid g2" style="margin-top:32px;align-items:start">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <h3>de onde vem o crescimento</h3>
+          <div class="seg" role="group" aria-label="Ano"><button type="button" id="wf-27" aria-pressed="true">2027 vs 2026</button><button type="button" id="wf-28" aria-pressed="false">2028 vs 2027</button></div>
+        </div>
+        <div id="chart-wf" style="margin-top:12px"></div>
+        <p class="note">Contribuição em pontos percentuais do RevPAR do portfólio (mesmos prédios). Base e maturação = prédios abertos no fim de 2025 rodando o ano cheio, e o prêmio de jul–out/26 valendo o ano todo.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">revpar por cidade</h3>
+        <div class="tbl"><table id="tbl-city"></table></div>
+        <p class="note">Nível médio do ano (R$ por noite disponível) e variação nos mesmos prédios. BC é só o TSO 001.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="evidencias">
+    <div class="head">
+      <div class="eyebrow">3 · evidências</div>
+      <h2>o que os dados mostram</h2>
+      <p>Cada número vem de uma regressão em que <b>cada prédio é comparado com ele mesmo ao longo do tempo</b>, descontando o que afetou todos no mesmo mês. Assim localização, padrão e sazonalidade saem da conta. Base: 38 prédios, ~700 prédio × mês (2024 a out/26). O intervalo de 90% vem de sortear os prédios 300 a 400 vezes.</p>
+    </div>
+    <div class="card"><div class="tbl"><table class="ev" id="tbl-ev"></table></div>
+      <p class="note">Barra: intervalo de 90%; traço terracota: estimativa usada; linha vertical: zero. Efeitos estimados juntos (reviews e canais na mesma regressão), sem a Swap (reserva espelho de realocação, devolvida ao canal original).</p></div>
+    <div class="takeaway"><p>Nota Airbnb, Expedia e demais canais têm efeito claro. A nota contínua do Booking não mexe no prêmio: o que conta no Booking é cruzar a faixa de 8,0, nos prédios em que ele pesa.</p></div>
+  </section>
+
+  <section id="reviews">
+    <div class="head">
+      <div class="eyebrow">4 · meta executável</div>
+      <h2>reviews: 4,75 no Airbnb e 8,5 no Booking</h2>
+      <p>A meta vale para os reviews novos desde nov/26. Como a nota usada é a média dos últimos 12 meses, ela chega à meta em out/27.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-bottom:12px">o caminho da nota (portfólio)</h3>
+        <div class="tbl"><table id="tbl-rev"></table></div>
+        <p class="note">Ponderado pelo volume de reviews de cada prédio. Booking em escala 0–10; exibida = regra 85/10/5 do Booking.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:6px">quem precisa subir</h3>
+        <p class="note" style="margin-top:0">Para o portfólio fechar 4,75, os prédios abaixo de <b>4,71</b> no Airbnb sobem a 4,71 nos reviews novos; quem já está acima mantém. No Booking, quem tem 8,0 ou mais mantém; os abaixo de 8,0 vão a <b>8,36</b>.</p>
+        <div class="eyebrow" style="margin:12px 0 6px">Airbnb · nota 12m hoje</div><div class="pill-list" id="piso-air"></div>
+        <div class="eyebrow" style="margin:14px 0 6px">Booking · nota 12m hoje (abaixo de 8,0)</div><div class="pill-list" id="piso-bk"></div>
+      </div>
+    </div>
+    <div class="card calc" style="margin-top:16px">
+      <div>
+        <h3 style="margin-bottom:6px">quanto vale um décimo de estrela</h3>
+        <p class="note" style="margin-top:0;margin-bottom:16px">Escolha um prédio ou ajuste os valores. Efeito no RevPAR, mantido o mercado.</p>
+        <div class="field"><label for="rv-b">prédio</label><select id="rv-b"></select></div>
+        <div class="field"><label for="rv-air">peso do Airbnb na receita <output id="rv-air-o"></output></label><input type="range" id="rv-air" min="10" max="85" step="1" value="48"></div>
+        <div class="field"><label for="rv-d">variação da nota Airbnb 12m <output id="rv-d-o"></output></label><input type="range" id="rv-d" min="-0.2" max="0.3" step="0.01" value="0.1"></div>
+        <div class="field"><label for="rv-bk">peso do Booking na receita <output id="rv-bk-o"></output></label><input type="range" id="rv-bk" min="0" max="70" step="1" value="35"></div>
+        <div class="field"><label for="rv-band">nota Booking exibida cruza 8,0?</label>
+          <select id="rv-band"><option value="0">não muda de faixa</option><option value="1">sobe para 8,0 ou mais</option><option value="-1">cai abaixo de 8,0</option></select></div>
+      </div>
+      <div class="result">
+        <div><div class="lbl">efeito no RevPAR</div><div class="big num" id="rv-out">–</div></div>
+        <div class="lbl" id="rv-split"></div>
+        <div class="lbl" id="rv-money"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="canais">
+    <div class="head">
+      <div class="eyebrow">5 · meta executável</div>
+      <h2>canais: Expedia 15%, direto 5% → 7%, outros 5% → 7%</h2>
+      <p>Expedia cresce em linha reta até dez/27, proporcional ao que cada prédio já tem. Canal direto e outros canais crescem os mesmos pontos em todos os prédios (são vendidos por empresa e contrato). Homelike e Cannes, já acima de 40% fora de Airbnb e Booking, ficam como estão. Airbnb e Booking dividem o resto.</p>
+    </div>
+    <div class="grid g4" id="ch-cards"></div>
+    <div class="card calc" style="margin-top:16px">
+      <div>
+        <h3 style="margin-bottom:6px">o que cada ponto de canal faz</h3>
+        <p class="note" style="margin-top:0;margin-bottom:16px">Mudança de share num prédio (p.p. da receita de hospedagem). Airbnb e Booking perdem na proporção.</p>
+        <div class="field"><label for="ch-exp">Δ Expedia <output id="ch-exp-o"></output></label><input type="range" id="ch-exp" min="-5" max="10" step="0.5" value="4"></div>
+        <div class="field"><label for="ch-dir">Δ canal direto <output id="ch-dir-o"></output></label><input type="range" id="ch-dir" min="-3" max="8" step="0.5" value="2.5"></div>
+        <div class="field"><label for="ch-out">Δ outros canais <output id="ch-out-o"></output></label><input type="range" id="ch-out" min="-3" max="8" step="0.5" value="2"></div>
+        <div class="field"><label for="ch-full">ocupação do prédio</label>
+          <select id="ch-full"><option value="1">cheio (≥ 80%): ganho 0,41 nos demais</option><option value="0">com folga (&lt; 80%): ganho 1,00 nos demais</option></select></div>
+      </div>
+      <div class="result">
+        <div><div class="lbl">efeito no RevPAR</div><div class="big num" id="ch-out-v">–</div></div>
+        <div><div class="lbl">efeito na comissão de canais</div><div class="kpi-v num" id="ch-com">–</div></div>
+        <div class="lbl" id="ch-net"></div>
+      </div>
+    </div>
+    <div class="takeaway"><p>Expedia aumenta pouco o prêmio (é quase o mesmo hóspede do Airbnb), mas custa menos (16,4% vs 18%). Canal direto e outros canais custam 11–12% e, em prédio com noite vazia, são receita nova inteira.</p></div>
+  </section>
+
+  <section id="outras">
+    <div class="head">
+      <div class="eyebrow">6 · demais inputs</div>
+      <h2>as outras variáveis da planilha</h2>
+    </div>
+    <div class="card"><div class="tbl"><table id="tbl-prem"></table></div></div>
+  </section>
+
+  <section id="metodo">
+    <div class="head">
+      <div class="eyebrow">7 · método e cuidados</div>
+      <h2>como foi feito</h2>
+    </div>
+    <details><summary>fontes de dados</summary><ul>
+      <li>Report DB (Portfolio Management): ADR, ocupação, reservas, comissão e limpeza realizados até set/26. Ago/26 corrigido com a calendar do Metabase (unidades sem diárias ou reservas preenchidas).</li>
+      <li>Metabase (views.listing_daily_stats): receita por canal, RevPAR de mercado do Pricelabs, out/26. Reservas (vivadb_reservation): comissão efetiva por canal.</li>
+      <li>Reviews: Airbnb (nota geral 1–5) e Booking (×2, 0–10), por prédio e mês, média móvel de 12 meses.</li>
+      <li>Swap ("0.1. Swap") é reserva espelho de realocação: volta para o canal da reserva original (código na nota interna).</li>
+    </ul></details>
+    <details><summary>como os efeitos foram estimados</summary><ul>
+      <li>Regressão com efeito fixo de prédio e de mês, ponderada por noites. O prédio é comparado com ele mesmo: só o que muda no tempo entra.</li>
+      <li>Prêmio em pontos por canal: receita do canal ÷ noites disponíveis ÷ RevPAR de mercado. Ganho líquido = quanto o total sobe quando um canal sobe 1 ponto.</li>
+      <li>Reviews: termo %Airbnb × nota 12m até o mês anterior. Teste placebo (reviews dos 3 meses seguintes) sem efeito: é a nota que move o preço.</li>
+      <li>Intervalos por bootstrap de prédios (300–400 sorteios). Efeitos fora do que os prédios mostraram (±0,3★, saltos de share muito grandes) são extrapolação.</li>
+    </ul></details>
+    <details><summary>premissas que não são estimativas</summary><ul>
+      <li>Mercado: SP −1,1% e FLN −10,7% (repetem 2026); FLN −5% em 2028; BC +1% no base, 0% no bear.</li>
+      <li>Ocupação: SP e BC estáveis; FLN −3% em 2027. Teto de 95%.</li>
+      <li>Ponderação da nota Booking (85/10/5) é a regra do Booking desde jan/25.</li>
+      <li>Metas de reviews e canais são metas de negócio, não previsões.</li>
+    </ul></details>
+    <details><summary>limites</summary><ul>
+      <li>Base pequena (~38 prédios): os intervalos são largos. A nota Airbnb pode valer de 3% a 9% por décimo num prédio com metade da receita no Airbnb.</li>
+      <li>O ganho de 1,00 dos demais canais em prédio com folga é o número mais incerto (estimado 1,34, limitado a 1,00).</li>
+      <li>Out/26 ainda vem do Metabase; troca para a Report DB quando a emissão fechar.</li>
+      <li>Planilha completa: Inputs_Demanda_buildup.xlsx (aba Premissas comanda tudo; C3 troca o cenário).</li>
+    </ul></details>
+  </section>
+</main>
+
+<script>
+const D = {"mon":{"base":{"rev":[208.0,199.8,207.9,200.9,186.1,174.5,161.5,176.7,197.8,177.3,240.5,191.3,196.9,206.8,200.5,175.2,188.0,155.6,160.0,173.2,171.9,197.3,234.6,186.5,189.0,203.6,201.5,176.7,188.2,159.7,165.9,182.3,180.2,207.9,247.1,192.8,194.7,210.1,207.9,182.4,194.6,163.9,169.2,184.5,181.6,208.8,247.6,192.2],"mkt":[206.7,191.0,184.9,178.1,153.1,150.4,146.9,153.9,157.6,155.4,203.5,172.8,188.9,198.4,193.4,160.0,159.7,135.4,152.4,149.0,150.4,185.3,199.4,166.5,179.2,190.6,188.2,156.7,156.9,133.1,149.9,146.5,147.6,182.0,195.5,160.7,174.5,186.5,185.0,154.4,154.8,131.4,147.9,144.6,145.6,179.5,192.7,157.4],"adr":[252.2,243.6,245.9,234.1,225.3,225.0,212.2,218.5,228.9,218.0,280.7,240.0,238.7,247.4,245.3,222.6,224.1,204.3,209.7,220.6,215.8,253.3,275.1,235.1,230.3,244.8,247.6,225.5,226.4,210.3,218.3,233.1,227.1,267.8,291.0,244.2,237.3,252.5,255.4,232.8,234.1,215.9,222.6,235.9,228.9,269.0,291.6,243.5],"occ":[0.8246,0.8204,0.8453,0.858,0.8261,0.7753,0.7611,0.8086,0.8642,0.8133,0.8568,0.7971,0.8249,0.8358,0.8175,0.787,0.8387,0.7619,0.7627,0.785,0.7965,0.7788,0.8529,0.7931,0.8207,0.832,0.8138,0.7836,0.8312,0.7592,0.76,0.7821,0.7935,0.7763,0.8491,0.7892,0.8207,0.832,0.8138,0.7836,0.8312,0.7592,0.76,0.7821,0.7935,0.7763,0.8491,0.7892],"nb":19},"bear":{"rev":[208.0,199.8,207.9,200.9,186.1,174.5,161.5,176.7,197.8,177.3,240.5,191.3,196.9,206.8,200.5,175.2,188.0,155.6,160.0,173.2,171.9,197.3,233.4,184.6,186.2,199.6,196.5,171.6,181.8,153.0,157.6,171.0,168.4,193.5,228.6,178.4,180.8,194.3,191.5,167.7,178.4,150.2,155.1,168.4,165.7,190.9,225.2,175.1],"mkt":[206.7,191.0,184.9,178.1,153.1,150.4,146.9,153.9,157.6,155.4,203.5,172.8,188.9,198.4,193.4,160.0,159.7,135.4,152.4,149.0,150.4,185.3,199.4,166.5,179.2,190.6,188.2,156.7,156.9,133.1,149.9,146.5,147.6,182.0,195.5,160.7,174.5,186.5,185.0,154.4,154.8,131.4,147.9,144.6,145.6,179.5,192.7,157.4],"adr":[252.2,243.6,245.9,234.1,225.3,225.0,212.2,218.5,228.9,218.0,280.7,240.0,238.7,247.4,245.3,222.6,224.1,204.3,209.7,220.6,215.8,253.3,273.6,232.7,226.9,239.9,241.4,218.9,218.8,201.5,207.4,218.7,212.3,249.2,269.2,226.1,220.3,233.5,235.3,214.0,214.6,197.8,204.1,215.4,208.8,245.9,265.2,221.9],"occ":[0.8246,0.8204,0.8453,0.858,0.8261,0.7753,0.7611,0.8086,0.8642,0.8133,0.8568,0.7971,0.8249,0.8358,0.8175,0.787,0.8387,0.7619,0.7627,0.785,0.7965,0.7788,0.8529,0.7931,0.8207,0.832,0.8138,0.7836,0.8312,0.7592,0.76,0.7821,0.7935,0.7763,0.8491,0.7892,0.8207,0.832,0.8138,0.7836,0.8312,0.7592,0.76,0.7821,0.7935,0.7763,0.8491,0.7892],"nb":19}},"wf":{"base|2027":[["mercado",-0.0246],["base e matura\u00e7\u00e3o",0.0218],["reviews",0.0213],["canais",0.0253]],"base|2028":[["mercado",-0.0169],["base e matura\u00e7\u00e3o",-0.0044],["reviews",0.0114],["canais",0.0316]],"bear|2027":[["mercado",-0.025],["base e matura\u00e7\u00e3o",0.0215]],"bear|2028":[["mercado",-0.0174],["base e matura\u00e7\u00e3o",-0.0046]]},"wft":{"base|2027":0.0439,"base|2028":0.0217,"bear|2027":-0.0035,"bear|2028":-0.022},"yoy":{"base|TOT":{"2025":{"revpar":0.0288,"occ":0.0385,"adr":-0.0094,"mkt":null,"n":14},"2026":{"revpar":-0.0264,"occ":-0.0177,"adr":-0.0089,"mkt":-0.0076,"n":21},"2027":{"revpar":0.0439,"occ":0.0074,"adr":0.0362,"mkt":-0.0246,"n":36},"2028":{"revpar":0.0217,"occ":0.0,"adr":0.0217,"mkt":-0.0169,"n":40}},"base|SP":{"2025":{"revpar":0.0105,"occ":0.0517,"adr":-0.0392,"mkt":null,"n":11},"2026":{"revpar":-0.0048,"occ":-0.0073,"adr":0.0025,"mkt":0.0128,"n":18},"2027":{"revpar":0.0668,"occ":0.0141,"adr":0.0519,"mkt":-0.011,"n":27},"2028":{"revpar":0.027,"occ":0.0,"adr":0.027,"mkt":-0.011,"n":30}},"base|FLN":{"2025":{"revpar":0.0983,"occ":-0.0121,"adr":0.1117,"mkt":null,"n":3},"2026":{"revpar":-0.1509,"occ":-0.0857,"adr":-0.0713,"mkt":-0.1088,"n":3},"2027":{"revpar":-0.0728,"occ":-0.03,"adr":-0.0442,"mkt":-0.107,"n":8},"2028":{"revpar":-0.0143,"occ":0.0,"adr":-0.0143,"mkt":-0.05,"n":9}},"base|BC":{"2025":null,"2026":null,"2027":{"revpar":0.0372,"occ":-0.0,"adr":0.0372,"mkt":0.01,"n":1},"2028":{"revpar":0.0495,"occ":0.0,"adr":0.0495,"mkt":0.01,"n":1}},"bear|TOT":{"2025":{"revpar":0.0288,"occ":0.0385,"adr":-0.0094,"mkt":null,"n":14},"2026":{"revpar":-0.0277,"occ":-0.0177,"adr":-0.0102,"mkt":-0.0076,"n":21},"2027":{"revpar":-0.0035,"occ":0.0074,"adr":-0.0108,"mkt":-0.025,"n":36},"2028":{"revpar":-0.022,"occ":0.0,"adr":-0.022,"mkt":-0.0174,"n":40}},"bear|SP":{"2025":{"revpar":0.0105,"occ":0.0517,"adr":-0.0392,"mkt":null,"n":11},"2026":{"revpar":-0.0061,"occ":-0.0073,"adr":0.0012,"mkt":0.0128,"n":18},"2027":{"revpar":0.0153,"occ":0.0141,"adr":0.0012,"mkt":-0.011,"n":27},"2028":{"revpar":-0.0168,"occ":0.0,"adr":-0.0168,"mkt":-0.011,"n":30}},"bear|FLN":{"2025":{"revpar":0.0983,"occ":-0.0121,"adr":0.1117,"mkt":null,"n":3},"2026":{"revpar":-0.1521,"occ":-0.0857,"adr":-0.0727,"mkt":-0.1088,"n":3},"2027":{"revpar":-0.1032,"occ":-0.03,"adr":-0.0755,"mkt":-0.107,"n":8},"2028":{"revpar":-0.0529,"occ":0.0,"adr":-0.0529,"mkt":-0.05,"n":9}},"bear|BC":{"2025":null,"2026":null,"2027":{"revpar":-0.0012,"occ":-0.0,"adr":-0.0012,"mkt":0.0,"n":1},"2028":{"revpar":-0.0031,"occ":0.0,"adr":-0.0031,"mkt":0.0,"n":1}}},"lvl":{"base":{"2025":{"revpar":200.10768204074895,"occ":0.805142955958057,"adr":248.53683505513192},"2026":{"revpar":196.52902864110445,"occ":0.7870622162058873,"adr":249.69948321047912},"2027":{"revpar":205.92959454256513,"occ":0.7942552172238517,"adr":259.27383299079577},"2028":{"revpar":210.3905007539886,"occ":0.7942552172238517,"adr":264.89029746554684}},"bear":{"2025":{"revpar":200.10768204074895,"occ":0.805142955958057,"adr":248.53683505513192},"2026":{"revpar":196.21796134151464,"occ":0.7870622162058873,"adr":249.3042574034402},"2027":{"revpar":195.76365569504583,"occ":0.7942552172238517,"adr":246.47449768009784},"2028":{"revpar":191.45735978457935,"occ":0.7942552172238517,"adr":241.05269393605923}}},"lvlc":{"base":{"SP":{"2026":{"revpar":193.1751220351444,"occ":0.8078349001643914,"adr":239.12698250079808},"2027":{"revpar":207.41008730568288,"occ":0.8175238805010069,"adr":253.7052338808437},"2028":{"revpar":213.01593099179127,"occ":0.8175238805010069,"adr":260.56233471889254}},"FLN":{"2026":{"revpar":187.27577793856233,"occ":0.7216909769339348,"adr":259.4958007292725},"2027":{"revpar":177.99635752390273,"occ":0.7217835725965671,"adr":246.60627407128842},"2028":{"revpar":175.44891935935456,"occ":0.7217835725965671,"adr":243.07690839816294}},"BC":{"2026":{"revpar":287.1300092959841,"occ":0.7117924166666668,"adr":403.39009319685886},"2027":{"revpar":297.81534158929145,"occ":0.7117916666666668,"adr":418.40239993812526},"2028":{"revpar":312.5554624664825,"occ":0.7117916666666668,"adr":439.1108762626926}}},"bear":{"SP":{"2026":{"revpar":192.89244881951126,"occ":0.8078349001643914,"adr":238.7770679135778},"2027":{"revpar":196.285953899832,"occ":0.8175238805010069,"adr":240.09812872932983},"2028":{"revpar":192.9815713732907,"occ":0.8175238805010069,"adr":236.0561886645133}},"FLN":{"2026":{"revpar":187.00092323185186,"occ":0.7216909769339348,"adr":259.1149525331676},"2027":{"revpar":172.05824650156313,"occ":0.7217835725965671,"adr":238.37927743713442},"2028":{"revpar":162.95563260785102,"occ":0.7217835725965671,"adr":225.7679986005074}},"BC":{"2026":{"revpar":286.2187507229556,"occ":0.7117924166666668,"adr":402.109862399661},"2027":{"revpar":285.86637631190445,"occ":0.7117916666666668,"adr":401.61523335981417},"2028":{"revpar":284.9887253770271,"occ":0.7117916666666668,"adr":400.38221676805296}}}},"mix":{"base":{"out26":{"air":0.49513249524442743,"bk":0.3240011651315503,"exp":0.1343768239230917,"dir":0.026368339481213365,"out":0.02012116944347342},"mai27":{"air":0.45826622503406705,"bk":0.3334052090398006,"exp":0.1301141398739398,"dir":0.03818416974060669,"out":0.04003025631158598},"dez27":{"air":0.4348924569775951,"bk":0.31510754302240507,"exp":0.15000000000000002,"dir":0.050000000000000044,"out":0.04999999999999999},"dez28":{"air":0.4120618726070504,"bk":0.2979381273929499,"exp":0.15000000000000002,"dir":0.07000000000000003,"out":0.06999999999999992}},"bear":{"out26":{"air":0.49513249524442743,"bk":0.3240011651315503,"exp":0.1343768239230917,"dir":0.026368339481213365,"out":0.02012116944347342},"mai27":{"air":0.4816399930905391,"bk":0.351702875057196,"exp":0.11022827974787959,"dir":0.026368339481213365,"out":0.0300605126231719},"dez27":{"air":0.4816399930905391,"bk":0.351702875057196,"exp":0.11022827974787959,"dir":0.026368339481213365,"out":0.0300605126231719},"dez28":{"air":0.4816399930905391,"bk":0.351702875057196,"exp":0.11022827974787959,"dir":0.026368339481213365,"out":0.0300605126231719}}},"mixb":{"air":0.4816357922433837,"bk":0.351699744293246,"exp":0.11022827974787959,"dir":0.026368339481213365,"out":0.030060512623171866},"mixh":{"2024":{"air":0.5458367250076279,"bk":0.3132661600418242,"oth":0.14089711495054785,"exp":0.05401150165673104},"2025":{"air":0.5037747647688089,"bk":0.35868003319513997,"oth":0.13754520203605114,"exp":0.050743423260286}},"rev":{"base":{"dez24":{"air":4.727319965468307,"bk":8.127679174924925,"bks":8.315635904584882},"dez25":{"air":4.730972802558439,"bk":8.364698518616382,"bks":8.368686869818506},"out26":{"air":4.710293277758147,"bk":8.329365104039704,"bks":8.33925807962835},"jun27":{"air":4.747349103161213,"bk":8.475869771290636,"bks":8.462844628955288},"dez27":{"air":4.750162912082171,"bk":8.499867525183452,"bks":8.47856382624297},"dez28":{"air":4.750162912082171,"bk":8.499867525183452,"bks":8.492922018040451}},"bear":{"dez24":{"air":4.727319965468307,"bk":8.127679174924925,"bks":8.315635904584882},"dez25":{"air":4.730972802558439,"bk":8.364698518616382,"bks":8.368686869818506},"out26":{"air":4.710293277758147,"bk":8.329365104039704,"bks":8.33925807962835},"jun27":{"air":4.720312846975848,"bk":8.358518807147629,"bks":8.362094874515094},"dez27":{"air":4.710293277758147,"bk":8.329365104039704,"bks":8.329811643450926},"dez28":{"air":4.710293277758147,"bk":8.329365104039704,"bks":8.329502531258733}}},"oth":{"base":{"2025":{"com":0.15136413093608983,"los":3.35308575962149,"tl":158.35948050962685,"prem":0.23971161765348295},"2026":{"com":0.16881205765419416,"los":3.5647446846555586,"tl":146.15931696980616,"prem":0.2792117914043613},"2027":{"com":0.17252591693216654,"los":3.6207766243804946,"tl":150.65367893794647,"prem":0.3732997966620338},"2028":{"com":0.16967681772436252,"los":3.7094856516778165,"tl":157.43309449015402,"prem":0.4254483026309055}},"bear":{"2025":{"com":0.15136413093608983,"los":3.35308575962149,"tl":158.35948050962685,"prem":0.23971161765348295},"2026":{"com":0.16887526096460814,"los":3.543334884250205,"tl":146.15931696980616,"prem":0.2776566964174899},"2027":{"com":0.17467482948624166,"los":3.512779193621483,"tl":150.65367893794647,"prem":0.3088815436778922},"2028":{"com":0.17467482948624166,"los":3.512779193621483,"tl":157.43309449015402,"prem":0.3020319512614774}}},"prem":{"C12":4.75,"C13":4.707,"C14":4.75016291208217,"C15":8.5,"C16":8.362,"C17":8.49986752518345,"C21":1.08,"C48":0.41,"C49":1,"C50":0.31,"C55":0.095,"C56":0.35,"C47":0.8,"C66":0.15,"C106":0.05,"C107":0.05,"D106":0.07,"D107":0.07,"C110":0.0246603640222376,"C111":0.0208074678771934,"D110":0.0455309786814429,"D111":0.0416780825363987,"C72":1.37043955974929,"C100":0.0245,"C101":0.045,"E93":0.181,"E94":0.178,"E95":0.164,"E96":0.107,"E97":0.118},"piso":{"air":[["DGE 197",4.39],["NXD 382",4.4],["TOF 1485",4.52],["NXF 444",4.55],["ONZ 247",4.56],["AGM 85",4.58],["AQL 1420",4.58],["HLK 407",4.59],["AYH 634",4.61],["NXH 720",4.62],["NXP 950",4.62],["PVN 39",4.62],["CAN 203",4.63],["AYR 423",4.63],["PVF 1304",4.63],["UPR 1577",4.65],["NXV 601",4.66],["PQJ 155",4.68],["NXB 1333",4.69],["PVP 936",4.69],["OMG 45",4.7],["SCN 59",4.71]],"bk":[["UPR 1577",6.75],["NUN 61",7.17],["NXV 601",7.23],["NXD 382",7.42],["NXH 720",7.51],["NXF 444",7.52],["DGE 197",7.53],["HLK 407",7.62],["AYH 634",7.78],["AYR 423",7.82],["PVJ 44",7.95],["AQL 1420",7.96],["TOF 1485",7.96]]}};
+const $ = id => document.getElementById(id);
+const pct = (x, d=1, sign=true) => x==null||isNaN(x) ? '–' : ((sign && x>0.00049)?'+':(x< -0.00049?'−':'')) + Math.abs(x*100).toFixed(d).replace('.',',') + '%';
+const pp = (x, d=1) => x==null ? '–' : ((x>0.00049)?'+':(x< -0.00049?'−':'')) + Math.abs(x*100).toFixed(d).replace('.',',') + ' p.p.';
+const brl = (x, d=0) => 'R$ ' + x.toFixed(d).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const dec = (x, d=2) => x.toFixed(d).replace('.',',');
+const cls = x => x>0.0005?'up':(x< -0.0005?'down':'');
+let SC = 'base', WY = '2027';
+try { const s = localStorage.getItem('bd-sc'); if (s==='base'||s==='bear') SC = s; } catch(e) {}
+const MES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function kpis(){
+  const L = D.lvl[SC], Y = D.yoy[SC+'|TOT'], O = D.oth[SC];
+  const items = [
+    ['RevPAR', brl(L['2027'].revpar), brl(L['2028'].revpar), Y['2027'].revpar, Y['2028'].revpar, brl(L['2026'].revpar)],
+    ['ADR acomodação', brl(L['2027'].adr), brl(L['2028'].adr), Y['2027'].adr, Y['2028'].adr, brl(L['2026'].adr)],
+    ['ocupação', pct(L['2027'].occ,1,false), pct(L['2028'].occ,1,false), Y['2027'].occ, Y['2028'].occ, pct(L['2026'].occ,1,false)],
+    ['prêmio vs mercado', pct(O['2027'].prem,0), pct(O['2028'].prem,0), O['2027'].prem-O['2026'].prem, O['2028'].prem-O['2027'].prem, pct(O['2026'].prem,0)],
+  ];
+  $('kpis').innerHTML = items.map(([n,v27,v28,g27,g28,v26],i)=>`<div class="card kpi">
+    <div class="eyebrow">${n}</div>
+    <div class="kpi-v num">${v27}</div>
+    <div class="row"><span>2027 vs 2026</span><span class="num ${cls(g27)}">${i==3?pp(g27,0):pct(g27)}</span></div>
+    <div class="row"><span>2028 · ${v28}</span><span class="num ${cls(g28)}">${i==3?pp(g28,0):pct(g28)}</span></div>
+    <div class="row muted"><span>2026</span><span class="num">${v26}</span></div></div>`).join('');
+}
+function tblYoy(){
+  const rows = [['portfólio','TOT'],['São Paulo','SP'],['Florianópolis','FLN'],['Balneário Camboriú','BC']];
+  let h = '<thead><tr><th></th><th>2025</th><th>2026</th><th>2027</th><th>2028</th></tr></thead><tbody>';
+  for (const [nm,c] of rows){
+    const Y = D.yoy[SC+'|'+c];
+    const cell = (y,k) => Y[y] ? `<span class="${cls(Y[y][k])}">${pct(Y[y][k])}</span>` : '<span class="muted">–</span>';
+    h += `<tr><td><b style="font-weight:500">${nm}</b> · RevPAR</td>${['2025','2026','2027','2028'].map(y=>`<td>${cell(y,'revpar')}</td>`).join('')}</tr>`;
+    h += `<tr class="sub"><td>ADR · ocupação · mercado</td>${['2025','2026','2027','2028'].map(y=>`<td>${Y[y]?pct(Y[y].adr)+' · '+pct(Y[y].occ)+' · '+(Y[y].mkt==null||y==='2025'?'–':pct(Y[y].mkt)):'–'}</td>`).join('')}</tr>`;
+  }
+  $('tbl-yoy').innerHTML = h + '</tbody>';
+}
+function chartMon(){
+  const M = D.mon[SC], n = M.rev.length, W = 960, H = 280, l = 44, r = 12, t = 12, b = 28;
+  const all = M.rev.concat(M.mkt), lo = Math.floor(Math.min(...all)/25)*25, hi = Math.ceil(Math.max(...all)/25)*25;
+  const x = i => l + i*(W-l-r)/(n-1), y = v => t + (hi-v)*(H-t-b)/(hi-lo);
+  const split = 21; // out/26 = índice 21 (jan/25 = 0)
+  const path = (a,i0,i1) => a.slice(i0,i1+1).map((v,j)=>(j?'L':'M')+x(i0+j).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+  let g = '';
+  for (let v=lo; v<=hi; v+=25){ g += `<line x1="${l}" x2="${W-r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${l-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`; }
+  for (let i=0;i<n;i+=6){ const yy = 2025+Math.floor(i/12); g += `<text x="${x(i)}" y="${H-8}" text-anchor="middle">${MES[i%12]}/${String(yy).slice(2)}</text>`; }
+  g += `<rect x="${x(split)}" y="${t}" width="${W-r-x(split)}" height="${H-t-b}" fill="var(--fill)"/>`;
+  g += `<path d="${path(M.mkt,0,split)}" fill="none" stroke="var(--mkt)" stroke-width="2"/><path d="${path(M.mkt,split,n-1)}" fill="none" stroke="var(--mkt)" stroke-width="2" stroke-dasharray="5 4"/>`;
+  g += `<path d="${path(M.rev,0,split)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="${path(M.rev,split,n-1)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+  g += `<circle cx="${x(n-1)}" cy="${y(M.rev[n-1])}" r="4" fill="var(--accent)"/><text x="${x(n-1)-6}" y="${y(M.rev[n-1])-9}" text-anchor="end">R$ ${Math.round(M.rev[n-1])}</text>`;
+  $('chart-mon').innerHTML = `<div class="tbl"><svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:560px" role="img" aria-label="RevPAR mensal nosso e de mercado, 2025 a 2028">${g}</svg></div>`;
+  $('mon-note').textContent = `R$ por noite disponível, ${M.nb} prédios com dados de jan/25 a dez/28 (same store). Área sombreada = projeção.`;
+}
+const CH = [['air','Airbnb','var(--ink)'],['bk','Booking','var(--ink-3)'],['exp','Expedia','var(--ocre)'],['dir','canal direto','var(--accent)'],['out','outros canais','var(--pos)']];
+function chartMix(){
+  const rows = [['2025', {air:D.mixh['2025'].air,bk:D.mixh['2025'].bk,exp:D.mixh['2025'].exp,dir:null,out:null,oth:D.mixh['2025'].oth-D.mixh['2025'].exp}],
+                ['jul–out/26', D.mixb], ['dez/27', D.mix[SC].dez27], ['dez/28', D.mix[SC].dez28]];
+  const W = 460, rowH = 34, l = 74, H = rows.length*rowH + 4;
+  let g = '';
+  rows.forEach(([nm,m],i)=>{
+    let x0 = l; const y0 = i*rowH + 4, w = W - l - 4;
+    const segs = m.dir==null ? [['air',m.air],['bk',m.bk],['exp',m.exp],['oth',m.oth]] : CH.map(c=>[c[0],m[c[0]]]);
+    g += `<text x="0" y="${y0+17}">${nm}</text>`;
+    segs.forEach(([k,v])=>{ const col = k==='oth' ? 'var(--line-2)' : CH.find(c=>c[0]===k)[2]; const ww = v*w;
+      g += `<rect x="${x0}" y="${y0}" width="${Math.max(0,ww-1)}" height="22" fill="${col}" rx="2"/>`;
+      if (ww>30) g += `<text x="${x0+ww/2}" y="${y0+15}" text-anchor="middle" style="fill:${k==='air'||k==='dir'?'var(--bg)':'var(--ink)'};font-size:10.5px">${Math.round(v*100)}%</text>`;
+      x0 += ww; });
+  });
+  $('chart-mix').innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Mix de canais">${g}</svg>`;
+  $('mix-legend').innerHTML = CH.map(c=>`<span><i style="background:${c[2]};height:10px;width:10px"></i>${c[1]}</span>`).join('') + '<span><i style="background:var(--line-2);height:10px;width:10px"></i>demais (2025, sem divisão)</span>';
+}
+function tblOth(){
+  const O = D.oth[SC], P = D.prem;
+  const rows = [['comissão de canais','com',x=>pct(x,1,false)],['LOS (noites/reserva)','los',x=>dec(x)],['taxa de limpeza/reserva','tl',x=>brl(x)]];
+  let h = '<thead><tr><th></th><th>2025</th><th>2026</th><th>2027</th><th>2028</th></tr></thead><tbody>';
+  rows.forEach(([n,k,f])=>{ h += `<tr><td>${n}</td>${['2025','2026','2027','2028'].map(y=>`<td>${f(O[y][k])}</td>`).join('')}</tr>`; });
+  $('tbl-oth').innerHTML = h + '</tbody>';
+}
+function chartWf(){
+  const S = D.wf[SC+'|'+WY], tot = D.wft[SC+'|'+WY];
+  const items = S.concat([['total', tot]]);
+  const W = 460, H = 230, l = 8, r = 8, t = 18, b = 40, n = items.length, bw = (W-l-r)/n;
+  let cum = 0, vals = [0];
+  S.forEach(([_,v])=>{ cum += v; vals.push(cum); }); vals.push(tot);
+  const lo = Math.min(0,...vals) - 0.005, hi = Math.max(0,...vals) + 0.008;
+  const y = v => t + (hi-v)*(H-t-b)/(hi-lo);
+  let g = `<line x1="${l}" x2="${W-r}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line-2)"/>`; cum = 0;
+  items.forEach(([nm,v],i)=>{
+    const isT = nm==='total'; const a = isT?0:cum, bb = isT?v:cum+v;
+    const col = isT ? 'var(--ink)' : (v>=0 ? 'var(--pos)' : 'var(--neg)');
+    const x = l + i*bw + bw*0.18, w = bw*0.64;
+    g += `<rect x="${x}" y="${Math.min(y(a),y(bb))}" width="${w}" height="${Math.max(1.5,Math.abs(y(a)-y(bb)))}" fill="${col}" rx="2"/>`;
+    g += `<text x="${x+w/2}" y="${Math.min(y(a),y(bb))-5}" text-anchor="middle" style="fill:var(--ink);font-weight:500">${pct(v)}</text>`;
+    const words = nm.split(' '); g += `<text x="${x+w/2}" y="${H-24}" text-anchor="middle">${words.slice(0,2).join(' ')}</text>` + (words.length>2?`<text x="${x+w/2}" y="${H-11}" text-anchor="middle">${words.slice(2).join(' ')}</text>`:'');
+    if (!isT) cum += v;
+  });
+  $('chart-wf').innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Decomposição do crescimento do RevPAR">${g}</svg>`;
+}
+function tblCity(){
+  const Lc = D.lvlc[SC];
+  let h = '<thead><tr><th></th><th>2026</th><th>2027</th><th>2028</th></tr></thead><tbody>';
+  [['São Paulo','SP'],['Florianópolis','FLN'],['Balneário Camboriú','BC']].forEach(([n,c])=>{
+    const Y = D.yoy[SC+'|'+c];
+    h += `<tr><td>${n}</td><td>${brl(Lc[c]['2026'].revpar)}</td><td>${brl(Lc[c]['2027'].revpar)} <span class="${cls(Y['2027'].revpar)}" style="font-size:12px">${pct(Y['2027'].revpar)}</span></td><td>${brl(Lc[c]['2028'].revpar)} <span class="${cls(Y['2028'].revpar)}" style="font-size:12px">${pct(Y['2028'].revpar)}</span></td></tr>`;
+    h += `<tr class="sub"><td>ADR</td><td>${brl(Lc[c]['2026'].adr)}</td><td>${brl(Lc[c]['2027'].adr)}</td><td>${brl(Lc[c]['2028'].adr)}</td></tr>`;
+  });
+  $('tbl-city').innerHTML = h + '</tbody>';
+}
+const EV = [
+  ['nota Airbnb (12m)','por estrela × %Airbnb','prédio com 45% de Airbnb e +0,1★: +5,0% de RevPAR',1.08,0.58,1.61,0,2,'forte'],
+  ['nota Booking (contínua)','por ponto × %Booking','não mexe no prêmio: usamos zero',-0.04,-0.09,0.03,-0.5,0.5,'zero'],
+  ['faixa Booking ≥ 8,0','Booking ≥ 35% da receita','+9,5% de prêmio ao entrar na faixa (e o inverso ao sair)',0.095,0.040,0.146,-0.05,0.2,'mod'],
+  ['Expedia','ganho líquido por ponto','de cada ponto via Expedia, ~0,69 sai do Airbnb e Booking',0.31,0.17,0.51,0,1.5,'forte'],
+  ['direto e outros · prédio cheio','ganho líquido por ponto','ocupa noites que o Airbnb venderia',0.41,0.33,0.76,0,1.5,'forte'],
+  ['direto e outros · com folga','ganho líquido por ponto','preenche noite vazia; estimado 1,34, usamos 1,00',1.0,0.41,1.85,0,2,'mod'],
+  ['nota Expedia','por estrela','~1.100 reviews; sem efeito, usamos zero',0.03,-0.03,0.09,-0.5,0.5,'zero'],
+];
+function tblEv(){
+  const lab = {forte:['s-forte','forte'],mod:['s-mod','moderada'],zero:['s-zero','sem efeito']};
+  let h = '<thead><tr><th>fator</th><th>medida</th><th>leitura</th><th>estimativa (90%)</th><th>evidência</th></tr></thead><tbody>';
+  EV.forEach(([f,m,lt,e,lo,hi,a,b,s])=>{
+    const p = v => ((v-a)/(b-a)*100).toFixed(1)+'%';
+    const fmt = v => v<1 && f.includes('faixa') ? pct(v) : dec(v);
+    h += `<tr><td><b style="font-weight:500">${f}</b></td><td>${m}</td><td>${lt}</td><td><span class="ci" aria-hidden="true"><span style="left:${p(lo)};width:calc(${p(hi)} - ${p(lo)})"></span>${a<0?`<i class="zero" style="left:${p(0)}"></i>`:''}<em style="left:${p(e)}"></em></span> <span class="num">${fmt(e)} <span class="muted">(${fmt(lo)} a ${fmt(hi)})</span></span></td><td><span class="strength ${lab[s][0]}">${lab[s][1]}</span></td></tr>`;
+  });
+  $('tbl-ev').innerHTML = h + '</tbody>';
+}
+function tblRev(){
+  const R = D.rev[SC];
+  const cols = [['dez/25','dez25'],['out/26','out26'],['jun/27','jun27'],['dez/27','dez27'],['dez/28','dez28']];
+  let h = '<thead><tr><th></th>'+cols.map(c=>`<th>${c[0]}</th>`).join('')+'</tr></thead><tbody>';
+  h += `<tr><td>Airbnb 12m</td>${cols.map(c=>`<td>${dec(R[c[1]].air)}</td>`).join('')}</tr>`;
+  h += `<tr><td>Booking 12m</td>${cols.map(c=>`<td>${dec(R[c[1]].bk)}</td>`).join('')}</tr>`;
+  h += `<tr class="sub"><td>Booking exibida</td>${cols.map(c=>`<td>${dec(R[c[1]].bks)}</td>`).join('')}</tr>`;
+  $('tbl-rev').innerHTML = h + '</tbody>';
+  $('piso-air').innerHTML = D.piso.air.map(([b,v])=>`<span>${b} · ${dec(v)}</span>`).join('');
+  $('piso-bk').innerHTML = D.piso.bk.map(([b,v])=>`<span>${b} · ${dec(v,1)}</span>`).join('');
+}
+// calculadora de reviews
+const BLD = [["AGM 85", 0.782, 0.17, 4.707, 4.58, 79.4, 9], ["AGR 965", 0.56, 0.151, 4.8, 4.8, 147.4, 50], ["AQL 1420", 0.91, 0.026, 4.707, 4.58, 87.6, 7], ["ARB 301", 0.728, 0.223, 4.78, 4.78, 151.8, 33], ["AYH 634", 0.243, 0.561, 4.707, 4.607, 237.3, 18], ["AYM 181", 0.309, 0.38, 4.742, 4.742, 187.4, 50], ["AYR 423", 0.234, 0.578, 4.707, 4.626, 292.8, 36], ["CAN 203", 0.412, 0.122, 4.707, 4.63, 79.9, 66], ["CNZ 366", 0.389, 0.495, 4.871, 4.871, 133.4, 20], ["DGE 197", 0.586, 0.328, 4.707, 4.39, 107.0, 14], ["FST 3950", 0.361, 0.485, 4.851, 4.851, 163.4, 20], ["FYP 441", 0.668, 0.18, 4.744, 4.744, 183.4, 49], ["HBV 189", 0.482, 0.417, 4.727, 4.727, 167.2, 15], ["HEG 1200", 0.365, 0.382, 4.938, 4.938, 388.4, 3], ["HLK 407", 0.234, 0.161, 4.707, 4.586, 260.0, 18], ["KAS 99", 0.485, 0.396, 4.734, 4.734, 169.6, 58], ["NUN 61", 0.787, 0.088, 4.745, 4.745, 267.7, 31], ["NXB 1333", 0.301, 0.551, 4.707, 4.693, 185.0, 37], ["NXD 382", 0.539, 0.394, 4.707, 4.401, 157.6, 19], ["NXF 444", 0.294, 0.511, 4.707, 4.554, 165.0, 22], ["NXH 720", 0.443, 0.432, 4.707, 4.624, 198.2, 22], ["NXP 950", 0.395, 0.416, 4.707, 4.616, 189.2, 44], ["NXV 601", 0.281, 0.506, 4.707, 4.659, 192.7, 10], ["OMG 45", 0.396, 0.441, 4.707, 4.704, 149.4, 19], ["ONZ 247", 0.475, 0.332, 4.707, 4.556, 137.6, 48], ["PQJ 155", 0.554, 0.34, 4.707, 4.677, 228.7, 38], ["PVF 1304", 0.378, 0.477, 4.707, 4.631, 346.7, 31], ["PVJ 44", 0.434, 0.439, 4.728, 4.728, 183.4, 50], ["PVN 39", 0.392, 0.409, 4.707, 4.624, 190.1, 51], ["PVP 936", 0.514, 0.372, 4.707, 4.694, 270.5, 68], ["SCN 59", 0.843, 0.148, 4.707, 4.705, 217.8, 12], ["SPZ 648", 0.75, 0.184, 4.736, 4.736, 163.9, 72], ["TBG 1320", 0.609, 0.299, 4.904, 4.904, 169.5, 70], ["TOF 1485", 0.588, 0.31, 4.707, 4.519, 282.9, 28], ["TPV 869", 0.311, 0.561, 4.794, 4.794, 191.8, 19], ["TSO 001", 0.535, 0.292, 4.809, 4.809, 214.5, 57], ["UPR 1577", 0.504, 0.257, 4.707, 4.653, 224.6, 8], ["URB 172", 0.316, 0.443, 4.713, 4.713, 123.3, 52], ["ZEE 135", 0.544, 0.344, 4.811, 4.811, 138.4, 12]];
+function initRv(){
+  $('rv-b').innerHTML = '<option value="">personalizado</option>' + BLD.map((b,i)=>`<option value="${i}">${b[0]}</option>`).join('');
+  $('rv-b').addEventListener('change', e=>{ const b = BLD[e.target.value]; if (!b) return calcRv();
+    $('rv-air').value = Math.round(b[1]*100); $('rv-bk').value = Math.round(b[2]*100); $('rv-d').value = Math.max(0, Math.min(0.3, +(b[3]-b[4]).toFixed(2))) || 0.1; calcRv(); });
+  ['rv-air','rv-d','rv-bk','rv-band'].forEach(id=>$(id).addEventListener('input', calcRv));
+  calcRv();
+}
+function calcRv(){
+  const air = +$('rv-air').value/100, d = +$('rv-d').value, bk = +$('rv-bk').value/100, band = +$('rv-band').value;
+  $('rv-air-o').textContent = Math.round(air*100)+'%'; $('rv-bk-o').textContent = Math.round(bk*100)+'%';
+  $('rv-d-o').textContent = (d>0?'+':d<0?'−':'') + dec(Math.abs(d)) + '★';
+  const ea = Math.exp(D.prem.C21*air*d) - 1;
+  const eb = band && bk >= D.prem.C56 ? Math.pow(1+D.prem.C55, band) - 1 : 0;
+  const tot = (1+ea)*(1+eb) - 1;
+  $('rv-out').textContent = pct(tot); $('rv-out').className = 'big num ' + cls(tot);
+  $('rv-split').innerHTML = `nota Airbnb: <b class="num">${pct(ea)}</b> · faixa Booking: <b class="num">${pct(eb)}</b>` + (band && bk < D.prem.C56 ? ' (Booking abaixo de 35%: sem efeito)' : '');
+  const b = BLD[$('rv-b').value];
+  $('rv-money').textContent = b ? `${b[0]}: RevPAR de ~${brl(b[5])} → ${pct(tot)} ≈ ${brl(b[5]*tot*30*b[6],0)} por mês no prédio (${b[6]} unidades, 30 dias).` : 'Escolha um prédio para ver o efeito em reais.';
+}
+// calculadora de canais
+function initCh(){ ['ch-exp','ch-dir','ch-out','ch-full'].forEach(id=>$(id).addEventListener('input', calcCh)); calcCh(); }
+function calcCh(){
+  const de = +$('ch-exp').value/100, dd = +$('ch-dir').value/100, dout = +$('ch-out').value/100, full = $('ch-full').value==='1';
+  [['ch-exp-o',de],['ch-dir-o',dd],['ch-out-o',dout]].forEach(([id,v])=>$(id).textContent = (v>0?'+':v<0?'−':'') + dec(Math.abs(v*100),1) + ' p.p.');
+  const g = full ? D.prem.C48 : D.prem.C49;
+  const eff = D.prem.C50*de + g*(dd+dout);
+  const m = D.mixb, ab = m.air + m.bk, dT = de+dd+dout;
+  const P = D.prem; const com = P.E95*de + P.E97*dd + P.E96*dout - (P.E93*m.air/ab + P.E94*m.bk/ab)*dT;
+  $('ch-out-v').textContent = pct(eff); $('ch-out-v').className = 'big num ' + cls(eff);
+  $('ch-com').textContent = pp(com,2); $('ch-com').className = 'kpi-v num ' + (com<0?'up':com>0?'down':'');
+  $('ch-net').textContent = `Expedia: +${dec(P.C50,2)} de RevPAR por ponto · direto e outros: +${dec(g,2)} por ponto (${full?'prédio cheio':'prédio com folga'}). Comissão: Airbnb ${dec(P.E93*100,1)}%, Booking ${dec(P.E94*100,1)}%, Expedia ${dec(P.E95*100,1)}%, direto ${dec(P.E97*100,1)}%, outros ${dec(P.E96*100,1)}%.`;
+}
+function chCards(){
+  const m0 = D.mixb, m27 = D.mix[SC].dez27, m28 = D.mix[SC].dez28, P = D.prem;
+  const c = [['Expedia','exp',`ganho líquido ${dec(P.C50,2)} por ponto · comissão ${dec(P.E95*100,1)}%`],['canal direto','dir',`ganho 0,41 (cheio) a 1,00 (folga) · comissão ${dec(P.E97*100,1)}%`],['outros canais','out',`B2B, Onfly, Cangooroo, Decolar... · comissão ${dec(P.E96*100,1)}%`],['Airbnb + Booking','ab',`comissão ${dec(P.E93*100,1)}% e ${dec(P.E94*100,1)}%`]];
+  const g = (m,k) => k==='ab' ? m.air+m.bk : m[k];
+  $('ch-cards').innerHTML = c.map(([n,k,s])=>`<div class="card kpi"><div class="eyebrow">${n} · dez/27</div>
+    <div class="kpi-v num">${pct(g(m27,k),1,false)}</div>
+    <div class="row"><span>hoje (jul–out/26)</span><span class="num">${pct(g(m0,k),1,false)}</span></div>
+    <div class="row"><span>dez/28</span><span class="num">${pct(g(m28,k),1,false)}</span></div>
+    <div class="row muted" style="font-size:12px"><span>${s}</span></div></div>`).join('');
+}
+function tblPrem(){
+  const P = D.prem;
+  const rows = [
+    ['RevPAR de mercado','SP −1,1% · FLN −10,7% (2027) e −5% (2028) · BC +1%','igual, com BC 0%','repete a variação de 2026 de cada cidade'],
+    ['ocupação','SP e BC 0% · FLN −3% em 2027','igual','em 2026 nossa ocupação same store ficou estável mesmo com mercado oscilando; variação vai para a diária'],
+    ['comissão de canais','segue o mix: taxa de cada canal × share do mês','mix atual','taxas efetivas ago–out/26 (Metabase); base do prédio ago–set/26 (Report DB)'],
+    ['LOS',`+${dec(P.C100*100,2)}% a.a. sobre o mesmo mês do ano anterior`,'igual ao ano anterior','histórico +6,6% (2025) e +3,3% (2026); média 4,9% com 50% de desconto'],
+    ['taxa de limpeza por reserva',`média jul–set/26 + ${dec(P.C101*100,1)}% em jan/27 e jan/28`,'igual','inflação'],
+    ['OTA taxa de limpeza (Revenue Model)','mesma regra da comissão','mix atual','6 prédios Revenue Model'],
+  ];
+  $('tbl-prem').innerHTML = '<thead><tr><th>variável</th><th style="text-align:left">base case</th><th style="text-align:left">bear case</th><th style="text-align:left">racional</th></tr></thead><tbody>' +
+    rows.map(r=>`<tr><td><b style="font-weight:500">${r[0]}</b></td><td style="text-align:left;white-space:normal">${r[1]}</td><td style="text-align:left;white-space:normal">${r[2]}</td><td style="text-align:left;white-space:normal;color:var(--ink-3)">${r[3]}</td></tr>`).join('') + '</tbody>';
+}
+function render(){ kpis(); tblYoy(); chartMon(); chartMix(); tblOth(); chartWf(); tblCity(); tblRev(); chCards(); }
+function setSc(s){ SC = s; try{localStorage.setItem('bd-sc',s)}catch(e){}
+  $('sc-base').setAttribute('aria-pressed', s==='base'); $('sc-bear').setAttribute('aria-pressed', s==='bear'); render(); }
+$('sc-base').addEventListener('click', ()=>setSc('base')); $('sc-bear').addEventListener('click', ()=>setSc('bear'));
+$('wf-27').addEventListener('click', ()=>{WY='2027'; $('wf-27').setAttribute('aria-pressed',true); $('wf-28').setAttribute('aria-pressed',false); chartWf();});
+$('wf-28').addEventListener('click', ()=>{WY='2028'; $('wf-28').setAttribute('aria-pressed',true); $('wf-27').setAttribute('aria-pressed',false); chartWf();});
+tblEv(); tblPrem(); initRv(); initCh(); setSc(SC);
+</script>
