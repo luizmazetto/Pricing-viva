@@ -352,8 +352,8 @@ put('C17', "=SUMPRODUCT('Premissas por prédio'!$F$5:$F$57,'Premissas por prédi
 put('B18', 'Volume de reviews por mês'); put('C18', 'média nov/25–out/26')
 put('F18', 'Por prédio, na aba Premissas por prédio (colunas E e F), editável.')
 put('B20', '3. Prêmio de mercado', F_B)
-put('B21', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C21', 0.95, F_IN, FILL_KEY, '0.00')
-put('F21', 'Estimado na análise Reviews × prêmio (nível prédio, nota 12m): 0,95 (intervalo de 90%: 0,49 a 1,41). Ex.: 50% Airbnb e +0,1★ → +4,9% de prêmio.')
+put('B21', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C21', 1.16, F_IN, FILL_KEY, '0.00')
+put('F21', 'Estimativa conjunta (nota 12m até o mês anterior, controlando mix de canais e nota/faixa Booking; analysis_canais_controle_reviews.py): 1,16 (intervalo de 90%: 0,64 a 1,72). Sem controles era 0,95. Ex.: 50% Airbnb e +0,1★ → +6,0% de prêmio.')
 put('B22', 'β Booking (por ponto 0–10 × %Booking no GMV)'); put('C22', 0.0, F_IN, FILL_KEY, '0.00')
 put('F22', 'Estimado −0,08 (intervalo −0,19 a +0,02), não significativo: zero por padrão.')
 put('B23', 'Base do prêmio: 1 = média jul–out/26 constante · 2 = média jul–out/26 × sazonalidade da cidade'); put('C23', 2, F_IN, FILL_KEY, '0')
@@ -380,7 +380,7 @@ lines = [
     'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mediana dos meses mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
     'Outros canais (itens 6 e 8): quando o share de Expedia ou dos demais canais sobe (cenário de crescimento do item 8 e/ou colunas S e T por prédio), o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
-    'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 7,5% nos prédios com Booking ≥ 35% da receita.',
+    'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 9,9% nos prédios com Booking ≥ 35% da receita.',
     'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
 for i, t in enumerate(lines):
@@ -388,19 +388,19 @@ for i, t in enumerate(lines):
 put('B46', '6. Outros canais · demanda nova vs canibalização do OTA', F_B)
 put('B47', 'Ocupação média que define prédio "cheio"'); put('C47', 0.80, F_IN, FILL_KEY, '0%')
 put('F47', 'Média do prédio em nov/25–out/26 (Premissas por prédio, coluna Q).')
-put('B48', 'Ganho líquido por ponto · demais outros canais · prédio cheio'); put('C48', 0.41, F_IN, FILL_KEY, '0.00')
-put('F48', 'Demais outros = tudo que não é Airbnb, Booking nem Expedia (direto, Swap, B2B, mid-term, corretores). Prédios com ocupação média ≥ 80%: sobra 0,41 (intervalo 0,31 a 0,74).')
+put('B48', 'Ganho líquido por ponto · demais outros canais · prédio cheio'); put('C48', 0.40, F_IN, FILL_KEY, '0.00')
+put('F48', 'Demais outros = tudo que não é Airbnb, Booking nem Expedia (direto, Swap, B2B, mid-term, corretores). Prédios com ocupação média ≥ 80%: sobra 0,40 (intervalo 0,31 a 0,70), com controle das notas.')
 put('B49', 'Ganho líquido por ponto · demais outros canais · prédio com folga'); put('C49', 1.0, F_IN, FILL_KEY, '0.00')
-put('F49', 'Estimado 1,18 (intervalo 0,57 a 1,75), limitado a 1,00: preenche noite vazia, demanda nova inteira.')
-put('B50', 'Ganho líquido por ponto · Expedia (qualquer prédio)'); put('C50', 0.41, F_IN, FILL_KEY, '0.00')
-put('F50', 'Estimado 0,41 (intervalo 0,21 a 0,65): cada ponto de prêmio via Expedia tira ~0,6 do Airbnb, com o prédio cheio ou com folga. Mesmo hóspede do Airbnb.')
+put('F49', 'Estimado 1,26 com controle das notas (intervalo 0,58 a 1,85), limitado a 1,00: preenche noite vazia, demanda nova inteira.')
+put('B50', 'Ganho líquido por ponto · Expedia (qualquer prédio)'); put('C50', 0.35, F_IN, FILL_KEY, '0.00')
+put('F50', 'Estimado 0,35 com controle das notas (intervalo 0,21 a 0,55; sem controle 0,41): cada ponto de prêmio via Expedia tira ~0,65 do Airbnb/Booking, com o prédio cheio ou com folga. Mesmo hóspede do Airbnb.')
 put('B51', 'Aumento de share por prédio'); put('C51', 'colunas S (Expedia) e T (demais) de Premissas por prédio, a partir de jan/27')
-put('F51', 'Prêmio × (1 + 0,41 × Δ Expedia + ganho dos demais × Δ demais). Airbnb e Booking perdem share na proporção. Padrão 0 p.p.')
+put('F51', 'Prêmio × (1 + 0,35 × Δ Expedia + ganho dos demais × Δ demais). Airbnb e Booking perdem share na proporção. Padrão 0 p.p.')
 put('B53', '7. Booking · faixa de nota 8,0 (filtro "Muito bom: 8 ou mais")', F_B)
 put('B54', 'Corte da faixa (nota Booking exibida)'); put('C54', 8.0, F_IN, FILL_KEY, '0.0')
 put('F54', 'Nota exibida reconstruída na aba Booking Nota Exibida (ponderação por ano abaixo).')
-put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.075, F_IN, FILL_KEY, '0.0%')
-put('F55', 'Estimado em 21 prédios com Booking ≥ 35% da receita, com a nota ponderada: +7,6% de prêmio (intervalo +1,4% a +12,7%). Acima de 8,0 a receita via Booking sobe ~0,11 ponto de prêmio e parte sai do Airbnb.')
+put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.099, F_IN, FILL_KEY, '0.0%')
+put('F55', 'Estimativa conjunta (com nota Airbnb e mix de canais): +9,9% de prêmio (intervalo +4,1% a +14,8%) nos prédios com Booking ≥ 35% da receita; sozinha era +7,6%. Acima de 8,0 a receita via Booking sobe ~0,11 ponto de prêmio e parte sai do Airbnb.')
 put('B56', 'Peso mínimo do Booking na receita para o ganho'); put('C56', 0.35, F_IN, FILL_KEY, '0%')
 put('B57', 'Ganho de prêmio · Booking abaixo do limite de peso'); put('C57', 0.0, F_IN, FILL_KEY, '0.0%')
 put('F57', 'Estimado −5,4% (intervalo −14% a +3,7%), não significativo: zero. A faixa 9,0 não mostrou ganho.')
@@ -433,7 +433,7 @@ put('B74', 'Check · Expedia no portfólio no mês da meta'); put('C74', f"=SUMP
 put('F74', 'Com os pesos de receita de jul–out/26 (deve bater com a meta). Sem contar os aumentos manuais das colunas S e T.')
 put('B75', 'Check · demais outros no portfólio no mês da meta'); put('C75', f"=SUMPRODUCT({PPN}!$AF$5:$AF$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('B76', 'Meses de rampa (nov/26 até o mês da meta)'); put('C76', '=MAX(1,(YEAR(C68)-2026)*12+MONTH(C68)-10)', F_CALC, None, '0')
-put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,41 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
+put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,35 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))

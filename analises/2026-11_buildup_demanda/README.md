@@ -15,7 +15,7 @@ Realizado até ago/26 só onde a linha (prédio × contrato) tinha ADR no mês; 
 do fechamento do Report DB). Abas novas: Premissas, Premissas por prédio, Sazonalidade Prêmio, Buildup RevPAR e Aux (cinza).
 
 Reviews: cenário 1 = nota atual (12m) de cada prédio; cenário 2 = meta de portfólio 4,75 (prédios abaixo do piso sobem ao piso, ~4,71).
-Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal (do prédio, ou da cidade para prédios novos) × exp(0,95 × %Airbnb × Δnota Airbnb 12m
+Prêmio projetado = (1 + média jul–out/26 do prédio) × índice sazonal (do prédio, ou da cidade para prédios novos) × exp(1,16 × %Airbnb × Δnota Airbnb 12m
 + β Booking × %Booking × Δnota Booking 12m) − 1. RevPAR nosso = RevPAR mercado × (1 + prêmio) × fator de calibração
 (Report DB ÷ Metabase, mediana mai–ago/26). Ocupação = mesmo mês do ano anterior × (1 + variação da cidade); ADR = RevPAR ÷ Ocupação.
 - `data/ocupacao_predio_mes.psv`: ocupação mensal por prédio (Metabase), usada em set–out/26 e na base de prédios em ramp-up.
@@ -24,8 +24,11 @@ Canais (Premissas, item 8): cenário 1 = mix de jul–out/26 de cada prédio, co
 15% de Expedia e 12% de demais outros canais em dez/27 (mês editável), em linha reta a partir de nov/26. Cada prédio cresce no
 mesmo multiplicador sobre o próprio share de jul–out/26 (hoje 1,37x Expedia e 1,71x demais). Prédios com mais de 50% fora de
 Airbnb/Booking (Homelike, Cannes, Equalize) ficam como estão. Airbnb e Booking dividem o resto na proporção atual do prédio.
-O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,41 × ΔExpedia + 0,41 ou 1,00 × Δdemais).
+O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,35 × ΔExpedia + 0,40 ou 1,00 × Δdemais).
 
 Cenário geral (Premissas, C3): 1 = base (nota atual de cada prédio + mix de canais de jul–out/26); 2 (padrão) = crescimento
 (meta de reviews Airbnb 4,75 / Booking 8,5 + Expedia 15% e demais 12% em dez/27). C11 (reviews) e C65 (canais) seguem C3,
 mas podem ser sobrescritos.
+
+Coeficientes (19/nov/2026): estimativa conjunta de `analysis_canais_controle_reviews.py` — β Airbnb 1,16; faixa Booking ≥ 8,0
++9,9% (Booking ≥ 35%); Expedia 0,35; demais 0,40 (cheio) / 1,00 (folga, limitado). Antes: 0,95 / 7,5% / 0,41 / 0,41.
