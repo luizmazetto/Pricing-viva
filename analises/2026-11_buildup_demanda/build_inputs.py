@@ -297,7 +297,9 @@ MKT_G = {'SP': (6, -0.011, 'Mesma variação de 2026: RevPAR de mercado jan–ou
          'BC': (8, 0.01, 'Mesma variação de 2026: +1,0% em jan–out (só TSO 001).')}
 for city, (row, g, why) in MKT_G.items():
     put(f'B{row}', city)
-    for c in 'CDE': put(f'{c}{row}', f"=IF($C$3=1,$C${ {'SP': 82, 'FLN': 83, 'BC': 84}[city] },$D${ {'SP': 82, 'FLN': 83, 'BC': 84}[city] })", F_LINK, FILL_IN, '0.0%')
+    for c in 'CDE':
+        rr = {'SP': 82, 'FLN': 83, 'BC': 84}[city] + (3 if c == 'E' else 0)      # 2028 nas linhas 85–87 do item 9
+        put(f'{c}{row}', f"=IF($C$3=1,$C${rr},$D${rr})", F_LINK, FILL_IN, '0.0%')
     put(f'F{row}', why)
 def bk_shown(cd, k, w=(0.85, 0.10, 0.05)):
     n36 = window(RB, cd, k, 36)
@@ -462,10 +464,15 @@ put('F81', 'Base: Expedia 15% e demais 12% do portfólio em dez/27. Bear: mix de
 for city, row, base, bear, why in (('SP', 82, -0.011, -0.011, 'Base e Bear: repete 2026 (−1,1% em jan–out/26 vs jan–out/25).'),
                                    ('FLN', 83, -0.107, -0.107, 'Base e Bear: repete 2026, −10,7%.'),
                                    ('BC', 84, 0.01, 0.0, 'Base: repete 2026 (+1,0%). Bear: 0%, já que 2026 foi de alta e o Bear não tem ganho.')):
-    put(f'B{row}', f'Variação do RevPAR de mercado · {city} (nov/26–dez/28, vs mesmo mês do ano anterior)')
+    put(f'B{row}', f'Variação do RevPAR de mercado · {city} · nov/26–dez/27 (vs mesmo mês do ano anterior)')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
-put('B85', 'Ocupação (item 5)'); put('C85', 'igual nos dois'); put('D85', 'igual nos dois')
-put('F85', 'A ocupação só divide o RevPAR entre ocupação e diária; não muda o RevPAR. Itens 1 e 5 mostram o que está em uso no cenário escolhido.')
+for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesma variação de 2027.'),
+                                   ('FLN', 86, -0.05, -0.05, 'Base e Bear: retração de 5% em 2028 (premissa do usuário), depois de −10,7% em 2026 e 2027.'),
+                                   ('BC', 87, 0.01, 0.0, 'Base e Bear: mesma variação de 2027.')):
+    put(f'B{row}', f'Variação do RevPAR de mercado · {city} · 2028')
+    put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
+put('B88', 'Ocupação (item 5)'); put('C88', 'igual nos dois'); put('D88', 'igual nos dois')
+put('F88', 'A ocupação só divide o RevPAR entre ocupação e diária; não muda o RevPAR. Itens 1 e 5 mostram o que está em uso no cenário escolhido.')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
 put('B43', 'Legenda', F_B)
 put('B44', 'Azul claro = realizado (até ago/26) · Verde claro = realizado em set–out/26 (Metabase) ou base completada · Amarelo = projeção (fórmulas) · Amarelo forte com texto azul = premissa editável', Font(name=ARIAL, size=9))
