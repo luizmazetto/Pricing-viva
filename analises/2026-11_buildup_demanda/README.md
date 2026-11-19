@@ -46,3 +46,14 @@ sobem de 12% (dez/27) para 16% em dez/28, em linha reta (Premissas C77; multipli
 Mercado de FLN: −10,7% em nov/26–dez/27 e −5% em 2028, nos dois cenários (Premissas, item 9, linhas 82–87: por cidade, 2027 e 2028).
 
 Teto de 25% no share de demais outros canais por prédio (Premissas C89, Base Case), com redistribuição do excedente entre os prédios que crescem (multiplicadores C73/D77, iterações em H/I).
+
+Comissão de Canais %, LOS, Taxa de Limpeza por reserva e OTA Taxa Limpeza % (Premissas, item 10). Set/26 da Report DB emitida;
+projeção de out/26 a dez/28:
+- Comissão = (OTAs Fee + Custo Canal Tx Limpeza) ÷ Total. Projeção: base jul–set/26 do prédio × índice de mix (taxa efetiva por
+  canal × % do canal no mês) ÷ índice na base. Taxas (Metabase, commissionValue ÷ GMV total, mai–set/26): Airbnb 18,0%, Booking 16,4%,
+  Expedia 16,4%, demais 11,6%. Segue sozinha o cenário de canais. OTA Taxa Limpeza (Custo Canal Tx Limpeza ÷ Receita de Limpeza,
+  só Revenue Model, aba com linhas próprias): mesma regra.
+- LOS = diárias ÷ reservas. Base Case: mesmo mês do ano anterior × (1 + 4,9% × (1 − 50%)) = +2,45% a.a.; Bear: igual ao ano anterior.
+- Taxa de Limpeza por reserva = receita de limpeza ÷ reservas. Média jul–set/26 do prédio, reajuste de 4,5% em jan/27 e jan/28.
+- Ago–set/26: a Report DB tem ~220 unidades/mês com diárias e 0 reservas (16 prédios). Reservas completadas com a calendar do Metabase
+  (reservas com noite no mês, mesma definição; bate 93–97% por unidade em mai–jul/26): data/report_db_reservas_ajuste.psv.

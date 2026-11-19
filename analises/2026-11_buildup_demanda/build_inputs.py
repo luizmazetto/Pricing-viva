@@ -758,6 +758,107 @@ for r in ROWS:
 for sh in ('ADR Acomodação', 'Ocupação (Disponível)'):
     wb[sh]['AL3'] = 'Set/26 em diante: puxa do Buildup (Premissas)'
 
+# ------------------------------------------------------------------ Comissão de canais, LOS, taxa de limpeza, OTA taxa de limpeza
+RDBX = {}
+for x in rd('data/report_db_predio_mes.psv'):
+    RDBX[(x['b'], x['ctr'], kof(x['m']))] = {kk: float(x[kk] or 0) for kk in ('rev', 'dia', 'disp', 'res', 'lim', 'tot', 'ota', 'otalim')}
+AJ_AGO = {(x['b'], x['ctr']): float(x['dia_aj']) for x in rd('data/report_db_ago26_ajuste.psv')}
+# ago–set/26: unidades com diárias e 0 reservas na Report DB (reservas não preenchidas) -> reservas da calendar do Metabase
+# (reservas com noite no mês, mesma definição da Report DB: bate 93–97% por unidade em mai–jul/26)
+RES_AJ = {}
+for x in rd('data/report_db_reservas_ajuste.psv'):
+    RES_AJ[(x['b'], x['ctr'], kof(x['m']))] = float(x['res_aj'])
+    RDBX[(x['b'], x['ctr'], kof(x['m']))]['res'] = float(x['res_aj'])
+SH_COM, SH_LOS, SH_TL, SH_OTL = wb['Comissão de Canais %'], wb['LOS'], wb['Taxa de Limpeza por reserva'], wb['OTA Taxa Limpeza % (RevModel)']
+def rdb_metric(key, k):
+    g = RDBX.get(key + (k,))
+    if not g: return {}
+    out = {}
+    if g['res'] > 0: out['los'] = g['dia'] / g['res']; out['tl'] = g['lim'] / g['res']
+    if g['tot'] > 0: out['com'] = (g['ota'] + g['otalim']) / g['tot']
+    if g['lim'] > 0: out['otl'] = g['otalim'] / g['lim']
+    return out
+def base_metric(key, ks=(30, 31, 32)):
+    t = {kk: sum(RDBX.get(key + (k,), {}).get(kk, 0) for k in ks) for kk in ('dia', 'res', 'lim', 'tot', 'ota', 'otalim')}
+    if key in AJ_AGO and 31 in ks: t['dia'] += AJ_AGO[key] - RDBX[key + (31,)]['dia']
+    return dict(los=t['dia'] / t['res'] if t['res'] else None, tl=t['lim'] / t['res'] if t['res'] else None,
+                com=(t['ota'] + t['otalim']) / t['tot'] if t['tot'] else None, otl=t['otalim'] / t['lim'] if t['lim'] else None)
+
+# Premissas item 10
+put('B91', '10. Comissão de canais, LOS e taxa de limpeza', F_B)
+for c, h in zip('BCDEF', ['Premissa', 'Base Case', 'Bear Case', 'Em uso', 'Racional']):
+    put(f'{c}92', h, F_B, FILL_HEAD)
+for row, lab, v, why in ((93, 'Taxa efetiva de comissão · Airbnb (% do GMV total)', 0.180, 'Metabase, reservas com check-in mai–set/26: Σ commissionValue ÷ Σ GMV total (acomodação + limpeza). 18.136 reservas.'),
+                         (94, 'Taxa efetiva de comissão · Booking', 0.164, '15.984 reservas.'),
+                         (95, 'Taxa efetiva de comissão · Expedia', 0.164, '4.436 reservas.'),
+                         (96, 'Taxa efetiva de comissão · demais outros canais', 0.116, '11.956 reservas (direto, Swap, B2B, mid-term, corretores).')):
+    put(f'B{row}', lab); put(f'C{row}', v, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'E{row}', '=C%d' % row, F_LINK, None, '0.0%'); put(f'F{row}', why)
+put('F97', 'Comissão(t) = comissão do prédio em jul–set/26 (Report DB) × [Σ taxa do canal × % do canal no mês] ÷ [o mesmo com o mix de jul–out/26]. Segue sozinha o cenário de canais. Mesma regra para a OTA da taxa de limpeza (Revenue Model).')
+put('B98', 'LOS · crescimento anual histórico (mesmo prédio, mesmo mês)'); put('C98', 0.049, F_IN, FILL_KEY, '0.0%'); put('D98', '=C98', F_LINK, None, '0.0%')
+put('F98', 'Report DB, jan–set, mesmo prédio e mês do ano anterior (sem Homelike): 2025 +6,6%, 2026 +3,3%; média +4,9%.')
+put('B99', 'LOS · desconto sobre o histórico'); put('C99', 0.5, F_IN, FILL_KEY, '0%')
+put('F99', 'O crescimento vem desacelerando (+6,6% → +3,3%).')
+put('B100', 'LOS · crescimento anual usado (vs mesmo mês do ano anterior)'); put('C100', '=C98*(1-C99)', F_CALC, None, '0.0%'); put('D100', 0.0, F_IN, FILL_KEY, '0.0%')
+put('E100', '=IF($C$3=1,C100,D100)', F_LINK, FILL_IN, '0.0%')
+put('F100', 'Base: histórico com desconto. Bear: LOS igual ao do mesmo mês do ano anterior. Mês do ano anterior sem dado ou em ramp-up: média do prédio em jul–set/26.')
+put('B101', 'Taxa de limpeza por reserva · reajuste anual (inflação)'); put('C101', 0.045, F_IN, FILL_KEY, '0.0%'); put('D101', 0.045, F_IN, FILL_KEY, '0.0%')
+put('E101', '=IF($C$3=1,C101,D101)', F_LINK, FILL_IN, '0.0%')
+put('F101', 'Valor médio por reserva do prédio em jul–set/26 (Report DB), reajustado em jan/27 e jan/28.')
+
+# Premissas por prédio: bases
+for cc, h in ((38, 'Comissão de canais jul–set/26 (Report DB)'), (39, 'Índice de mix de comissão na base (jul–out/26)'), (40, 'OTA taxa de limpeza jul–set/26 (Revenue Model)'),
+              (41, 'Taxa de limpeza por reserva jul–set/26 (R$)'), (42, 'LOS jul–set/26')):
+    x = PP.cell(4, cc, h); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(cc)].width = 20
+for r in ROWS:
+    if not active(r): continue
+    key = (ROWINFO[r]['code'], ROWINFO[r]['ctr']); bm = base_metric(key)
+    for cc, kk, fmt in ((38, 'com', '0.0%'), (40, 'otl', '0.0%'), (41, 'tl', '#,##0.00'), (42, 'los', '0.00')):
+        if bm.get(kk) is not None:
+            x = PP.cell(r, cc, round(bm[kk], 6)); x.font = F_IN; x.number_format = fmt
+    x = PP.cell(r, 39, f"=Premissas!$E$93*Y{r}+Premissas!$E$94*Z{r}+Premissas!$E$95*AA{r}+Premissas!$E$96*AB{r}"); x.font = F_CALC; x.number_format = '0.0%'; x.fill = FILL_IN
+
+PPr = "'Premissas por prédio'!"
+for r in ROWS:
+    if not active(r): continue
+    key = (ROWINFO[r]['code'], ROWINFO[r]['ctr']); fk = fk_of(ROWINFO[r]['code'])
+    # ago/26: LOS e taxa de limpeza por reserva com diárias / reservas ajustadas (calendar do Metabase)
+    if (key in AJ_AGO or key + (31,) in RES_AJ) and isinstance(SH_LOS.cell(r, 6 + 31).value, (int, float)):
+        g = RDBX[key + (31,)]; dia_ = AJ_AGO.get(key, g['dia'])
+        for sh, v, lab in ((SH_LOS, dia_ / g['res'], 'LOS'), (SH_TL, g['lim'] / g['res'], 'Taxa de limpeza por reserva')):
+            c = sh.cell(r, 6 + 31); old = c.value; c.value = round(v, 6); c.fill = PatternFill('solid', fgColor='FCE4D6')
+            c.comment = Comment(f'{lab} ajustado: unidades sem diárias ou sem reservas na Report DB completadas com a calendar do Metabase. Report DB: {old:,.4g}.', 'buildup')
+    # set/26 realizado (Report DB emitida)
+    m32 = rdb_metric(key, 32)
+    for sh, kk, fmt in ((SH_COM, 'com', '0.0%'), (SH_LOS, 'los', '0.00'), (SH_TL, 'tl', '#,##0.00'), (SH_OTL, 'otl', '0.0%')):
+        if kk in m32 and sh is not SH_OTL:
+            c = sh.cell(r, 6 + 32, round(m32[kk], 6)); c.font = copy.copy(F_IN); c.fill = FILL_ACT; c.number_format = fmt
+    # projeção out/26–dez/28
+    for k in range(K_OUT, K_END + 1):
+        cl = col(k); y = (K0 + k) // 12
+        mix = (f"(Premissas!$E$93*'% Airbnb'!{cl}{r}+Premissas!$E$94*'% Booking'!{cl}{r}+Premissas!$E$95*'Aux % Expedia'!{cl}{r}"
+               f"+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}))")
+        c = SH_COM.cell(r, 6 + k, f"=IFERROR({PPr}$AL{r}*{mix}/{PPr}$AM{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '0.0%'
+        c = SH_TL.cell(r, 6 + k, f"=IFERROR({PPr}$AO{r}*(1+Premissas!$E$101)^{y - 2026},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '#,##0.00'
+        kp = k - 12
+        prev_ok = isinstance(SH_LOS.cell(r, 6 + kp).value, (int, float)) and (fk is None or kp - fk >= 3) if kp <= 32 else True
+        ref = f"{col(kp)}{r}" if prev_ok else f"{PPr}$AP{r}"
+        c = SH_LOS.cell(r, 6 + k, f"=IFERROR({ref}*(1+Premissas!$E$100),\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '0.00'
+# OTA Taxa Limpeza (RevModel): aba com linhas próprias (só Revenue Model) -> mapeia para a linha do prédio nas demais abas
+ROW_OF = {(ROWINFO[r]['code'], ROWINFO[r]['ctr']): r for r in ROWS if active(r)}
+for q in range(5, 58):
+    keyq = (SH_OTL.cell(q, 2).value, SH_OTL.cell(q, 3).value); r = ROW_OF.get(keyq)
+    if r is None: continue
+    m32 = rdb_metric(keyq, 32)
+    if 'otl' in m32:
+        c = SH_OTL.cell(q, 6 + 32, round(m32['otl'], 6)); c.font = copy.copy(F_IN); c.fill = FILL_ACT; c.number_format = '0.0%'
+    for k in range(K_OUT, K_END + 1):
+        cl = col(k)
+        mix = (f"(Premissas!$E$93*'% Airbnb'!{cl}{r}+Premissas!$E$94*'% Booking'!{cl}{r}+Premissas!$E$95*'Aux % Expedia'!{cl}{r}"
+               f"+Premissas!$E$96*('% outros'!{cl}{r}-'Aux % Expedia'!{cl}{r}))")
+        c = SH_OTL.cell(q, 6 + k, f"=IFERROR({PPr}$AN{r}*{mix}/{PPr}$AM{r},\"\")"); c.font = F_CALC; c.fill = FILL_IN; c.number_format = '0.0%'
+for sh in (SH_COM, SH_LOS, SH_TL, SH_OTL):
+    sh['AM3'] = 'Set/26: Report DB emitida · Out/26 em diante: projeção (Premissas, item 10)'
+
 # fonte Arial nas abas novas
 for ws in wb.worksheets:
     if ws.title in DATA_SHEETS or ws.title.startswith('Aux') or ws.title in ('Booking Nota Exibida', 'Premissas', 'Premissas por prédio', 'Buildup RevPAR', 'Sazonalidade Prêmio', 'Sazonalidade Prêmio Prédio', 'Buildup Ocupação', 'Buildup ADR'):

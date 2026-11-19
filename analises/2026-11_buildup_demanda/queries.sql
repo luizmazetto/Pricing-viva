@@ -34,3 +34,17 @@ select internalName u, format_date('%Y-%m', date) m, countif(availability=1) dis
  sum(if(availability=1 and occupancy>0, accommodation_adr, 0)) rev
 from `views.listing_daily_stats` where date between '2026-07-01' and '2026-09-30'
  and regexp_contains(internalName, r'^(NXP 950|NXF 444|NUN 61|PQJ 155|KAS 99) ') group by 1,2;
+
+-- Taxa efetiva de comissão por canal (Premissas, item 10): check-in mai–set/26
+select case when lower(r.partnerName) like '%airbnb%' then 'air' when lower(r.partnerName) like '%booking%' then 'bk' when lower(r.partnerName) like '%expedia%' then 'exp' else 'out' end ch,
+ count(*) n, sum(r.commissionValue)/sum(safe_cast(json_value(r.price,'$._f_total') as float64)) taxa
+from replicas.vivadb_reservation r join replicas.vivadb_listing l on l.id_ = r.idlisting
+where r.checkInDate >= '2026-05-01' and r.checkInDate < '2026-10-01' and r.type not in ('blocked','maintenance') and l.buildingName is not null and l.buildingName not like 'ZZZ%'
+group by 1;
+
+-- metabase_reservas_unidade_mai_set26.psv (u;m;n_overlap;n_checkin;n_checkout;nights): n_overlap = definição da Report DB
+select internalName u, format_date('%Y-%m', date) m, count(distinct if(occupancy>0, reservation.id, null)) n_overlap,
+ count(distinct if(occupancy>0 and format_date('%Y-%m', reservation.checkin)=format_date('%Y-%m', date), reservation.id, null)) n_checkin,
+ count(distinct if(occupancy>0 and format_date('%Y-%m', date_sub(reservation.checkout, interval 1 day))=format_date('%Y-%m', date), reservation.id, null)) n_checkout,
+ countif(occupancy>0) nights
+from `views.listing_daily_stats` where date between '2026-05-01' and '2026-09-30' and availability=1 and internalName is not null group by 1,2;
