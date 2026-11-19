@@ -26,9 +26,9 @@ mesmo multiplicador sobre o próprio share de jul–out/26 (hoje 1,37x Expedia e
 Airbnb/Booking (Homelike, Cannes, Equalize) ficam como estão. Airbnb e Booking dividem o resto na proporção atual do prédio.
 O ganho no prêmio usa os ganhos líquidos do item 6: × (1 + 0,35 × ΔExpedia + 0,40 ou 1,00 × Δdemais).
 
-Cenário geral (Premissas, C3): 1 = base (nota atual de cada prédio + mix de canais de jul–out/26); 2 (padrão) = crescimento
-(meta de reviews Airbnb 4,75 / Booking 8,5 + Expedia 15% e demais 12% em dez/27). C11 (reviews) e C65 (canais) seguem C3,
-mas podem ser sobrescritos.
+Cenário (Premissas, C3; valores no item 9): 1 = Base Case (mercado SP −1,1%, FLN −5%, BC +1%; meta de reviews Airbnb 4,75 /
+Booking 8,5; Expedia 15% e demais 12% em dez/27). 2 = Bear Case (cada mercado repete 2026 sem crescimento: SP −1,1%,
+FLN −10,7%, BC 0%; notas e mix de canais atuais, sem ganho). C11 (reviews) e C65 (canais) seguem C3, mas podem ser sobrescritos.
 
 Coeficientes (19/nov/2026): estimativa conjunta de `analysis_canais_controle_reviews.py` — β Airbnb 1,16; faixa Booking ≥ 8,0
 +9,9% (Booking ≥ 35%); Expedia 0,35; demais 0,40 (cheio) / 1,00 (folga, limitado). Antes: 0,95 / 7,5% / 0,41 / 0,41.
