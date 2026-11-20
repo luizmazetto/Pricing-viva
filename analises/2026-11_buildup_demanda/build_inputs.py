@@ -368,8 +368,8 @@ put('C17', "=SUMPRODUCT('Premissas por prédio'!$F$5:$F$57,'Premissas por prédi
 put('B18', 'Volume de reviews por mês'); put('C18', 'média nov/25–out/26')
 put('F18', 'Por prédio, na aba Premissas por prédio (colunas E e F), editável.')
 put('B20', '3. Prêmio de mercado', F_B)
-put('B21', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C21', 1.08, F_IN, FILL_KEY, '0.00')
-put('F21', 'Estimativa conjunta (nota 12m até o mês anterior, controlando mix de canais e nota/faixa Booking; Swap devolvida ao canal original): 1,08 (intervalo de 90%: 0,58 a 1,61). Ex.: 50% Airbnb e +0,1★ → +5,5% de prêmio.')
+put('B21', 'β Airbnb (por estrela × %Airbnb no GMV)'); put('C21', 0.80, F_IN, FILL_KEY, '0.00')
+put('F21', 'Modelo conjunto (efeito fixo de prédio e mês; isolando maturação, LOS, faixa Booking e canais): ~0,80 (intervalo de 90%: 0,12 a 1,23). Ex.: 50% Airbnb e +0,1★ → +4,1% de prêmio.')
 put('B22', 'β Booking (por ponto 0–10 × %Booking no GMV)'); put('C22', 0.0, F_IN, FILL_KEY, '0.00')
 put('F22', 'Estimado −0,08 (intervalo −0,19 a +0,02), não significativo: zero por padrão.')
 put('B23', 'Base do prêmio: 1 = média jul–out/26 constante · 2 = média jul–out/26 × sazonalidade da cidade'); put('C23', 2, F_IN, FILL_KEY, '0')
@@ -396,7 +396,7 @@ lines = [
     'RevPAR nosso (Buildup RevPAR) = RevPAR de mercado × (1 + prêmio) × fator de calibração do prédio (Report DB ÷ Metabase, mediana dos meses mai–ago/26).',
     'Ocupação (Buildup Ocupação) = ocupação do mesmo mês do ano anterior × (1 + variação da cidade, item 5), com teto. Mês do ano anterior em ramp-up (< 3 meses de operação) usa a média recente do prédio × sazonalidade da cidade (Aux Base Ocupação).',
     'Outros canais (itens 6 e 8): quando o share de Expedia ou dos demais canais sobe (cenário de crescimento do item 8 e/ou colunas S e T por prédio), o prêmio é multiplicado por (1 + ganho líquido × Δ) de cada um; Airbnb/Booking perdem share proporcionalmente.',
-    'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 9,5% nos prédios com Booking ≥ 35% da receita.',
+    'Booking (item 7): se a nota Booking exibida (ponderada 85/10/5) cruza 8,0 em relação a out/26, o prêmio sobe (ou cai) 4,5% nos prédios com Booking ≥ 35% da receita.',
     'ADR (Buildup ADR) = RevPAR nosso ÷ Ocupação. Assim a mudança de prêmio por reviews aparece na diária, como nos dados. As abas ADR Acomodação e Ocupação (Disponível) do BP puxam essas duas a partir de set/26.',
 ]
 for i, t in enumerate(lines):
@@ -404,19 +404,19 @@ for i, t in enumerate(lines):
 put('B46', '6. Outros canais · demanda nova vs canibalização do OTA', F_B)
 put('B47', 'Ocupação média que define prédio "cheio"'); put('C47', 0.80, F_IN, FILL_KEY, '0%')
 put('F47', 'Média do prédio em nov/25–out/26 (Premissas por prédio, coluna Q).')
-put('B48', 'Ganho líquido por ponto · demais outros canais · prédio cheio'); put('C48', 0.41, F_IN, FILL_KEY, '0.00')
-put('F48', 'Demais outros = canal direto + outros canais (sem a Swap, que é reserva espelho de realocação e volta ao canal original). Prédios com ocupação média ≥ 80%: sobra 0,41 (intervalo 0,33 a 0,76), com controle das notas.')
+put('B48', 'Ganho líquido por ponto · demais outros canais · prédio cheio'); put('C48', 0.61, F_IN, FILL_KEY, '0.00')
+put('F48', 'Demais outros = canal direto + outros canais (sem a Swap). Prédios com ocupação média ≥ 80%: 0,61 (intervalo 0,16 a 0,94) no modelo conjunto, isolando maturação, LOS e notas.')
 put('B49', 'Ganho líquido por ponto · demais outros canais · prédio com folga'); put('C49', 1.0, F_IN, FILL_KEY, '0.00')
-put('F49', 'Estimado 1,34 com controle das notas (intervalo 0,41 a 1,85), limitado a 1,00: preenche noite vazia, demanda nova inteira.')
-put('B50', 'Ganho líquido por ponto · Expedia (qualquer prédio)'); put('C50', 0.31, F_IN, FILL_KEY, '0.00')
-put('F50', 'Estimado 0,31 com controle das notas (intervalo 0,17 a 0,51): cada ponto de prêmio via Expedia tira ~0,69 do Airbnb/Booking. Mesmo hóspede do Airbnb.')
+put('F49', 'Modelo conjunto: 1,39 (intervalo 0,41 a 1,99), limitado a 1,00: preenche noite vazia, demanda nova inteira.')
+put('B50', 'Ganho líquido por ponto · Expedia (qualquer prédio)'); put('C50', 0.16, F_IN, FILL_KEY, '0.00')
+put('F50', 'Modelo conjunto: 0,16 (intervalo −0,03 a 0,40). Isolando a maturação o ganho cai pela metade (era 0,31): os prédios novos aumentam Expedia enquanto amadurecem.')
 put('B51', 'Aumento de share por prédio'); put('C51', 'colunas S (Expedia) e T (demais) de Premissas por prédio, a partir de jan/27')
-put('F51', 'Prêmio × (1 + 0,31 × Δ Expedia + ganho dos demais × Δ demais). Airbnb e Booking perdem share na proporção. Padrão 0 p.p.')
+put('F51', 'Prêmio × (1 + 0,16 × Δ Expedia + ganho dos demais × Δ demais). Airbnb e Booking perdem share na proporção. Padrão 0 p.p.')
 put('B53', '7. Booking · faixa de nota 8,0 (filtro "Muito bom: 8 ou mais")', F_B)
 put('B54', 'Corte da faixa (nota Booking exibida)'); put('C54', 8.0, F_IN, FILL_KEY, '0.0')
 put('F54', 'Nota exibida reconstruída na aba Booking Nota Exibida (ponderação por ano abaixo).')
-put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.095, F_IN, FILL_KEY, '0.0%')
-put('F55', 'Estimativa conjunta (com nota Airbnb e mix de canais): +9,5% de prêmio (intervalo +4,0% a +14,6%) nos prédios com Booking ≥ 35% da receita.')
+put('B55', 'Ganho de prêmio por estar acima do corte · Booking ≥ limite de peso'); put('C55', 0.045, F_IN, FILL_KEY, '0.0%')
+put('F55', 'Modelo conjunto: +4,5% de prêmio (intervalo −1% a +8%) nos prédios com Booking ≥ 35% da receita. Isolando maturação e LOS fica menor que os +9,5% estimados antes.')
 put('B56', 'Peso mínimo do Booking na receita para o ganho'); put('C56', 0.35, F_IN, FILL_KEY, '0%')
 put('B57', 'Ganho de prêmio · Booking abaixo do limite de peso'); put('C57', 0.0, F_IN, FILL_KEY, '0.0%')
 put('F57', 'Estimado −5,4% (intervalo −14% a +3,7%), não significativo: zero. A faixa 9,0 não mostrou ganho.')
@@ -458,7 +458,7 @@ put('B74', 'Check · Expedia no portfólio no mês da meta'); put('C74', f"=SUMP
 put('F74', 'Com os pesos de receita de jul–out/26 (deve bater com a meta). Sem contar os aumentos manuais das colunas S e T.')
 put('B75', 'Check · demais outros no portfólio no mês da meta'); put('C75', f"=SUMPRODUCT({PPN}!$AF$5:$AF$57,{PPN}!$AC$5:$AC$57)/SUM({PPN}!$AC$5:$AC$57)", F_CALC, None, '0.0%')
 put('B76', 'Meses de rampa (nov/26 até o mês da meta)'); put('C76', '=MAX(1,(YEAR(C68)-2026)*12+MONTH(C68)-10)', F_CALC, None, '0')
-put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,31 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
+put('F76', 'Share(t) = base + (meta do prédio − base) × mín(1; meses desde out/26 ÷ meses de rampa). Ganho no prêmio: × (1 + 0,16 × ΔExpedia + ganho dos demais × Δdemais), Δ contra jul–out/26 (mesma base do prêmio).')
 put('B77', 'Meta · demais outros no portfólio em dez/28 (2ª rampa, jan–dez/28)'); put('C77', '=D108', F_LINK, FILL_IN, '0.0%')
 put('H77', mult_cap('C77'), F_CALC, None, '0.00"x"'); put('I77', mult_cap('C77', 'AJ'), F_CALC, None, '0.00"x"')
 put('D77', mult_cap('C77', 'AK'), F_CALC, None, '0.00"x"')
@@ -483,6 +483,9 @@ for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesm
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
 put('B89', 'Teto do share de demais outros canais por prédio (não usado desde o crescimento em p.p. iguais, item 11)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
 put('F89', 'Nenhum prédio que cresce passa deste share de demais (dez/27 e dez/28); o excedente é redistribuído entre os outros prédios (multiplicadores C73 e D77, 3 iterações em H/I). Prédios que já estão acima não caem. Expedia sem teto.')
+put('B90', 'Maturação dos prédios novos (item 12): 1 = aplica · 0 = não'); put('C90', 1, F_IN, FILL_KEY, '0'); put('D90', 1, F_IN, FILL_KEY, '0')
+put('E90', '=IF($C$3=1,C90,D90)', F_LINK, FILL_IN, '0')
+put('F90', 'Prédios que ainda amadureciam em jul–out/26 (base do prêmio) chegam ao nível maduro pela curva do item 12. É evolução natural do prédio, não meta: vale nos dois cenários.')
 put('B88', 'Ocupação (item 5)'); put('C88', 'igual nos dois'); put('D88', 'igual nos dois')
 put('F88', 'A ocupação só divide o RevPAR entre ocupação e diária; não muda o RevPAR. Itens 1 e 5 mostram o que está em uso no cenário escolhido.')
 put('B58', 'Como entra'); put('C58', 'prêmio × (1 + ganho) se o prédio entra na faixa; ÷ (1 + ganho) se sai, em relação a out/26')
@@ -613,6 +616,24 @@ for r in ROWS:
             AXE.cell(r, 6 + k, round(h['exp'] / h['tot'], 6)).font = F_IN
         AXE.cell(r, 6 + k).number_format = '0.0%'
 
+# ------------------------------------------------------------------ Aux Maturação (curva de prêmio por idade do prédio)
+AMT = mirror('Aux Maturação', 'Fator de maturação do prêmio (1 + efeito da idade)', 'Idade = meses desde a abertura (first_day). Curva no item 12 de Premissas; 12 meses ou mais = 1. A projeção usa fator do mês ÷ média do fator em jul–out/26 (base do prêmio, coluna AX de Premissas por prédio).')
+month_header(AMT)
+for r in ROWS:
+    AMT.cell(r, 5, 'fator')
+    cd = ROWINFO[r]['code']
+    if not active(r) or cd not in FIRST: continue
+    k0 = kof(FIRST[cd][:7])
+    for k in range(0, K_END + 1):
+        a = k - k0
+        if a < 0: continue
+        c = AMT.cell(r, 6 + k, f"=1+IF({a}<=2,Premissas!$C$115,IF({a}<=5,Premissas!$C$116,IF({a}<=8,Premissas!$C$117,IF({a}<=11,Premissas!$C$118,0))))")
+        c.font = F_CALC; c.number_format = '0.000'
+x = PP.cell(4, 50, 'Fator de maturação médio na base (jul–out/26)'); x.font = F_B; x.fill = FILL_HEAD; x.alignment = Alignment(wrap_text=True, vertical='top'); PP.column_dimensions[L(50)].width = 16
+for r in ROWS:
+    if not active(r): continue
+    x = PP.cell(r, 50, f"=IFERROR(AVERAGE('Aux Maturação'!AJ{r}:AM{r}),1)"); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0.000'
+
 # ------------------------------------------------------------------ fórmulas de projeção nas abas de dados
 def gcell(r, k):
     y = (K0 + k) // 12
@@ -647,7 +668,8 @@ for r in ROWS:
         mixf = f"*(1+Premissas!$C$50*({dexp}{sx})+{PPr}$R{r}*({ddem}{tx}))"
         bkf = (f"*IFERROR(POWER(1+IF('% Booking'!{cl}{r}>=Premissas!$C$56,Premissas!$C$55,Premissas!$C$57),"
                f"'Aux Faixa Booking'!{cl}{r}-'Premissas por prédio'!$X{r}),1)")
-        wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}-1,\"\")").font = F_CALC
+        matf = f"*IF(Premissas!$E$90=1,IFERROR('Aux Maturação'!{cl}{r}/{PPr}$AX{r},1),1)"
+        wb['Prêmio de Mercado'].cell(r, 6 + k, f"=IFERROR({basep}*EXP({ta}+{tb}){mixf}{bkf}{matf}-1,\"\")").font = F_CALC
 
 # Report DB emitida (data/report_db_predio_mes.psv, de VivaProp/Portfolio-Management-Viva): set/26 já fechado, substitui o Metabase
 RDB_MONTHS = [K_SET]
@@ -743,7 +765,7 @@ for r in ROWS:
                     c = BO.cell(r, 6 + k, round(v, 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
             else:
                 base = f"'Aux Base Ocupação'!{L(6 + (k - K_NOV))}{r}" if k - K_NOV < 12 else f"{col(k - 12)}{r}"
-                c = BO.cell(r, 6 + k, f"=IFERROR(MIN(Premissas!$C$33,{base}*(1+{ogcell(r, k)})),\"\")"); c.font = F_CALC; c.fill = FILL_IN
+                c = BO.cell(r, 6 + k, f"=IFERROR(MIN(Premissas!$C$33,{base}*(1+{ogcell(r, k)})*(1+Premissas!$E$100)^Premissas!$C$119),\"\")"); c.font = F_CALC; c.fill = FILL_IN
             if rdb(r, k):
                 c = BA.cell(r, 6 + k, round(rdb(r, k)[0], 4)); c.font = copy.copy(F_IN); c.fill = FILL_ACT
             else:
@@ -800,6 +822,14 @@ for r in ROWS:
     for cc, fx in ((44, f"=AB{r}*AQ{r}"), (45, f"=AB{r}*(1-AQ{r})")):
         x = PP.cell(r, cc, fx); x.font = F_CALC; x.fill = FILL_IN; x.number_format = '0.0%'
 W_, AD_, DIR_, OUT_ = f"{PPN}!$AC$5:$AC$57", f"{PPN}!$AD$5:$AD$57", f"{PPN}!$AR$5:$AR$57", f"{PPN}!$AS$5:$AS$57"
+put('B114', '12. Maturação e LOS (modelo conjunto, analysis_maturacao_los.py)', F_B)
+put('B115', 'Prêmio vs prédio maduro · 0–2 meses de operação'); put('C115', -0.131, F_IN, FILL_KEY, '0.0%')
+put('F115', 'Efeito fixo de prédio e de mês do ano, isolando LOS, nota Airbnb, faixa Booking e canais. 37 prédios, 653 prédio × mês. Intervalo −24% a 0%.')
+put('B116', 'Prêmio vs prédio maduro · 3–5 meses'); put('C116', -0.117, F_IN, FILL_KEY, '0.0%'); put('F116', 'Intervalo −18% a −5%. A diária fica ~9% abaixo até o 8º mês.')
+put('B117', 'Prêmio vs prédio maduro · 6–8 meses'); put('C117', -0.086, F_IN, FILL_KEY, '0.0%'); put('F117', 'Intervalo −16% a −1%.')
+put('B118', 'Prêmio vs prédio maduro · 9–11 meses'); put('C118', -0.027, F_IN, FILL_KEY, '0.0%'); put('F118', 'Intervalo −8% a +4%. A partir de 12 meses, sem diferença.')
+put('B119', 'Elasticidade da ocupação ao LOS'); put('C119', 0.35, F_IN, FILL_KEY, '0.00')
+put('F119', '+10% de LOS = +3,4% de ocupação e −5,2% de diária; prêmio (RevPAR) −1,9%, não significativo (usamos zero). Ocupação × (1 + crescimento do LOS)^0,35; o ADR absorve o resto.')
 put('B104', '11. Demais outros canais · canal direto (Viva) × outros canais (Base Case)', F_B)
 for c, h in zip('BCDF', ['Premissa', 'dez/27', 'dez/28', 'Racional']):
     put(f'{c}105', h, F_B, FILL_HEAD)

@@ -75,3 +75,8 @@ Metas de canal direto e outros canais fecham exatamente (dez/27 5% + 5%; dez/28 
 Canal direto e outros canais: crescimento em p.p. iguais nos prédios que crescem (Premissas C110:D111 = acréscimo), fecha exato e é fórmula; sem teto.
 
 Bear Case: BC +1% (igual ao Base); os dois cenários têm o mesmo mercado e diferem só nos ganhos de reviews e canais.
+
+Modelo conjunto (analysis_maturacao_los.py): coeficientes isolando maturação, LOS, notas e canais — β Airbnb 0,80; faixa Booking +4,5%;
+Expedia 0,16; demais 0,61 (cheio) / 1,00 (folga). Maturação (Premissas item 12, aba Aux Maturação): prêmio −13,1% / −11,7% / −8,6% / −2,7%
+aos 0–2 / 3–5 / 6–8 / 9–11 meses; a projeção leva quem amadurecia em jul–out/26 ao nível maduro (C90/D90 liga nos dois cenários).
+LOS na ocupação: ocupação × (1 + crescimento do LOS)^0,35 (C119); prêmio sem efeito do LOS.

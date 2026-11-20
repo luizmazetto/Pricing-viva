@@ -14,7 +14,15 @@ city = {}
 import openpyxl
 wb = openpyxl.load_workbook('data/Inputs_Demanda_original.xlsx', read_only=True)
 for row in wb['ADR Acomodação'].iter_rows(min_row=5, max_row=57, values_only=True): city.setdefault(row[1], row[0])
-B_A, B_EXP, G_FULL, G_FOLGA, BAND, BAND_MIN = 1.08, 0.31, 0.41, 1.00, 0.095, 0.35
+B_A, B_EXP, G_FULL, G_FOLGA, BAND, BAND_MIN = 0.80, 0.16, 0.61, 1.00, 0.045, 0.35   # modelo conjunto
+CURVE = [(2, -0.131), (5, -0.117), (8, -0.086), (11, -0.027)]
+FD = {l.split('|')[0].split(' - ')[0].strip(): l.split('|')[1].strip() for l in open('../2026-11_premio_mercado/data/first_day.psv', encoding='utf-8').read().splitlines()[1:]}
+def mfac(cd, t):
+    if cd not in FD: return 1.0
+    a = t - mi(FD[cd][:7])
+    for lim, e in CURVE:
+        if a <= lim: return 1 + e if a >= 0 else 1.0
+    return 1.0
 out = []
 for cd, g in D.groupby('cd'):
     a, b = g[g.y == 2025], g[g.y == 2026]
@@ -35,10 +43,12 @@ for cd, g in D.groupby('cd'):
     occ = np.nanmean([A['occ'], Bb['occ']]); gd = G_FULL if occ >= 0.80 else G_FOLGA
     e_exp = B_EXP * (Bb['s_exp'] - A['s_exp']); e_out = gd * (Bb['s_out'] - A['s_out'])
     real = Bb['prem'] / A['prem'] - 1
-    expl = (1 + e_air) * (1 + e_band) * (1 + e_exp + e_out) - 1
+    m25 = np.average([mfac(cd, t) for t in a.t], weights=a.n); m26 = np.average([mfac(cd, t) for t in b.t], weights=b.n)
+    e_mat = m26 / m25 - 1
+    expl = (1 + e_air) * (1 + e_band) * (1 + e_exp + e_out) * (1 + e_mat) - 1
     out.append(dict(cd=cd, city=city.get(cd), meses=len(ms), n=Bb['n'], wrev=(a.rev*a.n).sum(), wm25=(a.mrevpar*a.n).sum(), wm26=(b.mrevpar*b.n).sum(), wr26=(b.rev*b.n).sum(), prem25=A['prem'] - 1, prem26=Bb['prem'] - 1, real=real,
                     ra25=A['ra'], ra26=Bb['ra'], f8_25=A['f8'], f8_26=Bb['f8'], dexp=Bb['s_exp'] - A['s_exp'], dout=Bb['s_out'] - A['s_out'],
-                    e_air=e_air, e_band=e_band, e_exp=e_exp, e_out=e_out, expl=expl, resid=(1 + real) / (1 + expl) - 1))
+                    e_air=e_air, e_band=e_band, e_exp=e_exp, e_out=e_out, e_mat=e_mat, expl=expl, resid=(1 + real) / (1 + expl) - 1))
 O = pd.DataFrame(out)
 O.to_csv('/tmp/decomp_premio_2026.csv', index=False)  # resultado prédio a prédio fica fora do repositório
 def tot(x):
@@ -46,7 +56,7 @@ def tot(x):
     w = x.wrev
     p25 = x.wrev.sum() / x.wm25.sum() - 1; p26 = x.wr26.sum() / x.wm26.sum() - 1
     r = dict(predios=len(x), prem25=p25, prem26=p26, real=(1 + p26) / (1 + p25) - 1)
-    for k in ('e_air', 'e_band', 'e_exp', 'e_out', 'expl'): r[k] = np.average(x[k], weights=w)
+    for k in ('e_air', 'e_band', 'e_exp', 'e_out', 'e_mat', 'expl'): r[k] = np.average(x[k], weights=w)
     r['resid'] = (1 + r['real']) / (1 + r['expl']) - 1
     r['ra25'] = np.average(x.ra25.fillna(x.ra26), weights=w); r['ra26'] = np.average(x.ra26.fillna(x.ra25), weights=w)
     r['dexp'] = np.average(x.dexp, weights=w); r['dout'] = np.average(x.dout, weights=w)
@@ -55,4 +65,4 @@ pd.set_option('display.width', 220)
 res = {lab: tot(O[sel]) for lab, sel in (('Portfólio', O.cd.notna()), ('SP', O.city == 'SP'), ('FLN', O.city == 'FLN'))}
 print(pd.DataFrame(res).T.round(4).to_string())
 print()
-print(O.sort_values('n', ascending=False)[['cd', 'city', 'meses', 'prem25', 'prem26', 'real', 'ra25', 'ra26', 'f8_25', 'f8_26', 'dexp', 'dout', 'e_air', 'e_band', 'e_exp', 'e_out', 'expl', 'resid']].round(3).to_string(index=False))
+print(O.sort_values('n', ascending=False)[['cd', 'city', 'meses', 'prem25', 'prem26', 'real', 'e_air', 'e_band', 'e_exp', 'e_out', 'e_mat', 'expl', 'resid']].round(3).to_string(index=False))
