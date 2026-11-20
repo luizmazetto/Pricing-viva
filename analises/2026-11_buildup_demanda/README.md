@@ -80,3 +80,8 @@ Modelo conjunto (analysis_maturacao_los.py): coeficientes isolando maturação, 
 Expedia 0,16; demais 0,61 (cheio) / 1,00 (folga). Maturação (Premissas item 12, aba Aux Maturação): prêmio −13,1% / −11,7% / −8,6% / −2,7%
 aos 0–2 / 3–5 / 6–8 / 9–11 meses; a projeção leva quem amadurecia em jul–out/26 ao nível maduro (C90/D90 liga nos dois cenários).
 LOS na ocupação: ocupação × (1 + crescimento do LOS)^0,35 (C119); prêmio sem efeito do LOS.
+
+Prêmio base (20/nov/2026): média de jun–nov/26 sem sazonalidade ((1 + prêmio do mês) ÷ índice sazonal; aba Aux Prêmio Dessaz), com nov/26
+estimado (data/nov26_estimado.psv: realizado 1–19/nov + reservas de 20–30/nov × pickup de nov/25 1,38; mercado de 20–30 = média entre a alta
+de 1–19/nov e o ritmo de reservas do Pricelabs). Nov/26 entra como estimado (verde) em RevPar Mercado, Prêmio e Buildup Ocupação.
+Portfólio: prêmio base +27,9% (antes +32,0% com jul–out/26).
