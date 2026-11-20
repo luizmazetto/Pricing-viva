@@ -80,11 +80,3 @@ Modelo conjunto (analysis_maturacao_los.py): coeficientes isolando maturação, 
 Expedia 0,16; demais 0,61 (cheio) / 1,00 (folga). Maturação (Premissas item 12, aba Aux Maturação): prêmio −13,1% / −11,7% / −8,6% / −2,7%
 aos 0–2 / 3–5 / 6–8 / 9–11 meses; a projeção leva quem amadurecia em jul–out/26 ao nível maduro (C90/D90 liga nos dois cenários).
 LOS na ocupação: ocupação × (1 + crescimento do LOS)^0,35 (C119); prêmio sem efeito do LOS.
-
-Prêmio base (20/nov/2026): média de jun–nov/26 sem sazonalidade ((1 + prêmio do mês) ÷ índice sazonal; aba Aux Prêmio Dessaz), com nov/26
-= realizado do mês até 19/nov (data/nov26_estimado.psv; mesmo número do dashboard 58, prêmio ~1,12–1,14), até o fechamento do mês. Nov/26 entra como estimado (verde) em RevPar Mercado, Prêmio e Buildup Ocupação.
-Portfólio: prêmio base +27,9% (antes +32,0% com jul–out/26).
-
-Mercado (20/nov/2026): premissas = variação de jan–19/nov/26 vs jan–19/nov/25, mesmos prédios e meses, na régua da aba RevPar Mercado
-(market_median_booked_price × market_occupancy da calendar do Metabase): SP −0,2%, FLN −9,9% (2027; −5% em 2028), BC +4,6%. Iguais nos
-dois cenários. Em 1–19/nov/26 o mercado subiu: SP +3,2% (diária mediana +6,7%, ocupação −1,4 p.p.), FLN +2,4%, BC +0,8%.
