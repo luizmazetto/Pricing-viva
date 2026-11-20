@@ -292,9 +292,9 @@ put('B2', 'Células amarelas com texto azul são premissas: mude aqui e todas as
 put('B4', '1. Mercado · variação do RevPAR de mercado vs mesmo mês do ano anterior (vem do cenário em C3, item 9)', F_B)
 for c, h in zip('BCDEF', ['Cidade', '2026 (nov–dez)', '2027', '2028', 'Racional']):
     put(f'{c}5', h, F_B, FILL_HEAD)
-MKT_G = {'SP': (6, -0.011, 'Mesma variação de 2026: RevPAR de mercado jan–out/26 vs jan–out/25 nos nossos prédios de SP = −1,1% (relatório Prêmio de Mercado 2026).'),
-         'FLN': (7, -0.107, 'Mesma variação de 2026: −10,7% em jan–out/26 vs jan–out/25 (premissa do usuário, Base e Bear).'),
-         'BC': (8, 0.01, 'Mesma variação de 2026: +1,0% em jan–out (só TSO 001).')}
+MKT_G = {'SP': (6, -0.002, 'Mesma variação de 2026: RevPAR de mercado jan–19/nov/26 vs jan–19/nov/25, mesmos prédios e meses, na régua da aba RevPar Mercado = −0,2%.'),
+         'FLN': (7, -0.099, 'Mesma variação de 2026: −9,9% em jan–19/nov/26 vs jan–19/nov/25 (Base e Bear).'),
+         'BC': (8, 0.046, 'Mesma variação de 2026: +4,6% em jan–19/nov (só TSO 001).')}
 for city, (row, g, why) in MKT_G.items():
     put(f'B{row}', city)
     for c in 'CDE':
@@ -471,14 +471,14 @@ put('B80', 'Reviews (item 2): 1 = nota atual · 2 = meta de portfólio'); put('C
 put('F80', 'Base: Airbnb 4,75 e Booking 8,5 no portfólio (prédios abaixo do piso sobem ao piso). Bear: cada prédio mantém a nota atual (sem ganho).')
 put('B81', 'Canais (item 8): 1 = mix atual · 2 = crescimento até a meta'); put('C81', 2, F_IN, FILL_KEY, '0'); put('D81', 1, F_IN, FILL_KEY, '0')
 put('F81', 'Base: Expedia 15% e demais 12% do portfólio em dez/27. Bear: mix de jul–out/26 constante (sem ganho).')
-for city, row, base, bear, why in (('SP', 82, -0.011, -0.011, 'Base e Bear: repete 2026 (−1,1% em jan–out/26 vs jan–out/25).'),
-                                   ('FLN', 83, -0.107, -0.107, 'Base e Bear: repete 2026, −10,7%.'),
-                                   ('BC', 84, 0.01, 0.01, 'Base e Bear: repete 2026 (+1,0%).')):
+for city, row, base, bear, why in (('SP', 82, -0.002, -0.002, 'Base e Bear: repete 2026 (−0,2% em jan–19/nov/26 vs jan–19/nov/25, mesmos prédios, régua da aba RevPar Mercado).'),
+                                   ('FLN', 83, -0.099, -0.099, 'Base e Bear: repete 2026, −9,9% (jan–19/nov).'),
+                                   ('BC', 84, 0.046, 0.046, 'Base e Bear: repete 2026 (+4,6%, jan–19/nov).')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · nov/26–dez/27 (vs mesmo mês do ano anterior)')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
-for city, row, base, bear, why in (('SP', 85, -0.011, -0.011, 'Base e Bear: mesma variação de 2027.'),
-                                   ('FLN', 86, -0.05, -0.05, 'Base e Bear: retração de 5% em 2028 (premissa do usuário), depois de −10,7% em 2026 e 2027.'),
-                                   ('BC', 87, 0.01, 0.01, 'Base e Bear: mesma variação de 2027.')):
+for city, row, base, bear, why in (('SP', 85, -0.002, -0.002, 'Base e Bear: mesma variação de 2027.'),
+                                   ('FLN', 86, -0.05, -0.05, 'Base e Bear: retração de 5% em 2028 (premissa do usuário), depois de −9,9% em 2026 e 2027.'),
+                                   ('BC', 87, 0.046, 0.046, 'Base e Bear: mesma variação de 2027.')):
     put(f'B{row}', f'Variação do RevPAR de mercado · {city} · 2028')
     put(f'C{row}', base, F_IN, FILL_KEY, '0.0%'); put(f'D{row}', bear, F_IN, FILL_KEY, '0.0%'); put(f'F{row}', why)
 put('B89', 'Teto do share de demais outros canais por prédio (não usado desde o crescimento em p.p. iguais, item 11)'); put('C89', 0.25, F_IN, FILL_KEY, '0%')
