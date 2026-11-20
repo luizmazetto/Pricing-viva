@@ -92,3 +92,37 @@ for lab, xs in (('só LOS', ['ll']), ('LOS + canais', ['ll', 's_exp', 's_out']))
         print(f'  {lab:14s} {ylab:16s} +10% de LOS: {pc(e[0] * np.log(1.1))} ({pc(e[1] * np.log(1.1))} a {pc(e[2] * np.log(1.1))})')
 sd = (S.ll - S.groupby('cd').ll.transform('mean')).std()
 print('variação típica do LOS dentro do prédio (desvio-padrão do log):', round(sd, 3))
+
+print('\n== 3. Modelo conjunto: maturação + LOS + nota Airbnb + faixa Booking + canais (prédio + mês do ano)')
+RB = collections.defaultdict(lambda: collections.defaultdict(lambda: [0.0, 0.0]))
+for r in pd.read_csv(REV + 'reviews_booking_master_month.psv', sep='|').itertuples():
+    x = RB[code(r.b)][mi(r.m)]; x[0] += r.n; x[1] += r.sg
+def rb_shown(c, t):
+    num = dd = 0.0; tot = 0.0
+    for j, wj in enumerate((0.85, 0.10, 0.05)):
+        n = s = 0.0
+        for q in range(t - 12 * (j + 1), t - 12 * j):
+            x = RB[c].get(q)
+            if x: n += x[0]; s += x[1]
+        tot += n
+        if n: num += wj * s / n; dd += wj
+    return num / dd if dd and tot >= 10 else np.nan
+D['rbs'] = [rb_shown(c, t) for c, t in zip(D.cd, D.t)]
+D['bk_b'] = D.groupby('b').rev_bk.transform('sum') / D.groupby('b').rev_tot.transform('sum')
+D['f8s'] = ((D.rbs >= 8.0) & (D.bk_b >= 0.35)).astype(float)
+D['occ_b'] = D.groupby('cd').occ.transform('mean')
+D['s_out_full'] = D.s_out * (D.occ_b >= 0.8); D['s_out_folga'] = D.s_out * (D.occ_b < 0.8)
+J = D[D.age.notna() & (D.age >= 0) & D.xa.notna() & D.rbs.notna() & D.los.notna() & D.occ.notna() & (D.cd != 'HLK 407')].copy()
+for lo, hi, lab in bins: J['a_' + lab] = ((J.age > lo) & (J.age <= hi)).astype(float)
+J['ll'] = np.log(J.los); J['lo'] = np.log(J.occ); J['ladr'] = J.lp - J.lo
+XS = cols + ['ll', 'xa', 'f8s', 's_exp', 's_out_full', 's_out_folga']
+print('prédios', J.cd.nunique(), 'prédio×mês', len(J))
+for y, ylab in (('lp', 'PRÊMIO (RevPAR)'), ('ladr', 'DIÁRIA relativa'), ('lo', 'OCUPAÇÃO')):
+    r = boot(J, XS, y, ['cd', 'moy'])
+    print(' ', ylab)
+    for c in cols: print(f'     idade {c[2:]:>6} meses: {fmt(r[c])}')
+    e = r['ll']; print(f'     +10% LOS: {pc(e[0]*np.log(1.1))} ({pc(e[1]*np.log(1.1))} a {pc(e[2]*np.log(1.1))})')
+    e = r['xa']; print(f'     nota Airbnb (β por estrela × %Airbnb): {e[0]:.2f} ({e[1]:.2f} a {e[2]:.2f})')
+    e = r['f8s']; print(f'     faixa Booking ≥ 8,0 (Booking ≥ 35%): {fmt(e)}')
+    for k in ('s_exp', 's_out_full', 's_out_folga'):
+        e = r[k]; print(f'     {k} (log por ponto de share): {e[0]:.2f} ({e[1]:.2f} a {e[2]:.2f})')
