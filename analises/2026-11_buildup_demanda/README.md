@@ -82,6 +82,5 @@ aos 0–2 / 3–5 / 6–8 / 9–11 meses; a projeção leva quem amadurecia em j
 LOS na ocupação: ocupação × (1 + crescimento do LOS)^0,35 (C119); prêmio sem efeito do LOS.
 
 Prêmio base (20/nov/2026): média de jun–nov/26 sem sazonalidade ((1 + prêmio do mês) ÷ índice sazonal; aba Aux Prêmio Dessaz), com nov/26
-estimado (data/nov26_estimado.psv: realizado 1–19/nov + reservas de 20–30/nov × pickup de nov/25 1,38; mercado de 20–30 = média entre a alta
-de 1–19/nov e o ritmo de reservas do Pricelabs). Nov/26 entra como estimado (verde) em RevPar Mercado, Prêmio e Buildup Ocupação.
+= realizado do mês até 19/nov (data/nov26_estimado.psv; mesmo número do dashboard 58, prêmio ~1,12–1,14), até o fechamento do mês. Nov/26 entra como estimado (verde) em RevPar Mercado, Prêmio e Buildup Ocupação.
 Portfólio: prêmio base +27,9% (antes +32,0% com jul–out/26).

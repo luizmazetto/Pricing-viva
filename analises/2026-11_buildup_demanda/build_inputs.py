@@ -679,7 +679,7 @@ for x in rd('data/report_db_predio_mes.psv'):
     if di > 0 and dp > 0: RDB[(x['b'], x['ctr'], kof(x['m']))] = (rv / di, di / dp)
 def rdb(r, k): return RDB.get((ROWINFO[r]['code'], ROWINFO[r]['ctr'], k)) if k in RDB_MONTHS else None
 
-# ------------------------------------------------------------------ novembro/26 estimado (realizado 1–19/nov + reservas de 20–30 × pickup de nov/25)
+# ------------------------------------------------------------------ novembro/26 = realizado do mês até 19/nov (data/nov26_estimado.psv)
 NOV26 = {x['cd']: x for x in rd('data/nov26_estimado.psv')}
 for r in ROWS:
     x = NOV26.get(ROWINFO[r]['code'])
@@ -688,7 +688,7 @@ for r in ROWS:
         c = wb[sh].cell(r, 6 + K_NOV, round(v, 6)); c.font = copy.copy(F_IN); c.fill = FILL_ACT; c.number_format = fmt
 # prêmio dessazonalizado de jun–nov/26: base do prêmio da projeção
 APD = mirror('Aux Prêmio Dessaz', '(1 + prêmio) ÷ índice sazonal do mês, jun–nov/26',
-             'Base do prêmio (Premissas por prédio, coluna G) = média destes 6 meses − 1. Nov/26 estimado: realizado 1–19/nov + reservas já feitas de 20–30/nov × pickup de nov/25 (1,38); mercado de 20–30 = média entre a alta de 1–19/nov e o ritmo de reservas do Pricelabs.')
+             'Base do prêmio (Premissas por prédio, coluna G) = média destes 6 meses − 1. Nov/26 = realizado do mês até 19/nov (nosso RevPAR, mercado e ocupação de 1–19/nov, como no dashboard 58), até o fechamento do mês.')
 month_header(APD, 29, 34)
 for r in ROWS:
     APD.cell(r, 5, '(1 + prêmio) ÷ índice')
