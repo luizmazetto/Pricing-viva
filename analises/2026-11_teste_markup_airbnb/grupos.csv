@@ -1,0 +1,37 @@
+cidade,predio,unidades,grupo,markup_airbnb,observacao
+SP,NXD 382 - Next Home Design,18,teste_mais_afetado,10%,Airbnb pós/pré 0.24
+SP,FYP 441 - For You Paraíso,49,teste_mais_afetado,10%,Airbnb pós/pré 0.40
+SP,PQJ 155 - Parque Jockey,38,teste_mais_afetado,10%,Airbnb pós/pré 0.41
+SP,NXF 444 - Next Franca,21,teste_mais_afetado,10%,Airbnb pós/pré 0.42
+SP,NXB 1333 - Next Bela Cintra,35,teste_mais_afetado,10%,Airbnb pós/pré 0.46
+SP,HBV 189 - Hub Boa Vista,15,teste_mais_afetado,10%,Airbnb pós/pré 0.49
+SP,SPZ 648 - Share Perdizes,47,teste_mais_afetado,10%,Airbnb pós/pré 0.50
+SP,AGR 965 - Aurora Greystar,50,teste,10%,
+SP,AYM 181 - Ayra Moema,50,teste,10%,
+SP,HLK 407 - Homelike,18,teste,10%,
+SP,NXP 950 - Next Pamplona,44,teste,10%,
+SP,OMG 45 - Casa Omaguás,21,teste,10%,
+SP,PVF 1304 - Pivô Alameda Franca,30,teste,10%,
+SP,PVJ 44 - Pivô Jardins,48,teste,10%,
+SP,PVP 936 - Pivô Pamplona,72,teste,10%,
+SP,SCN 59 - Share Consolação,12,teste,10%,
+SP,KAS 99 - Kasa,58,controle,22%,
+SP,NUN 61 - Helbor NUN,31,controle,22%,
+SP,NXH 720 - Next Haddock Lobo,23,controle,22%,
+SP,ONZ 247 - Onze22,43,controle,22%,
+SP,PVN 39 - Pivô Vila Nova,51,controle,22%,
+SP,TOF 1485 - Terraço Oscar Freire,26,controle,22%,
+SP,AYR 423 - Ayra Pinheiros,35,fora,22%,pouco Airbnb
+SP,AYH 634 - Ayra Higienópolis,20,fora,22%,Airbnb não caiu
+SP,CNZ 366 - Caza Noz,20,fora,22%,Airbnb não caiu
+SP,DGE 197 - Setin Downtown Genebra,13,fora,22%,Airbnb não caiu
+SP,URB 172 - Urbic Vila Mariana,51,fora,22%,Airbnb não caiu
+SP,NXV 601 - Next Vila Nova,9,fora,22%,ZERO reservas Airbnb há 6 semanas: checar anúncios
+FLN,CAN 203 - Cannes,62,teste_mais_afetado,10%,Airbnb vs 2025: 0.61
+FLN,ARB 301 - Rio Branco,35,teste_mais_afetado,10%,Airbnb vs 2025: 0.60
+FLN,AGM 85 - Água Marinha,9,teste_mais_afetado,10%,Airbnb vs 2025: 0.59
+FLN,ZEE 135 - ZEE Studios,12,teste_mais_afetado,10%,Airbnb vs 2025: 0.60
+FLN,FST 3950 - First,18,teste,10%,
+FLN,AQL 1420 - Aquarelle,7,teste,10%,
+FLN,TBG 1320 - The Bridge,71,controle,22%,
+FLN,TPV 869 - Top Vision,19,controle,22%,
